@@ -7,7 +7,9 @@ myModal.show();
 
 var readyToSend=false;
 var namesToSent;
-let cardPlayer1="";
+let cardPlayer1_A="";
+let cardPlayer1_B="";
+var baseUrl="src/img/";
 
 let field=document.getElementsByClassName("modal-body");
 field[0].addEventListener("keyup", function(){   
@@ -63,33 +65,46 @@ async function load(){
         alert(JSON.stringify(result));
         console.log(result);
         saveResponseFromServer(result);
+        drawCards();
     }else{
         alert("HTTP-Error: " + response.status);
     }
+
+    
 }
 
 
 function saveResponseFromServer(response){
-    console.log("i try to read");
     console.log(response.Players[0].Cards);
-    cardPlayer1= response.Players[0].Cards.map(item=>`${item.Color.slice(0,1)}${item.Value}`);
-    console.log("Example -> card 1 player 1: "+cardPlayer1[0]);
+    cardPlayer1_A= response.Players[0].Cards.map(item=>`${item.Color.slice(0,1)}${item.Value}`);
+    cardPlayer1_B= response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
+    console.log("Example a-> card 1 player 1: "+cardPlayer1_A[0]);
+    console.log("Example b-> card 1 player 1: "+cardPlayer1_B[0]);
 }
-
-
 
 let but=document.getElementsByClassName("footer_btn-primary");
 but[0].addEventListener("click", function(){  
     console.log("HIER in start game");
     if(readyToSend) { 
          myModal.hide()
-         load();
+          load();
+          
     };
 
 });
 
 
 
+async function drawCards(){
+    for(let i=0; i<cardPlayer1_B.length ;i++){
+        const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
+        console.log("URL :"+ url);
+        let myElem=document.getElementsByClassName("Player 1 card-body hand")[0];
+        const img = document.createElement("img");
+        img.src = url;
+        myElem.appendChild(img);
+    }
+}
 
 
 
