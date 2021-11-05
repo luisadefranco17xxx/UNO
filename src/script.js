@@ -39,9 +39,13 @@ field[0].addEventListener("keyup", function(){
     }   
 });
 
-let but=document.getElementsByClassName("btn-primary");
-but[0].addEventListener("click", function(){     
+let but=document.getElementsByClassName("footer_btn-primary");
+but[0].addEventListener("click", function(){  
+    console.log("HIER in start game");
     if(readyToSend) myModal.hide();
 });
+
+
+
 
 
