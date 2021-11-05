@@ -7,7 +7,7 @@ myModal.show();
 
 var readyToSend=false;
 var namesToSent;
-
+let cardPlayer1="";
 
 let field=document.getElementsByClassName("modal-body");
 field[0].addEventListener("keyup", function(){   
@@ -62,11 +62,19 @@ async function load(){
         console.log(result);
         alert(JSON.stringify(result));
         console.log(result);
+        saveResponseFromServer(result);
     }else{
         alert("HTTP-Error: " + response.status);
     }
 }
-// hier rufen wir unsere asynchrone funktion auf
+
+
+function saveResponseFromServer(response){
+    console.log("i try to read");
+    console.log(response.Players[0].Cards);
+    cardPlayer1= response.Players[0].Cards.map(item=>`${item.Color.slice(0,1)}${item.Value}`);
+    console.log("Example -> card 1 player 1: "+cardPlayer1[0]);
+}
 
 
 
@@ -75,7 +83,8 @@ but[0].addEventListener("click", function(){
     console.log("HIER in start game");
     if(readyToSend) { 
          myModal.hide()
-         load()    };
+         load();
+    };
 
 });
 
