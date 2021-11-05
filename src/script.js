@@ -1,6 +1,5 @@
 "use strict";
 
-// hola hola
 
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 
