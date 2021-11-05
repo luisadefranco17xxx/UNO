@@ -6,6 +6,7 @@ var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 myModal.show();
 
 var readyToSend=false;
+var namesToSent;
 
 
 let field=document.getElementsByClassName("modal-body");
@@ -35,15 +36,54 @@ field[0].addEventListener("keyup", function(){
                         readyToSend=false;
                 }
             }
-        }   
+        } 
+        namesToSent =fieldnamenList;
     }   
 });
+
+async function load(){
+    console.log("start_function: "+ namesToSent);
+    // hier starten wir gleich den request
+    // warten auf das promise (alternativ fetch, then notation)
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start",{             
+        method: 'POST',
+        body: JSON.stringify(
+                namesToSent
+        ),        
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    });
+
+    // dieser code wird erst ausgeführt wenn fetch fertig ist
+    if(response.ok){ // wenn http-status zwischen 200 und 299 liegt
+        // wir lesen den response body 
+        let result = await response.json(); // alternativ response.text wenn nicht json gewünscht ist
+        console.log(result);
+        alert(JSON.stringify(result));
+        console.log(result);
+    }else{
+        alert("HTTP-Error: " + response.status);
+    }
+}
+// hier rufen wir unsere asynchrone funktion auf
+
+
 
 let but=document.getElementsByClassName("footer_btn-primary");
 but[0].addEventListener("click", function(){  
     console.log("HIER in start game");
-    if(readyToSend) myModal.hide();
+    if(readyToSend) { 
+         myModal.hide()
+         load()    };
+
 });
+
+
+
+
+
+
 
 
 
