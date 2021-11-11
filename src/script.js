@@ -8,6 +8,7 @@ myModal.show();
 var readyToSend=false;
 var namesToSent;
 
+var deck="";
 let cardPlayer1_B="";
 let cardPlayer2_B="";
 let cardPlayer3_B="";
@@ -80,6 +81,9 @@ async function load(){
 
 
 function saveResponseFromServer(response){
+    let session_id=response.Id;
+    let _deck=response.TopCard;
+    deck=`${_deck.Color}${_deck.Value}`
     cardPlayer1_B = response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
@@ -116,7 +120,12 @@ function setPlayersNamesInBoard(names){
 
 
 async function drawCards(){
-
+    console.log("LUISAAAAA2"+deck);
+    const url_deck = `${baseUrl}${deck}.png`;
+    let myElem=document.getElementById("deck");
+    const img = document.createElement("img");
+    img.src = url_deck;
+    myElem.appendChild(img);
 
     for(let i=0; i<cardPlayer1_B.length ;i++){
         const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
