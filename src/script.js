@@ -8,12 +8,15 @@ myModal.show();
 var readyToSend=false;
 var namesToSent;
 
+var session_id;
 var deck="";
 let cardPlayer1_B="";
 let cardPlayer2_B="";
 let cardPlayer3_B="";
 let cardPlayer4_B="";
+let nextPlayer;
 var baseUrl="src/img/";
+var fieldnamenList;
 
 
 let field=document.getElementsByClassName("modal-body");
@@ -25,7 +28,7 @@ field[0].addEventListener("keyup", function(){
     let fieldName3 =document.getElementById("name3");
     let fieldName4 =document.getElementById("name4");
 
-    var fieldnamenList =[fieldName1.value,fieldName2.value,fieldName3.value,fieldName4.value];
+    fieldnamenList =[fieldName1.value,fieldName2.value,fieldName3.value,fieldName4.value];
     var formIsFull=true;
 
     fieldnamenList.forEach(function(fieldElement) { 
@@ -81,15 +84,14 @@ async function load(){
 
 
 function saveResponseFromServer(response){
-    let session_id=response.Id;
+    session_id=response.Id;
     let _deck=response.TopCard;
+    nextPlayer=response.NextPlayer;
     deck=`${_deck.Color}${_deck.Value}`
     cardPlayer1_B = response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer4_B = response.Players[3].Cards.map(item=>`${item.Color}${item.Value}`);
-
-
 
 }
 
@@ -98,23 +100,18 @@ but[0].addEventListener("click", function(){
     console.log("HIER in start game");
     if(readyToSend) { 
          myModal.hide()
-          load();
-          
+          load();          
     };
 
 });
 
 function setPlayersNamesInBoard(names){
-
     for (let i = 0; i < names.length; i++) {
         const li = document.createElement("li");
         li.innerHTML = names[i];
         let nameField = document.getElementById('name-player'+ (i+1));
         nameField.appendChild(li);
     }
-
-
-
 }
 
 
@@ -159,11 +156,35 @@ async function drawCards(){
         img.src = url;
         myElem.appendChild(img);
     }
+    setActivePlayer();
 
 }
 
+function setActivePlayer() {
 
 
+   for (let i=0;i<fieldnamenList.length;i++){
+       if(fieldnamenList[i]==nextPlayer){
+        let myElem=document.getElementById("name-player"+(i+1));
+        const li = document.createElement("li");
+        li.innerHTML ="Active Player";        
+        myElem.appendChild(li);
+       }
+   }
+}
+
+document.querySelector(".card-all").addEventListener("mouseover", function(event){
+    console.log(event.target.tagName);
+    if (event.target.tagName === "IMG"){
+        event.target.classList.add("selected");
+    }
+});
+
+document.querySelector(".card-all").addEventListener("mouseout", function(event){
+    if (event.target.tagName === "IMG"){
+        event.target.classList.remove("selected");
+    }    
+});
 
 
 
