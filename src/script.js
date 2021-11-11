@@ -7,11 +7,16 @@ myModal.show();
 
 var readyToSend=false;
 var namesToSent;
-let cardPlayer1_A="";
+
 let cardPlayer1_B="";
+let cardPlayer2_B="";
+let cardPlayer3_B="";
+let cardPlayer4_B="";
 var baseUrl="src/img/";
 
+
 let field=document.getElementsByClassName("modal-body");
+
 field[0].addEventListener("keyup", function(){   
      
     let fieldName1 =document.getElementById("name1");
@@ -39,8 +44,9 @@ field[0].addEventListener("keyup", function(){
                 }
             }
         } 
-        namesToSent =fieldnamenList;
-    }   
+        namesToSent = fieldnamenList;
+    }
+
 });
 
 async function load(){
@@ -66,20 +72,21 @@ async function load(){
         console.log(result);
         saveResponseFromServer(result);
         drawCards();
+        setPlayersNamesInBoard(namesToSent);
     }else{
         alert("HTTP-Error: " + response.status);
     }
-
-    
 }
 
 
 function saveResponseFromServer(response){
-    console.log(response.Players[0].Cards);
-    cardPlayer1_A= response.Players[0].Cards.map(item=>`${item.Color.slice(0,1)}${item.Value}`);
-    cardPlayer1_B= response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
-    console.log("Example a-> card 1 player 1: "+cardPlayer1_A[0]);
-    console.log("Example b-> card 1 player 1: "+cardPlayer1_B[0]);
+    cardPlayer1_B = response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer4_B = response.Players[3].Cards.map(item=>`${item.Color}${item.Value}`);
+
+
+
 }
 
 let but=document.getElementsByClassName("footer_btn-primary");
@@ -93,9 +100,24 @@ but[0].addEventListener("click", function(){
 
 });
 
+function setPlayersNamesInBoard(names){
+
+    for (let i = 0; i < names.length; i++) {
+        const li = document.createElement("li");
+        li.innerHTML = names[i];
+        let nameField = document.getElementById('name-player'+ (i+1));
+        nameField.appendChild(li);
+    }
+
+
+
+}
+
 
 
 async function drawCards(){
+
+
     for(let i=0; i<cardPlayer1_B.length ;i++){
         const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
         console.log("URL :"+ url);
@@ -104,6 +126,31 @@ async function drawCards(){
         img.src = url;
         myElem.appendChild(img);
     }
+    for(let i=0; i<cardPlayer2_B.length ;i++){
+        const url = `${baseUrl}${cardPlayer2_B[i]}.png`;
+        console.log("URL :"+ url);
+        let myElem=document.getElementsByClassName("Player2-hand")[0];
+        const img = document.createElement("img");
+        img.src = url;
+        myElem.appendChild(img);
+    }
+    for(let i=0; i<cardPlayer3_B.length ;i++){
+        const url = `${baseUrl}${cardPlayer3_B[i]}.png`;
+        console.log("URL :"+ url);
+        let myElem=document.getElementsByClassName("Player3-hand")[0];
+        const img = document.createElement("img");
+        img.src = url;
+        myElem.appendChild(img);
+    }
+    for(let i=0; i<cardPlayer4_B.length ;i++){
+        const url = `${baseUrl}${cardPlayer4_B[i]}.png`;
+        console.log("URL :"+ url);
+        let myElem=document.getElementsByClassName("Player4-hand")[0];
+        const img = document.createElement("img");
+        img.src = url;
+        myElem.appendChild(img);
+    }
+
 }
 
 
