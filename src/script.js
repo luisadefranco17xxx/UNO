@@ -11,6 +11,8 @@ var namesToSent;
 var session_id;
 var deck="";
 let cardPlayer1_B="";
+let cardPlayer1_color="";
+let cardPlayer1_value="";
 let cardPlayer2_B="";
 let cardPlayer3_B="";
 let cardPlayer4_B="";
@@ -89,6 +91,8 @@ function saveResponseFromServer(response){
     nextPlayer=response.NextPlayer;
     deck=`${_deck.Color}${_deck.Value}`
     cardPlayer1_B = response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer1_color = response.Players[0].Cards.map(item=>`${item.Color}`);
+    cardPlayer1_value = response.Players[0].Cards.map(item=>`${item.Value}`);
     cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
     cardPlayer4_B = response.Players[3].Cards.map(item=>`${item.Color}${item.Value}`);
@@ -130,6 +134,9 @@ async function drawCards(){
         let myElem=document.getElementsByClassName("Player1-hand")[0];
         const img = document.createElement("img");
         img.src = url;
+        img.dataset.value=cardPlayer1_value[i];
+        img.dataset.color=cardPlayer1_color[i];
+
         myElem.appendChild(img);
     }
     for(let i=0; i<cardPlayer2_B.length ;i++){
@@ -146,6 +153,7 @@ async function drawCards(){
         let myElem=document.getElementsByClassName("Player3-hand")[0];
         const img = document.createElement("img");
         img.src = url;
+
         myElem.appendChild(img);
     }
     for(let i=0; i<cardPlayer4_B.length ;i++){
@@ -186,7 +194,39 @@ document.querySelector(".card-all").addEventListener("mouseout", function(event)
     }    
 });
 
+document.querySelector(".card-all").addEventListener("click", function(event){
+    console.log(event.target.dataset.value);
+    console.log(event.target.dataset.color);
 
+
+    sendCard(event.target.dataset.value,event.target.dataset.color);
+});
+
+
+async function sendCard(value, color){
+    console.log("start_function send card "+value);
+
+    //{id}?value={value}&color={color}&wildColor={wildColor}
+
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/"+session_id+"?value="+value+"&color="+color+"&wildColor= ",
+    {       
+        method: 'PUT',       
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    });
+
+    if(response.ok){ 
+        let result = await response.json(); // alternativ response.text wenn nicht json gewünscht ist
+        console.log(result);
+        alert(JSON.stringify(result));
+        //saveResponseFromServer(result);
+        //drawCards();
+        //setPlayersNamesInBoard(namesToSent);
+    }else{
+        alert("HTTP-Error: " + response.status);
+    }
+}
 
 
 
