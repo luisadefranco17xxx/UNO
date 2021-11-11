@@ -16,3 +16,8 @@
 .card-body .hand {
     flex-direction: column;
 }
+
+.Player1-hand > img {
+    width: 40px;
+}
+

@@ -99,7 +99,7 @@ async function drawCards(){
     for(let i=0; i<cardPlayer1_B.length ;i++){
         const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
         console.log("URL :"+ url);
-        let myElem=document.getElementsByClassName("Player 1 card-body hand")[0];
+        let myElem=document.getElementsByClassName("Player1-hand")[0];
         const img = document.createElement("img");
         img.src = url;
         myElem.appendChild(img);
