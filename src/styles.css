@@ -36,3 +36,7 @@
 .card-all .selected{
     transform: rotate(10deg) translateY(-9px);
   }
+
+.active-player{
+    background-color: aqua;
+}

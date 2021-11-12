@@ -14,11 +14,18 @@ let cardPlayer1_B="";
 let cardPlayer1_color="";
 let cardPlayer1_value="";
 let cardPlayer2_B="";
+let cardPlayer2_color="";
+let cardPlayer2_value="";
 let cardPlayer3_B="";
+let cardPlayer3_color="";
+let cardPlayer3_value="";
 let cardPlayer4_B="";
+let cardPlayer4_color="";
+let cardPlayer4_value="";
 let nextPlayer;
 var baseUrl="src/img/";
 var fieldnamenList;
+var scoreHand;
 
 
 let field=document.getElementsByClassName("modal-body");
@@ -86,7 +93,7 @@ async function load(){
 
 
 function saveResponseFromServer(response){
-    session_id=response.Id;
+    session_id = response.Id;
     let _deck=response.TopCard;
     nextPlayer=response.NextPlayer;
     deck=`${_deck.Color}${_deck.Value}`
@@ -94,9 +101,21 @@ function saveResponseFromServer(response){
     cardPlayer1_color = response.Players[0].Cards.map(item=>`${item.Color}`);
     cardPlayer1_value = response.Players[0].Cards.map(item=>`${item.Value}`);
     cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer2_color = response.Players[1].Cards.map(item=>`${item.Color}`);
+    cardPlayer2_value = response.Players[1].Cards.map(item=>`${item.Value}`);
     cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer3_color = response.Players[2].Cards.map(item=>`${item.Color}`);
+    cardPlayer3_value = response.Players[2].Cards.map(item=>`${item.Value}`);
     cardPlayer4_B = response.Players[3].Cards.map(item=>`${item.Color}${item.Value}`);
+    cardPlayer4_color = response.Players[3].Cards.map(item=>`${item.Color}`);
+    cardPlayer4_value = response.Players[3].Cards.map(item=>`${item.Value}`);
+}
 
+function saveResponseFromServerAfterPlayCard(response){
+    nextPlayer = response.Player;
+    scoreHand = response.Score;
+
+    setActivePlayer();
 }
 
 let but=document.getElementsByClassName("footer_btn-primary");
@@ -121,12 +140,13 @@ function setPlayersNamesInBoard(names){
 
 
 async function drawCards(){
-    console.log("LUISAAAAA2"+deck);
+
     const url_deck = `${baseUrl}${deck}.png`;
     let myElem=document.getElementById("deck");
     const img = document.createElement("img");
     img.src = url_deck;
     myElem.appendChild(img);
+
 
     for(let i=0; i<cardPlayer1_B.length ;i++){
         const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
@@ -136,7 +156,6 @@ async function drawCards(){
         img.src = url;
         img.dataset.value=cardPlayer1_value[i];
         img.dataset.color=cardPlayer1_color[i];
-
         myElem.appendChild(img);
     }
     for(let i=0; i<cardPlayer2_B.length ;i++){
@@ -145,6 +164,8 @@ async function drawCards(){
         let myElem=document.getElementsByClassName("Player2-hand")[0];
         const img = document.createElement("img");
         img.src = url;
+        img.dataset.value=cardPlayer2_value[i];
+        img.dataset.color=cardPlayer2_color[i];
         myElem.appendChild(img);
     }
     for(let i=0; i<cardPlayer3_B.length ;i++){
@@ -153,7 +174,8 @@ async function drawCards(){
         let myElem=document.getElementsByClassName("Player3-hand")[0];
         const img = document.createElement("img");
         img.src = url;
-
+        img.dataset.value=cardPlayer3_value[i];
+        img.dataset.color=cardPlayer3_color[i];
         myElem.appendChild(img);
     }
     for(let i=0; i<cardPlayer4_B.length ;i++){
@@ -162,6 +184,8 @@ async function drawCards(){
         let myElem=document.getElementsByClassName("Player4-hand")[0];
         const img = document.createElement("img");
         img.src = url;
+        img.dataset.value=cardPlayer4_value[i];
+        img.dataset.color=cardPlayer4_color[i];
         myElem.appendChild(img);
     }
     setActivePlayer();
@@ -170,43 +194,46 @@ async function drawCards(){
 
 function setActivePlayer() {
 
-
    for (let i=0;i<fieldnamenList.length;i++){
        if(fieldnamenList[i]==nextPlayer){
         let myElem=document.getElementById("name-player"+(i+1));
         const li = document.createElement("li");
-        li.innerHTML ="Active Player";        
+        li.innerHTML ="Active Player";
         myElem.appendChild(li);
+       } else {
+
        }
    }
 }
 
-document.querySelector(".card-all").addEventListener("mouseover", function(event){
-    console.log(event.target.tagName);
-    if (event.target.tagName === "IMG"){
-        event.target.classList.add("selected");
-    }
-});
-
-document.querySelector(".card-all").addEventListener("mouseout", function(event){
-    if (event.target.tagName === "IMG"){
-        event.target.classList.remove("selected");
-    }    
-});
-
-document.querySelector(".card-all").addEventListener("click", function(event){
-    console.log(event.target.dataset.value);
-    console.log(event.target.dataset.color);
+for (let i = 0; i < 4; i++) {
+    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseover", function(event){
+        console.log(event.target.tagName);
+        console.log('POR AQUI PASO EL MOUSE' + event.target.tagName)
+        if (event.target.tagName === "IMG"){
+            event.target.classList.add("selected");
+        }
+    });
 
 
-    sendCard(event.target.dataset.value,event.target.dataset.color);
-});
+    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseout", function(event){
+        if (event.target.tagName === "IMG"){
+            event.target.classList.remove("selected");
+        }
+    });
+
+    document.getElementsByClassName("card-body hand")[i].addEventListener("click", function(event){
+        console.log(event.target.dataset.value);
+        console.log(event.target.dataset.color);
+
+        sendCard(event.target.dataset.value,event.target.dataset.color);
+    });
+
+}
 
 
 async function sendCard(value, color){
     console.log("start_function send card "+value);
-
-    //{id}?value={value}&color={color}&wildColor={wildColor}
 
     let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/"+session_id+"?value="+value+"&color="+color+"&wildColor= ",
     {       
@@ -220,9 +247,7 @@ async function sendCard(value, color){
         let result = await response.json(); // alternativ response.text wenn nicht json gewünscht ist
         console.log(result);
         alert(JSON.stringify(result));
-        //saveResponseFromServer(result);
-        //drawCards();
-        //setPlayersNamesInBoard(namesToSent);
+        saveResponseFromServerAfterPlayCard(result);
     }else{
         alert("HTTP-Error: " + response.status);
     }
