@@ -2,256 +2,376 @@
 
 
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'))
 
-myModal.show();
-
-var readyToSend=false;
+var readyToSend = false;
 var namesToSent;
-
 var session_id;
-var deck="";
-let cardPlayer1_B="";
-let cardPlayer1_color="";
-let cardPlayer1_value="";
-let cardPlayer2_B="";
-let cardPlayer2_color="";
-let cardPlayer2_value="";
-let cardPlayer3_B="";
-let cardPlayer3_color="";
-let cardPlayer3_value="";
-let cardPlayer4_B="";
-let cardPlayer4_color="";
-let cardPlayer4_value="";
+var pile = "";
+let cardsPlayer1 = "";
+let cardsPlayer1_color = "";
+let cardsPlayer1_value = "";
+let cardsPlayer2 = "";
+let cardsPlayer2_color = "";
+let cardsPlayer2_value = "";
+let cardsPlayer3 = "";
+let cardsPlayer3_color = "";
+let cardsPlayer3_value = "";
+let cardsPlayer4 = "";
+let cardsPlayer4_color = "";
+let cardsPlayer4_value = "";
 let nextPlayer;
-var baseUrl="src/img/";
+var baseUrl = "src/img/";
 var fieldnamenList;
 var scoreHand;
+var wild;
+var eventForModal;
 
 
-let field=document.getElementsByClassName("modal-body");
+myModal.show();
+//<img src="https://robohash.org/YOUR-TEXT.png">
 
-field[0].addEventListener("keyup", function(){   
-     
-    let fieldName1 =document.getElementById("name1");
-    let fieldName2 =document.getElementById("name2");
-    let fieldName3 =document.getElementById("name3");
-    let fieldName4 =document.getElementById("name4");
 
-    fieldnamenList =[fieldName1.value,fieldName2.value,fieldName3.value,fieldName4.value];
-    var formIsFull=true;
+setTimeout(function (){
+    document.getElementById("name1").focus();
+}, 500);
+let formInputNames = document.getElementById("form-names-modal");
 
-    fieldnamenList.forEach(function(fieldElement) { 
-        if (fieldElement=="")  
-                { 
-                    formIsFull=false; 
-                }
+formInputNames.addEventListener("keyup", function () {
+    let fieldName1 = document.getElementById("name1");
+    let fieldName2 = document.getElementById("name2");
+    let fieldName3 = document.getElementById("name3");
+    let fieldName4 = document.getElementById("name4");
+
+
+    fieldnamenList = [fieldName1.value, fieldName2.value, fieldName3.value, fieldName4.value];
+    var formIsFull = true;
+
+    fieldnamenList.forEach(function (fieldElement) {
+        if (fieldElement == "") {
+            formIsFull = false;
+        }
     });
 
     if (formIsFull) {
-        readyToSend=true;
-        for (var j = 0, len = fieldnamenList.length-1; j < len; j++){
-            for (var i = j+1, len = fieldnamenList.length; i < len; i++){
-                if (fieldnamenList[i] == fieldnamenList[j]){
-                        console.log("HIER Zwei felden sind gleich");
-                        readyToSend=false;
+        readyToSend = true;
+        for (var j = 0, len = fieldnamenList.length - 1; j < len; j++) {
+            for (var i = j + 1, len = fieldnamenList.length; i < len; i++) {
+                if (fieldnamenList[i] == fieldnamenList[j]) {
+                    console.log("There are two repeated names");
+                    document.getElementById('error-feedback-names').classList.add('display-feedback-names');
+                    readyToSend = false;
                 }
             }
-        } 
+        }
+        if (readyToSend == true) {
+            document.getElementById('error-feedback-names').classList.remove('display-feedback-names');
+        }
         namesToSent = fieldnamenList;
     }
-
 });
 
-async function load(){
-    console.log("start_function: "+ namesToSent);
-    // hier starten wir gleich den request
-    // warten auf das promise (alternativ fetch, then notation)
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start",{             
+let startGameModalButton = document.getElementById("start-game-btn");
+
+startGameModalButton.addEventListener("click", function () {
+    if (readyToSend) {
+        myModal.hide()
+        startGame();
+    }
+});
+
+let colorButtonClicked = document.getElementById('colorButtonClicked');
+colorButtonClicked.addEventListener("click", function (event) {
+    wild = event.target.id;
+    sendCard(eventForModal.dataset.value, eventForModal.dataset.color, wild);
+});
+
+async function startGame() {
+
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start", {
         method: 'POST',
         body: JSON.stringify(
-                namesToSent
-        ),        
+            namesToSent
+        ),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         }
     });
 
-    // dieser code wird erst ausgeführt wenn fetch fertig ist
-    if(response.ok){ // wenn http-status zwischen 200 und 299 liegt
-        // wir lesen den response body 
-        let result = await response.json(); // alternativ response.text wenn nicht json gewünscht ist
-        console.log(result);
-        alert(JSON.stringify(result));
-        console.log(result);
+    if (response.ok) {
+        let result = await response.json();
+
         saveResponseFromServer(result);
-        drawCards();
+        setuptStartingCards();
         setPlayersNamesInBoard(namesToSent);
-    }else{
+    } else {
         alert("HTTP-Error: " + response.status);
     }
 }
 
-
-function saveResponseFromServer(response){
+function saveResponseFromServer(response) {
     session_id = response.Id;
-    let _deck=response.TopCard;
-    nextPlayer=response.NextPlayer;
-    deck=`${_deck.Color}${_deck.Value}`
-    cardPlayer1_B = response.Players[0].Cards.map(item=>`${item.Color}${item.Value}`);
-    cardPlayer1_color = response.Players[0].Cards.map(item=>`${item.Color}`);
-    cardPlayer1_value = response.Players[0].Cards.map(item=>`${item.Value}`);
-    cardPlayer2_B = response.Players[1].Cards.map(item=>`${item.Color}${item.Value}`);
-    cardPlayer2_color = response.Players[1].Cards.map(item=>`${item.Color}`);
-    cardPlayer2_value = response.Players[1].Cards.map(item=>`${item.Value}`);
-    cardPlayer3_B = response.Players[2].Cards.map(item=>`${item.Color}${item.Value}`);
-    cardPlayer3_color = response.Players[2].Cards.map(item=>`${item.Color}`);
-    cardPlayer3_value = response.Players[2].Cards.map(item=>`${item.Value}`);
-    cardPlayer4_B = response.Players[3].Cards.map(item=>`${item.Color}${item.Value}`);
-    cardPlayer4_color = response.Players[3].Cards.map(item=>`${item.Color}`);
-    cardPlayer4_value = response.Players[3].Cards.map(item=>`${item.Value}`);
+    nextPlayer = response.NextPlayer;
+    let topCard = response.TopCard;
+    pile = `${topCard.Color}${topCard.Value}`
+
+    cardsPlayer1 = response.Players[0].Cards.map(item => `${item.Color}${item.Value}`);
+    cardsPlayer1_color = response.Players[0].Cards.map(item => `${item.Color}`);
+    cardsPlayer1_value = response.Players[0].Cards.map(item => `${item.Value}`);
+
+    cardsPlayer2 = response.Players[1].Cards.map(item => `${item.Color}${item.Value}`);
+    cardsPlayer2_color = response.Players[1].Cards.map(item => `${item.Color}`);
+    cardsPlayer2_value = response.Players[1].Cards.map(item => `${item.Value}`);
+
+    cardsPlayer3 = response.Players[2].Cards.map(item => `${item.Color}${item.Value}`);
+    cardsPlayer3_color = response.Players[2].Cards.map(item => `${item.Color}`);
+    cardsPlayer3_value = response.Players[2].Cards.map(item => `${item.Value}`);
+
+    cardsPlayer4 = response.Players[3].Cards.map(item => `${item.Color}${item.Value}`);
+    cardsPlayer4_color = response.Players[3].Cards.map(item => `${item.Color}`);
+    cardsPlayer4_value = response.Players[3].Cards.map(item => `${item.Value}`);
 }
 
-function saveResponseFromServerAfterPlayCard(response){
-    nextPlayer = response.Player;
-    scoreHand = response.Score;
 
-    setActivePlayer();
-}
-
-let but=document.getElementsByClassName("footer_btn-primary");
-but[0].addEventListener("click", function(){  
-    console.log("HIER in start game");
-    if(readyToSend) { 
-         myModal.hide()
-          load();          
-    };
-
-});
-
-function setPlayersNamesInBoard(names){
+function setPlayersNamesInBoard(names) {
     for (let i = 0; i < names.length; i++) {
         const li = document.createElement("li");
         li.innerHTML = names[i];
-        let nameField = document.getElementById('name-player'+ (i+1));
+        let nameField = document.getElementById('name-player' + (i + 1));
         nameField.appendChild(li);
     }
 }
 
+async function setuptStartingCards() {
 
-
-async function drawCards(){
-
-    const url_deck = `${baseUrl}${deck}.png`;
-    let myElem=document.getElementById("deck");
+    const url_pile = `${baseUrl}${pile}.png`;
+    let myElem = document.getElementById("pile");
     const img = document.createElement("img");
-    img.src = url_deck;
+    img.src = url_pile;
+    img.id = "pile-top";
     myElem.appendChild(img);
 
 
-    for(let i=0; i<cardPlayer1_B.length ;i++){
-        const url = `${baseUrl}${cardPlayer1_B[i]}.png`;
-        console.log("URL :"+ url);
-        let myElem=document.getElementsByClassName("Player1-hand")[0];
+    for (let i = 0; i < cardsPlayer1.length; i++) {
+        const url = `${baseUrl}${cardsPlayer1[i]}.png`;
+        console.log("URL :" + url);
+        let myElem = document.getElementsByClassName("Player1-hand")[0];
         const img = document.createElement("img");
         img.src = url;
-        img.dataset.value=cardPlayer1_value[i];
-        img.dataset.color=cardPlayer1_color[i];
+        img.dataset.value = cardsPlayer1_value[i];
+        img.dataset.color = cardsPlayer1_color[i];
         myElem.appendChild(img);
     }
-    for(let i=0; i<cardPlayer2_B.length ;i++){
-        const url = `${baseUrl}${cardPlayer2_B[i]}.png`;
-        console.log("URL :"+ url);
-        let myElem=document.getElementsByClassName("Player2-hand")[0];
+    for (let i = 0; i < cardsPlayer2.length; i++) {
+        const url = `${baseUrl}${cardsPlayer2[i]}.png`;
+        console.log("URL :" + url);
+        let myElem = document.getElementsByClassName("Player2-hand")[0];
         const img = document.createElement("img");
         img.src = url;
-        img.dataset.value=cardPlayer2_value[i];
-        img.dataset.color=cardPlayer2_color[i];
+        img.dataset.value = cardsPlayer2_value[i];
+        img.dataset.color = cardsPlayer2_color[i];
         myElem.appendChild(img);
     }
-    for(let i=0; i<cardPlayer3_B.length ;i++){
-        const url = `${baseUrl}${cardPlayer3_B[i]}.png`;
-        console.log("URL :"+ url);
-        let myElem=document.getElementsByClassName("Player3-hand")[0];
+    for (let i = 0; i < cardsPlayer3.length; i++) {
+        const url = `${baseUrl}${cardsPlayer3[i]}.png`;
+        console.log("URL :" + url);
+        let myElem = document.getElementsByClassName("Player3-hand")[0];
         const img = document.createElement("img");
         img.src = url;
-        img.dataset.value=cardPlayer3_value[i];
-        img.dataset.color=cardPlayer3_color[i];
+        img.dataset.value = cardsPlayer3_value[i];
+        img.dataset.color = cardsPlayer3_color[i];
         myElem.appendChild(img);
     }
-    for(let i=0; i<cardPlayer4_B.length ;i++){
-        const url = `${baseUrl}${cardPlayer4_B[i]}.png`;
-        console.log("URL :"+ url);
-        let myElem=document.getElementsByClassName("Player4-hand")[0];
+    for (let i = 0; i < cardsPlayer4.length; i++) {
+        const url = `${baseUrl}${cardsPlayer4[i]}.png`;
+        console.log("URL :" + url);
+        let myElem = document.getElementsByClassName("Player4-hand")[0];
         const img = document.createElement("img");
         img.src = url;
-        img.dataset.value=cardPlayer4_value[i];
-        img.dataset.color=cardPlayer4_color[i];
+        img.dataset.value = cardsPlayer4_value[i];
+        img.dataset.color = cardsPlayer4_color[i];
         myElem.appendChild(img);
     }
     setActivePlayer();
-
 }
 
 function setActivePlayer() {
+    for (let i = 0; i < fieldnamenList.length; i++) {
+        if (fieldnamenList[i] == nextPlayer) {
+            let myElem = document.getElementById("name-player" + (i + 1));
 
-   for (let i=0;i<fieldnamenList.length;i++){
-       if(fieldnamenList[i]==nextPlayer){
-        let myElem=document.getElementById("name-player"+(i+1));
-        const li = document.createElement("li");
-        li.innerHTML ="Active Player";
-        myElem.appendChild(li);
-       } else {
+            const li = document.createElement("li");
+            li.innerHTML = "Active Player";
+            li.classList.add('active-player')
+            myElem.appendChild(li);
+        } else {
+            let myElem = document.getElementById("name-player" + (i + 1));
 
-       }
-   }
+            let activeLi = myElem.querySelector(".active-player");
+            if(activeLi != null){
+                activeLi.remove();
+            }
+        }
+    }
 }
 
+async function sendCard(value, color, wild) {
+
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+
+    if (response.ok) {
+
+        let result = await response.json();
+        console.log(result);
+        alert(JSON.stringify(result));
+        if (result.error == "WrongColor" || result.error == "IncorrectPlayer" || result.error == "Draw4NotAllowed") {
+            return false;
+        } else {
+            saveResponseFromServerAfterPlayCard(result);
+            return true;
+        }
+    } else {
+        console.log('response not OK')
+        alert("HTTP-Error: " + response.status);
+        return false;
+    }
+}
+
+
+function saveResponseFromServerAfterPlayCard(response) {
+    nextPlayer = response.Player;
+    scoreHand = response.Score;
+
+    setActivePlayer();
+    removeSelectedCardFromPlayerHand();
+    removeOldPileTopCard();
+    setPileTopCard();
+}
+
+
+async function setPileTopCard() {
+
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
+        {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+
+    if (response.ok) {
+        let result = await response.json();
+        console.log(result);
+        saveResponseFromServerAfterTopCard(result);
+        return true;
+    } else {
+        alert("HTTP-Error: " + response.status);
+        return false;
+    }
+}
+
+function saveResponseFromServerAfterTopCard(response) {
+    let _pile = `${response.Color}${response.Value}`
+    const url_pile = `${baseUrl}${_pile}.png`;
+
+    let myElem = document.getElementById("pile");
+    const img = document.createElement("img");
+    img.src = url_pile;
+    img.id = "pile-top"
+    myElem.appendChild(img);
+
+}
+
+async function removeSelectedCardFromPlayerHand() {
+    let toRemove = document.getElementById("selected-card");
+    toRemove.remove();
+}
+
+async function removeOldPileTopCard() {
+    let toRemove = document.getElementById("pile-top");
+    toRemove.remove();
+}
+
+async function drawACardFromDeck() {
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/DrawCard/" + session_id,
+        {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+
+    if (response.ok) {
+        let result = await response.json();
+        let playerToReceiveCard = result.Player;
+
+        const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
+        console.log("URL :" + url);
+
+        for (let i = 0; i < fieldnamenList.length; i++) {
+            if (fieldnamenList[i] == playerToReceiveCard) {
+                let myElem = document.getElementById("hand-player" + (i + 1));
+                const img = document.createElement("img");
+                img.src = url;
+                img.dataset.value = result.Card.Value;
+                img.dataset.color = result.Card.Color;
+                myElem.appendChild(img);
+            }
+        }
+        nextPlayer = result.NextPlayer;
+        setActivePlayer();
+        return true;
+    } else {
+        alert("HTTP-Error: " + response.status);
+        return false;
+    }
+}
+
+document.getElementById("deck").addEventListener("click", function (event) {
+    drawACardFromDeck();
+})
+
 for (let i = 0; i < 4; i++) {
-    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseover", function(event){
-        console.log(event.target.tagName);
-        console.log('POR AQUI PASO EL MOUSE' + event.target.tagName)
-        if (event.target.tagName === "IMG"){
+    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseover", function (event) {
+        if (event.target.tagName === "IMG") {
             event.target.classList.add("selected");
         }
     });
 
-
-    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseout", function(event){
-        if (event.target.tagName === "IMG"){
+    document.getElementsByClassName("card-body hand")[i].addEventListener("mouseout", function (event) {
+        if (event.target.tagName === "IMG") {
             event.target.classList.remove("selected");
         }
     });
 
-    document.getElementsByClassName("card-body hand")[i].addEventListener("click", function(event){
-        console.log(event.target.dataset.value);
-        console.log(event.target.dataset.color);
-
-        sendCard(event.target.dataset.value,event.target.dataset.color);
-    });
-
-}
-
-
-async function sendCard(value, color){
-    console.log("start_function send card "+value);
-
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/"+session_id+"?value="+value+"&color="+color+"&wildColor= ",
-    {       
-        method: 'PUT',       
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
+    document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
+        event.target.id = "selected-card";
+        if (event.target.dataset.color === "Black") {
+            eventForModal = event.target
+            colorModal.show();
+        } else {
+            wild = "";
+            sendCard(event.target.dataset.value, event.target.dataset.color, wild);
         }
-    });
 
-    if(response.ok){ 
-        let result = await response.json(); // alternativ response.text wenn nicht json gewünscht ist
-        console.log(result);
-        alert(JSON.stringify(result));
-        saveResponseFromServerAfterPlayCard(result);
-    }else{
-        alert("HTTP-Error: " + response.status);
-    }
-}
+    });
+};
+
+let restarButton = document.getElementById("restart-game-btn");
+restarButton.addEventListener("click", function(){
+    location.reload();
+})
+
+
+
+
+
 
 
 

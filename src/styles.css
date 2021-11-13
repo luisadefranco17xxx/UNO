@@ -29,7 +29,7 @@
 .Player4-hand > img {
     width: 40px;
 }
-#deck > img {
+#pile > img {
     width: 40px;
 }
 
@@ -40,3 +40,12 @@
 .active-player{
     background-color: aqua;
 }
+
+#error-feedback-names{
+    display: none;
+}
+
+#error-feedback-names.display-feedback-names{
+    display: block;
+}
+

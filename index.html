@@ -16,42 +16,53 @@
 <div class="container ">
     <div class="container-fluid d-flex justify-content-center">
         <div class="row">
+
+            <!-- PILE AND DECK AREA *****************************************-->
             <div class="col-sm-4" id="pile-and-deck">
-                Here will go the Pile and deck
                 <div class="card text-center">
                     <div class="card-header">
                         Pile & Deck
                     </div>
                     <div class="card-body">
-                        <div>
-                            <img src="src/img/Black13.png" alt="pile" style="width:40px;height:70px;"></div>
-                        <div id="deck"></div>
-                        <a href="#" class="btn btn-primary">New Game</a>
+                        <div id="deck">
+                            <img src="src/img/back0.png" alt="pile" style="width:40px;height:70px;"></div>
+                        <div id="pile"></div>
+                        <a href="#" class="btn btn-primary" id="restart-game-btn">New Game</a>
                     </div>
                 </div>
             </div>
+
+            <!-- PLAYERS HANDS AREA *****************************************-->
             <div class="col-sm-8" id="play-area">
                 Here is the Play area
                 <div class="card">
-                    <div class="card-header" id="name-player1"></div>
+                    <div class="card-header" >
+                        <ul id="name-player1"></ul>
+                    </div>
                     <div class="card-body hand">
                         <div class="Player1-hand card-all" id="hand-player1"></div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="name-player2"></div>
+                    <div class="card-header" >
+                        <ul id="name-player2"></ul>
+                    </div>
                     <div class="card-body hand" >
                         <div class="Player2-hand card-all" id="hand-player2"></div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="name-player3"></div>
+                    <div class="card-header" >
+                        <ul id="name-player3"></ul>
+                    </div>
                     <div class="card-body hand">
                         <div class="Player3-hand card-all" id="hand-player3"></div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="name-player4"></div>
+                    <div class="card-header">
+                        <ul id="name-player4"></ul>
+                    </div>
                     <div class="card-body hand">
                         <div class="Player4-hand card-all" id="hand-player4"></div>
                     </div>
@@ -63,46 +74,72 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Enter the name of the players</h5>
             </div>
-            <div class="modal-body">
+            <div id="form-names-modal" class="modal-body">
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1"></span>
+                    <span class="input-group-text" id="basic-addon1">Player 1</span>
                     <input id="name1" type="text" class="form-control1" placeholder="Enter name player 1"
                            aria-label="Username" aria-describedby="basic-addon1">
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2"></span>
+                    <span class="input-group-text" id="basic-addon2">Player 2</span>
                     <input id="name2" type="text" class="form-control2" placeholder="Enter name player 2"
                            aria-label="Username" aria-describedby="basic-addon1">
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon3"></span>
+                    <span class="input-group-text" id="basic-addon3">Player 3</span>
                     <input id="name3" type="text" class="form-control3" placeholder="Enter name player 3"
                            aria-label="Username" aria-describedby="basic-addon1">
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon4"></span>
+                    <span class="input-group-text" id="basic-addon4">Player 4</span>
                     <input id="name4" type="text" class="form-control4" placeholder="Enter name player 4"
                            aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div id="error-feedback-names">
+                    <img src="https://www.wired.com/wp-content/uploads/images_blogs/photos/uncategorized/dancers.gif" alt="Dancers" title="Dancers">
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="submit" class="footer_btn-primary">Start game</button>
+                <button type="submit" class="footer_btn-primary" id="start-game-btn">Start game</button>
             </div>
         </div>
     </div>
 </div>
 <!-- End of  Modal -->
+
+
+
+<!-- Modal COLOR -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer" id="colorButtonClicked">
+                <button type="button" class="btn btn-danger"  id="Red" data-bs-dismiss="modal">Red</button>
+                <button type="button" class="btn btn-primary" id="Blue" data-bs-dismiss="modal">Blue</button>
+                <button type="button" class="btn btn-success" id="Green" data-bs-dismiss="modal">Green</button>
+                <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of  Modal COLOR -->
 
 
 <!-- Option 1: Bootstrap Bundle with Popper -->
