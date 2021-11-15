@@ -203,16 +203,24 @@ function setActivePlayer() {
     for (let i = 0; i < fieldnamenList.length; i++) {
         if (fieldnamenList[i] == nextPlayer) {
             let myElem = document.getElementById("name-player" + (i + 1));
-
             const li = document.createElement("li");
             li.innerHTML = "Active Player";
             li.classList.add('active-player')
             myElem.appendChild(li);
+
+            let myHand = document.getElementById("hand-player" + (i + 1));
+            myHand.classList.add("active-hand");
+
         } else {
             let myElem = document.getElementById("name-player" + (i + 1));
             let activeLi = myElem.querySelector(".active-player");
             if (activeLi != null) {
                 activeLi.remove();
+            }
+
+            let myHand = document.getElementById("hand-player" + (i + 1));
+            if (myHand.classList.contains("active-hand")){
+                myHand.classList.remove("active-hand");
             }
         }
     }
@@ -416,11 +424,13 @@ for (let i = 0; i < 4; i++) {
     });
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
+
         event.target.id = "selected-card";
         if (event.target.dataset.color === "Black") {
             eventForModal = event.target
             colorModal.show();
         } else {
+
             wild = "";
             sendCard(event.target.dataset.value, event.target.dataset.color, wild);
         }

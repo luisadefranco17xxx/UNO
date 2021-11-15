@@ -1,46 +1,39 @@
+body {
+    background-color: darkgreen !important;
+}
+ul {
+    list-style: none;
+    padding: 0!important;
+    margin: 0!important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+li.active-player{
+    margin-left: 15px;
+}
+.card{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
 #pile-and-deck{
-    border: 1px solid darkred;
     background-color: darkgreen;
     min-height: 600px;
     height: 100%;
     width: 300px;
 }
 #play-area{
-    border: 1px solid darkblue;
     background-color: darkred;
     min-height: 600px;
     height: 100%;
     width: 700px;
 }
-
-.play-area{
-    display: grid;
-    grid-template-rows: 150px 150px 150px 150px;
-    grid-template-columns: 50px 1fr 1fr 50px;
-    grid-row-gap: 30px;
-}
-
-.card-v-1{
-    grid-row: 1/2;
-    grid-column: 2/4;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.card-v-2{
-    grid-row: 2/3;
-    grid-column: 2/4;
-}
-
-.card-v-3{
-    grid-row: 3/4;
-    grid-column: 2/4;
-}
-
-.card-v-4{
-    grid-row: 4/5;
-    grid-column: 2/4;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row !important;
 }
 
 .card-body .hand {
