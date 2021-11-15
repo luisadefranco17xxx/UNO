@@ -32,7 +32,7 @@ myModal.show();
 //<img src="https://robohash.org/YOUR-TEXT.png">
 
 
-setTimeout(function (){
+setTimeout(function () {
     document.getElementById("name1").focus();
 }, 500);
 let formInputNames = document.getElementById("form-names-modal");
@@ -154,6 +154,7 @@ async function setuptStartingCards() {
 
     for (let i = 0; i < cardsPlayer1.length; i++) {
         const url = `${baseUrl}${cardsPlayer1[i]}.png`;
+        console.log('CARDS PLAYER 1-->')
         console.log("URL :" + url);
         let myElem = document.getElementsByClassName("Player1-hand")[0];
         const img = document.createElement("img");
@@ -164,6 +165,7 @@ async function setuptStartingCards() {
     }
     for (let i = 0; i < cardsPlayer2.length; i++) {
         const url = `${baseUrl}${cardsPlayer2[i]}.png`;
+        console.log('CARDS PLAYER 2-->')
         console.log("URL :" + url);
         let myElem = document.getElementsByClassName("Player2-hand")[0];
         const img = document.createElement("img");
@@ -174,6 +176,7 @@ async function setuptStartingCards() {
     }
     for (let i = 0; i < cardsPlayer3.length; i++) {
         const url = `${baseUrl}${cardsPlayer3[i]}.png`;
+        console.log('CARDS PLAYER 3-->')
         console.log("URL :" + url);
         let myElem = document.getElementsByClassName("Player3-hand")[0];
         const img = document.createElement("img");
@@ -184,6 +187,7 @@ async function setuptStartingCards() {
     }
     for (let i = 0; i < cardsPlayer4.length; i++) {
         const url = `${baseUrl}${cardsPlayer4[i]}.png`;
+        console.log('CARDS PLAYER 4-->')
         console.log("URL :" + url);
         let myElem = document.getElementsByClassName("Player4-hand")[0];
         const img = document.createElement("img");
@@ -206,9 +210,8 @@ function setActivePlayer() {
             myElem.appendChild(li);
         } else {
             let myElem = document.getElementById("name-player" + (i + 1));
-
             let activeLi = myElem.querySelector(".active-player");
-            if(activeLi != null){
+            if (activeLi != null) {
                 activeLi.remove();
             }
         }
@@ -228,6 +231,7 @@ async function sendCard(value, color, wild) {
     if (response.ok) {
 
         let result = await response.json();
+        console.log('Result from sendCard call --> ')
         console.log(result);
         alert(JSON.stringify(result));
         if (result.error == "WrongColor" || result.error == "IncorrectPlayer" || result.error == "Draw4NotAllowed") {
@@ -246,12 +250,69 @@ async function sendCard(value, color, wild) {
 
 function saveResponseFromServerAfterPlayCard(response) {
     nextPlayer = response.Player;
-    scoreHand = response.Score;
 
     setActivePlayer();
-    removeSelectedCardFromPlayerHand();
+
+    for (let i = 0; i < fieldnamenList.length; i++) {
+        setPlayersHandsAndScoresAfterPlayCard(fieldnamenList[i], i + 1);
+    }
+
+    //  removeSelectedCardFromPlayerHand();
     removeOldPileTopCard();
     setPileTopCard();
+}
+
+async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
+
+    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/GetCards/" + session_id + "?playerName=" + playerName,
+        {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+
+    if (response.ok) {
+        let result = await response.json();
+        console.log('result from setPlayersHandsAndScoresAfterPlayCard -->')
+        console.log(result);
+        saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
+        return true;
+    } else {
+        alert("HTTP-Error: " + response.status);
+        return false;
+    }
+
+}
+
+function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNumber) {
+    scoreHand = response.Score;
+    let spanScore = document.getElementById("score-player" + playerNumber);
+
+    while (spanScore.firstChild) {
+        spanScore.removeChild(spanScore.firstChild);
+    }
+    spanScore.appendChild(document.createTextNode('SCORE = ' + response.Score));
+
+    let cardsPlayerToSetHand = response.Cards.map(item => `${item.Color}${item.Value}`);
+    let cardsPlayerToSetHand_color = response.Cards.map(item => `${item.Color}`);
+    let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
+    let myElem = document.getElementById("hand-player" + playerNumber);
+    while (myElem.firstChild) {
+        myElem.removeChild(myElem.firstChild);
+    }
+
+    for (let i = 0; i < cardsPlayerToSetHand.length; i++) {
+        const url = `${baseUrl}${cardsPlayerToSetHand[i]}.png`;
+        console.log('CARDS PLAYERTOSETHAND--> Player = ' + fieldnamenList[playerNumber - 1])
+        console.log("URL :" + url);
+
+        const img = document.createElement("img");
+        img.src = url;
+        img.dataset.value = cardsPlayerToSetHand_value[i];
+        img.dataset.color = cardsPlayerToSetHand_color[i];
+        myElem.appendChild(img);
+    }
 }
 
 
@@ -267,8 +328,9 @@ async function setPileTopCard() {
 
     if (response.ok) {
         let result = await response.json();
+        console.log('Result from setPileTopCard -->')
         console.log(result);
-        saveResponseFromServerAfterTopCard(result);
+        appendPileTopFromResponseFromServerAfterTopCard(result);
         return true;
     } else {
         alert("HTTP-Error: " + response.status);
@@ -276,7 +338,7 @@ async function setPileTopCard() {
     }
 }
 
-function saveResponseFromServerAfterTopCard(response) {
+function appendPileTopFromResponseFromServerAfterTopCard(response) {
     let _pile = `${response.Color}${response.Value}`
     const url_pile = `${baseUrl}${_pile}.png`;
 
@@ -295,6 +357,8 @@ async function removeSelectedCardFromPlayerHand() {
 
 async function removeOldPileTopCard() {
     let toRemove = document.getElementById("pile-top");
+    console.log('Este es el que hay que remover de la pila -->');
+    console.log(toRemove);
     toRemove.remove();
 }
 
@@ -312,6 +376,7 @@ async function drawACardFromDeck() {
         let playerToReceiveCard = result.Player;
 
         const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
+        console.log('Este está en drawCardFromDeck -->')
         console.log("URL :" + url);
 
         for (let i = 0; i < fieldnamenList.length; i++) {
@@ -361,10 +426,11 @@ for (let i = 0; i < 4; i++) {
         }
 
     });
-};
+}
+;
 
 let restarButton = document.getElementById("restart-game-btn");
-restarButton.addEventListener("click", function(){
+restarButton.addEventListener("click", function () {
     location.reload();
 })
 

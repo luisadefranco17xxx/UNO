@@ -33,38 +33,43 @@
             </div>
 
             <!-- PLAYERS HANDS AREA *****************************************-->
-            <div class="col-sm-8" id="play-area">
-                Here is the Play area
-                <div class="card">
-                    <div class="card-header" >
-                        <ul id="name-player1"></ul>
+            <div class="col-sm-8" >
+                <div class="container play-area" id="play-area" >
+                    <div class="card card-v-1">
+                        <div class="card-header">
+                            <ul id="name-player1"></ul>
+                            <span id="score-player1"></span>
+                        </div>
+                        <div class="card-body hand">
+                            <div class="Player1-hand card-all" id="hand-player1"></div>
+                        </div>
                     </div>
-                    <div class="card-body hand">
-                        <div class="Player1-hand card-all" id="hand-player1"></div>
+                    <div class="card card-v-2">
+                        <div class="card-header">
+                            <ul id="name-player2"></ul>
+                            <span id="score-player2"></span>
+                        </div>
+                        <div class="card-body hand">
+                            <div class="Player2-hand card-all" id="hand-player2"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" >
-                        <ul id="name-player2"></ul>
+                    <div class="card card-v-3">
+                        <div class="card-header">
+                            <ul id="name-player3"></ul>
+                            <span id="score-player3"></span>
+                        </div>
+                        <div class="card-body hand">
+                            <div class="Player3-hand card-all" id="hand-player3"></div>
+                        </div>
                     </div>
-                    <div class="card-body hand" >
-                        <div class="Player2-hand card-all" id="hand-player2"></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" >
-                        <ul id="name-player3"></ul>
-                    </div>
-                    <div class="card-body hand">
-                        <div class="Player3-hand card-all" id="hand-player3"></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <ul id="name-player4"></ul>
-                    </div>
-                    <div class="card-body hand">
-                        <div class="Player4-hand card-all" id="hand-player4"></div>
+                    <div class="card card-v-4">
+                        <div class="card-header">
+                            <ul id="name-player4"></ul>
+                            <span id="score-player4"></span>
+                        </div>
+                        <div class="card-body hand">
+                            <div class="Player4-hand card-all" id="hand-player4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +79,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -106,7 +112,8 @@
                            aria-label="Username" aria-describedby="basic-addon1">
                 </div>
                 <div id="error-feedback-names">
-                    <img src="https://www.wired.com/wp-content/uploads/images_blogs/photos/uncategorized/dancers.gif" alt="Dancers" title="Dancers">
+                    <img src="https://www.wired.com/wp-content/uploads/images_blogs/photos/uncategorized/dancers.gif"
+                         alt="Dancers" title="Dancers">
                 </div>
 
             </div>
@@ -119,19 +126,19 @@
 <!-- End of  Modal -->
 
 
-
 <!-- Modal COLOR -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                </div>
+            </div>
             <div class="modal-body">
                 ...
             </div>
             <div class="modal-footer" id="colorButtonClicked">
-                <button type="button" class="btn btn-danger"  id="Red" data-bs-dismiss="modal">Red</button>
+                <button type="button" class="btn btn-danger" id="Red" data-bs-dismiss="modal">Red</button>
                 <button type="button" class="btn btn-primary" id="Blue" data-bs-dismiss="modal">Blue</button>
                 <button type="button" class="btn btn-success" id="Green" data-bs-dismiss="modal">Green</button>
                 <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow</button>
