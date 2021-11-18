@@ -33,10 +33,9 @@ li.active-player{
     margin-left: 100px;
     margin-right: 100px;
 }
-
-
-#pile-and-deck{
+#card-pile-and-deck{
     background-color: darkgreen;
+    margin-right: 30px;
 }
 
 #play-area{
