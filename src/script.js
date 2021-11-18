@@ -434,13 +434,13 @@ document.getElementById("deck").addEventListener("click", function (event) {
 
 for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("card-body hand")[i].addEventListener("mouseover", function (event) {
-        if (event.target.tagName === "IMG") {
+        if (event.target.tagName === "IMG" && event.target.parentElement.classList.contains("active-hand")) {
             event.target.classList.add("selected");
         }
     });
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("mouseout", function (event) {
-        if (event.target.tagName === "IMG") {
+        if (event.target.tagName === "IMG" && event.target.parentElement.classList.contains("active-hand")) {
             event.target.classList.remove("selected");
         }
     });
@@ -453,6 +453,10 @@ for (let i = 0; i < 4; i++) {
         } else if (event.target.parentElement.classList.contains("active-hand")) {
             wild = "";
             sendCard(event.target.dataset.value, event.target.dataset.color, wild);
+        } else {
+            event.target.classList.remove("shake-horizontal") 
+            event.target.offsetWidth;
+            event.target.classList.add("shake-horizontal")
         }
     });
 };
@@ -461,6 +465,7 @@ let restartButton = document.getElementById("restart-game-btn");
 restartButton.addEventListener("click", function () {
     location.reload();
 })
+
 
 
 
