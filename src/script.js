@@ -270,9 +270,11 @@ async function sendCard(value, color, wild) {
         console.log(result);
         alert(JSON.stringify(result));
         if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
+            showErrorToSelectCard(true);
             return false;
         } else {
             saveResponseFromServerAfterPlayCard(result);
+            showErrorToSelectCard(false);
             return true;
         }
     } else {
@@ -419,6 +421,7 @@ async function drawACardFromDeck() {
         const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
         console.log('Este está en drawCardFromDeck -->')
         console.log("URL :" + url);
+        showErrorToSelectCard(false);
 
         for (let i = 0; i < fieldnamenList.length; i++) {
             if (fieldnamenList[i] == playerToReceiveCard) {
@@ -478,7 +481,14 @@ restartButton.addEventListener("click", function () {
 })
 
 
+function showErrorToSelectCard(bool) {
 
+      if (bool) {
+        document.getElementById('error-to-select').classList.add('display-feedback-error');
+      } else {
+        document.getElementById('error-to-select').classList.remove('display-feedback-error');       
+      }
+}
 
 
 
