@@ -87,8 +87,13 @@ li.active-player{
 #error-feedback-names.display-feedback-repeatednames{
     display: block;
 }
+#ready-to-send{
+    display: none;
+}
 
-#display-feedback-success
+#ready-to-send.display-feedback-success{
+    display: block;
+}
 
 #error-feedback-empty{
     display: none;
