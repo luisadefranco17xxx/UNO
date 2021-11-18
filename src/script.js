@@ -108,8 +108,9 @@ async function startGame() {
         let result = await response.json();
 
         saveResponseFromServer(result);
-        setPlayersNamesInBoard(namesToSent);
+        setPlayersNamesInBoard(namesToSent,result);
         setuptStartingCards();
+
 
     } else {
         alert("HTTP-Error: " + response.status);
@@ -121,11 +122,12 @@ function saveResponseFromServer(response) {
     session_id = response.Id;
     nextPlayer = response.NextPlayer;
     let topCard = response.TopCard;
-    pile = `${topCard.Color}${topCard.Value}`
+    pile = `${topCard.Color}${topCard.Value}`;
 
+        
     cardsPlayer1 = response.Players[0].Cards.map(item => `${item.Color}${item.Value}`);
     cardsPlayer1_color = response.Players[0].Cards.map(item => `${item.Color}`);
-    cardsPlayer1_value = response.Players[0].Cards.map(item => `${item.Value}`);
+    cardsPlayer1_value = response.Players[0].Cards.map(item => `${item.Value}`);  
 
     cardsPlayer2 = response.Players[1].Cards.map(item => `${item.Color}${item.Value}`);
     cardsPlayer2_color = response.Players[1].Cards.map(item => `${item.Color}`);
@@ -138,15 +140,21 @@ function saveResponseFromServer(response) {
     cardsPlayer4 = response.Players[3].Cards.map(item => `${item.Color}${item.Value}`);
     cardsPlayer4_color = response.Players[3].Cards.map(item => `${item.Color}`);
     cardsPlayer4_value = response.Players[3].Cards.map(item => `${item.Value}`);
+
+
 }
 
 
-function setPlayersNamesInBoard(names) {
+function setPlayersNamesInBoard(names,response) {
     for (let i = 0; i < names.length; i++) {
         const li = document.createElement("li");
         li.innerHTML = names[i];
         let nameField = document.getElementById('name-player' + (i + 1));
         nameField.appendChild(li);
+    }
+
+    for (let i = 0; i < 4; i++) {
+        setScore(response.Players[i].Score,i+1);
     }
 }
 
@@ -301,14 +309,20 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
 
 }
 
-function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNumber) {
-    scoreHand = response.Score;
+function setScore(score,playerNumber){
     let spanScore = document.getElementById("score-player" + playerNumber);
 
     while (spanScore.firstChild) {
         spanScore.removeChild(spanScore.firstChild);
     }
-    spanScore.appendChild(document.createTextNode('SCORE = ' + response.Score));
+    spanScore.appendChild(document.createTextNode('SCORE = ' + score));
+}
+
+
+function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNumber) {
+    scoreHand = response.Score;
+
+    setScore(scoreHand,playerNumber);
 
     let cardsPlayerToSetHand = response.Cards.map(item => `${item.Color}${item.Value}`);
     let cardsPlayerToSetHand_color = response.Cards.map(item => `${item.Color}`);
