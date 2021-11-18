@@ -4,7 +4,6 @@
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
-var readyToSend = false;
 var namesToSent;
 var session_id;
 var pile = "";
@@ -38,6 +37,7 @@ setTimeout(function () {
 let formInputNames = document.getElementById("form-names-modal");
 
 formInputNames.addEventListener("keyup", function () {
+ 
     let fieldName1 = document.getElementById("name1");
     let fieldName2 = document.getElementById("name2");
     let fieldName3 = document.getElementById("name3");
@@ -46,11 +46,12 @@ formInputNames.addEventListener("keyup", function () {
 
     fieldnamenList = [fieldName1.value, fieldName2.value, fieldName3.value, fieldName4.value];
     var formIsFull = true;
-
+    var readyToSend = false;
+    
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
-           
+            document.getElementById('ready-to-send').classList.remove('display-feedback-success');        
             document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
         }
         if (formIsFull == true) {
