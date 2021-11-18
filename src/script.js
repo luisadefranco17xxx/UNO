@@ -50,6 +50,7 @@ formInputNames.addEventListener("keyup", function () {
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
+           
             document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
         }
         if (formIsFull == true) {
