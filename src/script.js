@@ -50,6 +50,10 @@ formInputNames.addEventListener("keyup", function () {
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
+            document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
+        }
+        if (formIsFull == true) {
+            document.getElementById('error-feedback-empty').classList.remove('display-feedback-empty');
         }
     });
 
@@ -57,6 +61,7 @@ formInputNames.addEventListener("keyup", function () {
         readyToSend = true;
         for (var j = 0, len = fieldnamenList.length - 1; j < len; j++) {
             for (var i = j + 1, len = fieldnamenList.length; i < len; i++) {
+
                 if (fieldnamenList[i] == fieldnamenList[j]) {
                     console.log("There are two repeated names");
                     document.getElementById('error-feedback-names').classList.add('display-feedback-names');
@@ -74,6 +79,8 @@ formInputNames.addEventListener("keyup", function () {
 let startGameModalButton = document.getElementById("start-game-btn");
 
 startGameModalButton.addEventListener("click", function () {
+    
+
     if (readyToSend) {
         myModal.hide()
         startGame();
@@ -102,8 +109,9 @@ async function startGame() {
         let result = await response.json();
 
         saveResponseFromServer(result);
-        setuptStartingCards();
         setPlayersNamesInBoard(namesToSent);
+        setuptStartingCards();
+
     } else {
         alert("HTTP-Error: " + response.status);
     }
@@ -219,7 +227,7 @@ function setActivePlayer() {
             }
 
             let myHand = document.getElementById("hand-player" + (i + 1));
-            if (myHand.classList.contains("active-hand")){
+            if (myHand.classList.contains("active-hand")) {
                 myHand.classList.remove("active-hand");
             }
         }
@@ -424,23 +432,19 @@ for (let i = 0; i < 4; i++) {
     });
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
-
         event.target.id = "selected-card";
-        if (event.target.dataset.color === "Black") {
+        if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
             eventForModal = event.target
             colorModal.show();
-        } else {
-
+        } else if (event.target.parentElement.classList.contains("active-hand")) {
             wild = "";
             sendCard(event.target.dataset.value, event.target.dataset.color, wild);
         }
-
     });
-}
-;
+};
 
-let restarButton = document.getElementById("restart-game-btn");
-restarButton.addEventListener("click", function () {
+let restartButton = document.getElementById("restart-game-btn");
+restartButton.addEventListener("click", function () {
     location.reload();
 })
 

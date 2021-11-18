@@ -14,11 +14,9 @@
 </head>
 <body>
 <div class="container ">
-    <div class="container-fluid d-flex justify-content-center">
-        <div class="row">
-
+    <div class="d-md-flex">
             <!-- PILE AND DECK AREA *****************************************-->
-            <div class="col-sm-4" id="pile-and-deck">
+            <div class="col-md-3 col-sm-12" id="pile-and-deck">
                 <div class="card text-center">
                     <div class="card-header">
                         Pile & Deck
@@ -33,7 +31,7 @@
             </div>
 
             <!-- PLAYERS HANDS AREA *****************************************-->
-            <div class="col-sm-8" id="play-area" >
+            <div class="col-md-9 col-sm-12" id="play-area" >
 
                     <div class="card card-v-1">
                         <div class="card-header">
@@ -73,7 +71,6 @@
                     </div>
 
             </div>
-        </div>
     </div>
 </div>
 
@@ -91,29 +88,33 @@
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Player 1</span>
                     <input id="name1" type="text" class="form-control1" placeholder="Enter name player 1"
-                           aria-label="Username" aria-describedby="basic-addon1">
+                           aria-label="Username" aria-describedby="basic-addon1" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon2">Player 2</span>
                     <input id="name2" type="text" class="form-control2" placeholder="Enter name player 2"
-                           aria-label="Username" aria-describedby="basic-addon1">
+                           aria-label="Username" aria-describedby="basic-addon1" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon3">Player 3</span>
                     <input id="name3" type="text" class="form-control3" placeholder="Enter name player 3"
-                           aria-label="Username" aria-describedby="basic-addon1">
+                           aria-label="Username" aria-describedby="basic-addon1" required>
                 </div>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon4">Player 4</span>
                     <input id="name4" type="text" class="form-control4" placeholder="Enter name player 4"
-                           aria-label="Username" aria-describedby="basic-addon1">
+                           aria-label="Username" aria-describedby="basic-addon1" required>
                 </div>
                 <div id="error-feedback-names">
                     <img src="https://www.wired.com/wp-content/uploads/images_blogs/photos/uncategorized/dancers.gif"
                          alt="Dancers" title="Dancers">
+                </div>
+                <div id="error-feedback-empty">
+                    <img src="https://media3.giphy.com/media/EHONhY3lb7XDa/200w.webp?cid=ecf05e470squ9ie2t8p9myr960gj8zrsomfxznw3p2m1a0vm&rid=200w.webp&ct=g"
+                         alt="Chomsky" title="Chomsky">
                 </div>
 
             </div>

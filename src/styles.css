@@ -20,16 +20,12 @@ li.active-player{
 
 #pile-and-deck{
     background-color: darkgreen;
-    min-height: 600px;
-    height: 100%;
-    width: 300px;
 }
+
 #play-area{
     background-color: darkred;
-    min-height: 600px;
-    height: 100%;
-    width: 700px;
 }
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -72,3 +68,11 @@ li.active-player{
     display: block;
 }
 
+
+#error-feedback-empty{
+    display: none;
+}
+
+#error-feedback-empty.display-feedback-empty{
+    display: block;
+}
