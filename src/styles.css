@@ -64,7 +64,7 @@ li.active-player{
     display: none;
 }
 
-#error-feedback-names.display-feedback-names{
+#error-feedback-names.display-feedback-repeatednames{
     display: block;
 }
 

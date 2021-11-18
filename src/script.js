@@ -2,7 +2,7 @@
 
 
 var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'))
+var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
 var readyToSend = false;
 var namesToSent;
@@ -64,13 +64,13 @@ formInputNames.addEventListener("keyup", function () {
 
                 if (fieldnamenList[i] == fieldnamenList[j]) {
                     console.log("There are two repeated names");
-                    document.getElementById('error-feedback-names').classList.add('display-feedback-names');
+                    document.getElementById('error-feedback-names').classList.add('display-feedback-repeatednames');
                     readyToSend = false;
                 }
             }
         }
         if (readyToSend == true) {
-            document.getElementById('error-feedback-names').classList.remove('display-feedback-names');
+            document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
         }
         namesToSent = fieldnamenList;
     }
@@ -79,7 +79,6 @@ formInputNames.addEventListener("keyup", function () {
 let startGameModalButton = document.getElementById("start-game-btn");
 
 startGameModalButton.addEventListener("click", function () {
-    
 
     if (readyToSend) {
         myModal.hide()
@@ -118,6 +117,7 @@ async function startGame() {
 }
 
 function saveResponseFromServer(response) {
+    //SCORE
     session_id = response.Id;
     nextPlayer = response.NextPlayer;
     let topCard = response.TopCard;
@@ -250,7 +250,7 @@ async function sendCard(value, color, wild) {
         console.log('Result from sendCard call --> ')
         console.log(result);
         alert(JSON.stringify(result));
-        if (result.error == "WrongColor" || result.error == "IncorrectPlayer" || result.error == "Draw4NotAllowed") {
+        if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
             return false;
         } else {
             saveResponseFromServerAfterPlayCard(result);
