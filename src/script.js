@@ -66,12 +66,14 @@ formInputNames.addEventListener("keyup", function () {
                 if (fieldnamenList[i] == fieldnamenList[j]) {
                     console.log("There are two repeated names");
                     document.getElementById('error-feedback-names').classList.add('display-feedback-repeatednames');
+                    document.getElementById('ready-to-send').classList.remove('display-feedback-success');
                     readyToSend = false;
                 }
             }
         }
         if (readyToSend == true) {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
+            document.getElementById('ready-to-send').classList.add('display-feedback-success');
         }
         namesToSent = fieldnamenList;
     }

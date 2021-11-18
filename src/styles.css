@@ -16,6 +16,20 @@ li.active-player{
 .card{
     margin-top: 30px;
     margin-bottom: 30px;
+}
+.card.card-v-1{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.card.card-v-2{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.card.card-v-3{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.card.card-v-4{
     margin-left: 100px;
     margin-right: 100px;
 }
@@ -74,6 +88,7 @@ li.active-player{
     display: block;
 }
 
+#display-feedback-success
 
 #error-feedback-empty{
     display: none;
