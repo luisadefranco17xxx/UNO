@@ -68,7 +68,12 @@ li.active-player{
     width: 40px;
 }
 #pile > img {
-    width: 40px;
+    width: 100px;
+    margin-bottom: 15px;
+}
+
+#deck > img {
+    margin-bottom: 15px;
 }
 
 .card-all .selected{
