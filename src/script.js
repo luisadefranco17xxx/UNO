@@ -227,17 +227,23 @@ function setActivePlayer() {
             let myHand = document.getElementById("hand-player" + (i + 1));
             myHand.classList.add("active-hand");
 
+            let activeCard=myHand.parentElement.parentElement;
+            activeCard.classList.add("scale-up-center");  
+
         } else {
             let myElem = document.getElementById("name-player" + (i + 1));
             let activeLi = myElem.querySelector(".active-player");
             if (activeLi != null) {
                 activeLi.remove();
             }
-
+          
             let myHand = document.getElementById("hand-player" + (i + 1));
             if (myHand.classList.contains("active-hand")) {
                 myHand.classList.remove("active-hand");
             }
+
+            let activeCard=myHand.parentElement.parentElement;
+            activeCard.classList.remove("scale-up-center");
         }
     }
 }
@@ -454,9 +460,9 @@ for (let i = 0; i < 4; i++) {
             wild = "";
             sendCard(event.target.dataset.value, event.target.dataset.color, wild);
         } else {
-            event.target.classList.remove("shake-horizontal") 
+            event.target.classList.remove("shake-horizontal");
             event.target.offsetWidth;
-            event.target.classList.add("shake-horizontal")
+            event.target.classList.add("shake-horizontal");
         }
     });
 };
