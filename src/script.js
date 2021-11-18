@@ -5,6 +5,7 @@ var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
 var namesToSent;
+var readyToSend;
 var session_id;
 var pile = "";
 let cardsPlayer1 = "";
@@ -46,8 +47,8 @@ formInputNames.addEventListener("keyup", function () {
 
     fieldnamenList = [fieldName1.value, fieldName2.value, fieldName3.value, fieldName4.value];
     var formIsFull = true;
-    var readyToSend = false;
-    
+    readyToSend = false;
+
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
