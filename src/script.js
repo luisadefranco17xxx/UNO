@@ -8,24 +8,31 @@ var namesToSent;
 var readyToSend;
 var session_id;
 var pile = "";
-let cardsPlayer1 = "";
-let cardsPlayer1_color = "";
-let cardsPlayer1_value = "";
-let cardsPlayer2 = "";
-let cardsPlayer2_color = "";
-let cardsPlayer2_value = "";
-let cardsPlayer3 = "";
-let cardsPlayer3_color = "";
-let cardsPlayer3_value = "";
-let cardsPlayer4 = "";
-let cardsPlayer4_color = "";
-let cardsPlayer4_value = "";
+//let cards="";  
+
 let nextPlayer;
 var baseUrl = "src/img/";
 var fieldnamenList;
 var scoreHand;
 var wild;
 var eventForModal;
+
+
+let score=0;
+class Player {
+    constructor(name, cards, color, value, score) {
+        this.name = name;
+        this.cards = cards;
+        this.color = color;
+        this.value = value;
+        this.score = score;
+    }
+}
+let arrPlayer_=new Player ;
+let score_;
+let cards_ = ["", "", ""];
+let color_ = ["", "", ""];
+let value_ = [0, 0, 0];
 
 
 myModal.show();
@@ -134,23 +141,16 @@ function saveResponseFromServer(response) {
     let topCard = response.TopCard;
     pile = `${topCard.Color}${topCard.Value}`;
 
-        
-    cardsPlayer1 = response.Players[0].Cards.map(item => `${item.Color}${item.Value}`);
-    cardsPlayer1_color = response.Players[0].Cards.map(item => `${item.Color}`);
-    cardsPlayer1_value = response.Players[0].Cards.map(item => `${item.Value}`);  
 
-    cardsPlayer2 = response.Players[1].Cards.map(item => `${item.Color}${item.Value}`);
-    cardsPlayer2_color = response.Players[1].Cards.map(item => `${item.Color}`);
-    cardsPlayer2_value = response.Players[1].Cards.map(item => `${item.Value}`);
-
-    cardsPlayer3 = response.Players[2].Cards.map(item => `${item.Color}${item.Value}`);
-    cardsPlayer3_color = response.Players[2].Cards.map(item => `${item.Color}`);
-    cardsPlayer3_value = response.Players[2].Cards.map(item => `${item.Value}`);
-
-    cardsPlayer4 = response.Players[3].Cards.map(item => `${item.Color}${item.Value}`);
-    cardsPlayer4_color = response.Players[3].Cards.map(item => `${item.Color}`);
-    cardsPlayer4_value = response.Players[3].Cards.map(item => `${item.Value}`);
-
+   for (let i = 0; i < 4; i++) {
+        arrPlayer_[i]=new Player("toCancel", color_, value_, cards_, score_);
+        arrPlayer_[i].cards_=response.Players[i].Cards.map(item => `${item.Color}${item.Value}`);    
+        arrPlayer_[i].color_=response.Players[i].Cards.map(item => `${item.Color}`);
+        arrPlayer_[i].value_=response.Players[i].Cards.map(item => `${item.Value}`);
+        console.log("LUISA1:"+arrPlayer_[i].cards_);
+        console.log("LUISA1:"+arrPlayer_[i].color_);
+        console.log("LUISA1:"+arrPlayer_[i].value_);
+   }
 
 }
 
@@ -178,49 +178,24 @@ async function setuptStartingCards() {
     myElem.appendChild(img);
 
 
-    for (let i = 0; i < cardsPlayer1.length; i++) {
-        const url = `${baseUrl}${cardsPlayer1[i]}.png`;
-        console.log('CARDS PLAYER 1-->')
-        console.log("URL :" + url);
-        let myElem = document.getElementsByClassName("Player1-hand")[0];
-        const img = document.createElement("img");
-        img.src = url;
-        img.dataset.value = cardsPlayer1_value[i];
-        img.dataset.color = cardsPlayer1_color[i];
-        myElem.appendChild(img);
-    }
-    for (let i = 0; i < cardsPlayer2.length; i++) {
-        const url = `${baseUrl}${cardsPlayer2[i]}.png`;
-        console.log('CARDS PLAYER 2-->')
-        console.log("URL :" + url);
-        let myElem = document.getElementsByClassName("Player2-hand")[0];
-        const img = document.createElement("img");
-        img.src = url;
-        img.dataset.value = cardsPlayer2_value[i];
-        img.dataset.color = cardsPlayer2_color[i];
-        myElem.appendChild(img);
-    }
-    for (let i = 0; i < cardsPlayer3.length; i++) {
-        const url = `${baseUrl}${cardsPlayer3[i]}.png`;
-        console.log('CARDS PLAYER 3-->')
-        console.log("URL :" + url);
-        let myElem = document.getElementsByClassName("Player3-hand")[0];
-        const img = document.createElement("img");
-        img.src = url;
-        img.dataset.value = cardsPlayer3_value[i];
-        img.dataset.color = cardsPlayer3_color[i];
-        myElem.appendChild(img);
-    }
-    for (let i = 0; i < cardsPlayer4.length; i++) {
-        const url = `${baseUrl}${cardsPlayer4[i]}.png`;
-        console.log('CARDS PLAYER 4-->')
-        console.log("URL :" + url);
-        let myElem = document.getElementsByClassName("Player4-hand")[0];
-        const img = document.createElement("img");
-        img.src = url;
-        img.dataset.value = cardsPlayer4_value[i];
-        img.dataset.color = cardsPlayer4_color[i];
-        myElem.appendChild(img);
+    for (let j = 0; j < 4; j++) {
+         
+        for (let i = 0; i < arrPlayer_[j].cards_.length; i++) {
+            const url = `${baseUrl}${arrPlayer_[j].cards_[i]}.png`;
+            console.log('CARDS PLAYER '+j+'-->');
+            console.log("URL :" + url);
+
+            let myElem;
+            if(j==0)      {  myElem = document.getElementsByClassName("Player1-hand")[0]; }
+            else if(j==1) {  myElem = document.getElementsByClassName("Player2-hand")[0]; }
+            else if(j==2) {  myElem = document.getElementsByClassName("Player3-hand")[0]; }
+            else if(j==3) {  myElem = document.getElementsByClassName("Player4-hand")[0]; }         
+            const img = document.createElement("img");
+            img.src = url;
+            img.dataset.value = arrPlayer_[j].value_[i];
+            img.dataset.color = arrPlayer_[j].color_[i];
+            myElem.appendChild(img);
+        }
     }
     setActivePlayer();
 }
