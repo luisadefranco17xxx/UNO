@@ -11,6 +11,7 @@ var pile = "";
 //let cards="";  
 
 let nextPlayer;
+let lastPlayer;
 var baseUrl = "src/img/";
 var fieldnamenList;
 var scoreHand;
@@ -130,13 +131,14 @@ async function startGame() {
 
 
     } else {
-        alert("HTTP-Error: " + response.status);
+        console.log("HTTP-Error: " + response.status);
     }
 }
 
 function saveResponseFromServer(response) {
     //SCORE
     session_id = response.Id;
+    lastPlayer=nextPlayer;
     nextPlayer = response.NextPlayer;
     let topCard = response.TopCard;
     pile = `${topCard.Color}${topCard.Value}`;
@@ -147,9 +149,7 @@ function saveResponseFromServer(response) {
         arrPlayer_[i].cards_=response.Players[i].Cards.map(item => `${item.Color}${item.Value}`);    
         arrPlayer_[i].color_=response.Players[i].Cards.map(item => `${item.Color}`);
         arrPlayer_[i].value_=response.Players[i].Cards.map(item => `${item.Value}`);
-        console.log("LUISA1:"+arrPlayer_[i].cards_);
-        console.log("LUISA1:"+arrPlayer_[i].color_);
-        console.log("LUISA1:"+arrPlayer_[i].value_);
+
    }
 
 }
@@ -222,7 +222,7 @@ function setActivePlayer() {
             if (activeLi != null) {
                 activeLi.remove();
             }
-          
+            console.log("Luisa1:  nextPlayer  :"+nextPlayer)
             let myHand = document.getElementById("hand-player" + (i + 1));
             if (myHand.classList.contains("active-hand")) {
                 myHand.classList.remove("active-hand");
@@ -249,7 +249,7 @@ async function sendCard(value, color, wild) {
         let result = await response.json();
         console.log('Result from sendCard call --> ')
         console.log(result);
-        alert(JSON.stringify(result));
+        console.log(JSON.stringify(result));
         if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
             showErrorToSelectCard(true);
             return false;
@@ -260,13 +260,14 @@ async function sendCard(value, color, wild) {
         }
     } else {
         console.log('response not OK')
-        alert("HTTP-Error: " + response.status);
+        console.log("HTTP-Error: " + response.status);
         return false;
     }
 }
 
 
 function saveResponseFromServerAfterPlayCard(response) {
+    lastPlayer=nextPlayer;
     nextPlayer = response.Player;
 
     setActivePlayer();
@@ -297,7 +298,7 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
         saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
         return true;
     } else {
-        alert("HTTP-Error: " + response.status);
+        console.log("HTTP-Error: " + response.status);
         return false;
     }
 
@@ -322,11 +323,17 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     let cardsPlayerToSetHand_color = response.Cards.map(item => `${item.Color}`);
     let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
 
-    if (cardsPlayerToSetHand.length==0 ) 
-       alert("Player  won");
-    if (cardsPlayerToSetHand.length==1 ) 
-       alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
 
+    if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ) 
+       {  console.log ("Luisa: lastPlayer :"+lastPlayer);
+           console.log ("Luisa:   fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
+          alert("Player : "+fieldnamenList[playerNumber-1] + " won");
+        }
+    if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]) 
+    {   console.log ("Luisa: lastPlayer :"+lastPlayer);
+        console.log ("Luisa:  fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
+       alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+    }
 
     let myElem = document.getElementById("hand-player" + playerNumber);
     while (myElem.firstChild) {
@@ -364,7 +371,7 @@ async function setPileTopCard() {
         appendPileTopFromResponseFromServerAfterTopCard(result);
         return true;
     } else {
-        alert("HTTP-Error: " + response.status);
+        console.log("HTTP-Error: " + response.status);
         return false;
     }
 }
@@ -425,7 +432,7 @@ async function drawACardFromDeck() {
         setActivePlayer();
         return true;
     } else {
-        alert("HTTP-Error: " + response.status);
+        console.log("HTTP-Error: " + response.status);
         return false;
     }
 }
