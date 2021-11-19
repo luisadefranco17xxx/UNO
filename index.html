@@ -13,69 +13,82 @@
     <title>PLAY UNO!</title>
 </head>
 <body>
+<header>
+    <nav class="navbar navbar-light ">
+        <div class="container-fluid">
+            <div class="logo">
+                <a href="index.html" class="name">L&V</a>
+            </div>
+            <div class="header-menu">
+                <a href="#" class="btn navbar-brand" id="restart-game-btn">New Game</a>
+            </div>
+        </div>
+    </nav>
+
+</header>
 <div class="container ">
     <div class="d-md-flex">
-            <!-- PILE AND DECK AREA *****************************************-->
-            <div class="col-md-3 col-sm-12" id="pile-and-deck">
-                <div class="card text-center" id="card-pile-and-deck">
+        <!-- PILE AND DECK AREA *****************************************-->
+        <div class="col-md-3 col-sm-12" id="pile-and-deck">
+            <div class="card text-center" id="card-pile-and-deck">
 
-                    <div class="card-body">
-                        <div id="deck">
-                            <img src="src/img/back0.png" alt="pile" style="width:100px;"></div>
-                        <div id="pile"></div>
-                        <a href="#" class="btn btn-primary" id="restart-game-btn">New Game</a>
-                    </div>
+                <div class="card-body">
+                    <div id="deck">
+                        <img src="src/img/back0.png" alt="pile" style="width:80px;"></div>
+                    <div id="pile"></div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--probe-->
+        <div id="error-to-select">
+            <img src="https://i.gifer.com/6yJ.gif"
+                 alt="laugh" title="Laugh">
+        </div>
+        <!--end probe-->
+
+        <!-- PLAYERS HANDS AREA *****************************************-->
+        <div class="col-md-9 col-sm-12" id="play-area">
+
+            <div class="card card-v-1 text-center">
+                <div class="card-header">
+                    <ul id="name-player1"></ul>
+                    <span id="score-player1"></span>
+                </div>
+                <div class="card-body hand">
+                    <div class="Player1-hand card-all" id="hand-player1"></div>
+                </div>
+            </div>
+            <div class="card card-v-2 text-center">
+                <div class="card-header">
+                    <ul id="name-player2"></ul>
+                    <span id="score-player2"></span>
+                </div>
+                <div class="card-body hand">
+                    <div class="Player2-hand card-all" id="hand-player2"></div>
+                </div>
+            </div>
+            <div class="card card-v-3 text-center">
+                <div class="card-header">
+                    <ul id="name-player3"></ul>
+                    <span id="score-player3"></span>
+                </div>
+                <div class="card-body hand">
+                    <div class="Player3-hand card-all" id="hand-player3"></div>
+                </div>
+            </div>
+            <div class="card card-v-4 text-center">
+                <div class="card-header">
+                    <ul id="name-player4"></ul>
+                    <span id="score-player4"></span>
+                </div>
+                <div class="card-body hand">
+                    <div class="Player4-hand card-all" id="hand-player4"></div>
                 </div>
             </div>
 
-            <!--probe-->
-            <div id="error-to-select">               
-                <img src="https://i.gifer.com/6yJ.gif"
-                     alt="laugh" title="Laugh"> 
-            </div>
-            <!--end probe-->
-
-            <!-- PLAYERS HANDS AREA *****************************************-->
-            <div class="col-md-9 col-sm-12" id="play-area" >
-
-                    <div class="card card-v-1 text-center">
-                        <div class="card-header">
-                            <ul id="name-player1"></ul>
-                            <span id="score-player1"></span>
-                        </div>
-                        <div class="card-body hand">
-                            <div class="Player1-hand card-all" id="hand-player1"></div>
-                        </div>
-                    </div>
-                    <div class="card card-v-2 text-center">
-                        <div class="card-header">
-                            <ul id="name-player2"></ul>
-                            <span id="score-player2"></span>
-                        </div>
-                        <div class="card-body hand">
-                            <div class="Player2-hand card-all" id="hand-player2"></div>
-                        </div>
-                    </div>
-                    <div class="card card-v-3 text-center">
-                        <div class="card-header">
-                            <ul id="name-player3"></ul>
-                            <span id="score-player3"></span>
-                        </div>
-                        <div class="card-body hand">
-                            <div class="Player3-hand card-all" id="hand-player3"></div>
-                        </div>
-                    </div>
-                    <div class="card card-v-4 text-center">
-                        <div class="card-header">
-                            <ul id="name-player4"></ul>
-                            <span id="score-player4"></span>
-                        </div>
-                        <div class="card-body hand">
-                            <div class="Player4-hand card-all" id="hand-player4"></div>
-                        </div>
-                    </div>
-
-            </div>
+        </div>
     </div>
 </div>
 
@@ -85,47 +98,103 @@
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content ">
-            <div class="modal-header ">
+            <div class="modal-header d-block text-center">
                 <h5 class="modal-title" id="exampleModalLabel">Enter the name of the players</h5>
             </div>
             <div id="form-names-modal" class="modal-body">
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Player 1</span>
                     <input id="name1" type="text" class="form-control1" placeholder="Enter name player 1"
-                           aria-label="Username" aria-describedby="basic-addon1" required>
+                           aria-label="Username"  required>
+                    <span class="input-group-text" id="basic-addon1">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-robot-1" value="robot">
+                            <label class="form-check-label" for="radio-robot-1">Robot</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-cat-1" value="cat" checked>
+                            <label class="form-check-label" for="radio-cat-1">Cat</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-zombie-1" value="zombie">
+                            <label class="form-check-label" for="radio-zombie-1">Zombie</label>
+                        </div>
+                    </span>
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon2">Player 2</span>
                     <input id="name2" type="text" class="form-control2" placeholder="Enter name player 2"
-                           aria-label="Username" aria-describedby="basic-addon1" required>
+                           aria-label="Username" required>
+                    <span class="input-group-text" id="basic-addon2">
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-robot-2" value="robot">
+                            <label class="form-check-label" for="radio-robot-2">Robot</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-cat-2" value="cat" checked>
+                            <label class="form-check-label" for="radio-cat-2">Cat</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-zombie-2" value="zombie">
+                            <label class="form-check-label" for="radio-zombie-2">Zombie</label>
+                        </div>
+                    </span>
+
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon3">Player 3</span>
                     <input id="name3" type="text" class="form-control3" placeholder="Enter name player 3"
-                           aria-label="Username" aria-describedby="basic-addon1" required>
+                           aria-label="Username"  required>
+                    <span class="input-group-text" id="basic-addon3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-robot-3" value="robot">
+                            <label class="form-check-label" for="radio-robot-3">Robot</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-cat-3" value="cat" checked>
+                            <label class="form-check-label" for="radio-cat-3">Cat</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-zombie-3" value="zombie">
+                            <label class="form-check-label" for="radio-zombie-3">Zombie</label>
+                        </div>
+                    </span>
                 </div>
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon4">Player 4</span>
                     <input id="name4" type="text" class="form-control4" placeholder="Enter name player 4"
-                           aria-label="Username" aria-describedby="basic-addon1" required>
+                           aria-label="Username"  required>
+                    <span class="input-group-text" id="basic-addon4">
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-robot-4" value="robot">
+                            <label class="form-check-label" for="radio-robot-4">Robot</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-cat-4" value="cat" checked>
+                            <label class="form-check-label" for="radio-cat-4">Cat</label>
+                        </div>
+                         <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-zombie-4" value="zombie">
+                            <label class="form-check-label" for="radio-zombie-4">Zombie</label>
+                        </div>
+                    </span>
+
                 </div>
-                <div id="error-feedback-names">
-                     <img src="src/img2/NotRepeat.PNG" alt="Name should not repeat">
+
+
+                <div id="error-feedback-names" class="text-center">
+                    <img src="src/img2/NotRepeat.PNG" alt="Name should not repeat">
                 </div>
-                <div id="error-feedback-empty">    
-                    <img src="src/img2/Please.PNG" alt="Please four names"> 
+                <div id="error-feedback-empty" class="text-center">
+                    <img src="src/img2/Please.PNG" alt="Please four names">
                 </div>
-                <div id="ready-to-send">
+                <div id="ready-to-send" class="text-center">
                     <img src="https://www.wired.com/wp-content/uploads/images_blogs/photos/uncategorized/dancers.gif"
-                         alt="Dancers" title="Dancers"> 
+                         alt="Dancers" title="Dancers">
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="footer_btn-primary" id="start-game-btn">Start game</button>
+            <div class="modal-footer d-block text-center">
+                <button type="submit" class="footer_btn-primary" id="start-game-btn" disabled>Start game</button>
             </div>
         </div>
     </div>

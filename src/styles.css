@@ -1,7 +1,37 @@
 body {
+
+    background-image: linear-gradient(darkgreen, yellow);
+}
+nav{
     background-color: darkgreen !important;
 }
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    display: flex;
+}
 
+header .logo .name {
+    background: black;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+}
+
+
+
+#restart-game-btn{
+    color: black;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+}
+#restart-game-btn:hover {
+    font-weight: 700;
+    color: #ff5253;
+}
 ul {
     list-style: none;
     padding: 0!important;
@@ -9,7 +39,9 @@ ul {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
+}
+#form-names-modal{
+    display: block !important;
 }
 li.active-player{
     margin-left: 15px;
@@ -17,6 +49,7 @@ li.active-player{
 .card{
     margin-top: 30px;
     margin-bottom: 30px;
+
 }
 .card.card-v-1{
     margin-left: 100px;
@@ -35,7 +68,8 @@ li.active-player{
     margin-right: 100px;
 }
 .card-body.hand{
-    background-color: darkred !important;
+    background-color: rgba(139, 0, 0, 1)!important;
+
 }
 #card-pile-and-deck{
     background-color: darkgreen;
@@ -43,10 +77,14 @@ li.active-player{
 }
 
 #play-area{
-    background-color: darkred;
+    background-image: linear-gradient(orangered, yellow);
     display: flex;
     flex-direction: column;
     justify-content: center !important;
+}
+
+#play-area > .card {
+    border: 1px solid orangered !important;
 }
 
 .card-header {
@@ -72,7 +110,7 @@ li.active-player{
     width: 40px;
 }
 #pile > img {
-    width: 100px;
+    width: 80px;
     margin-bottom: 15px;
 }
 
@@ -88,7 +126,7 @@ li.active-player{
     background-color: aqua;
 }
 .active-hand > img{
-    width: 80px;
+    width: 60px;
 }
 
 #error-feedback-names{

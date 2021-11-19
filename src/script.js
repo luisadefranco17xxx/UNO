@@ -69,6 +69,8 @@ formInputNames.addEventListener("keyup", function () {
                     console.log("There are two repeated names");
                     document.getElementById('error-feedback-names').classList.add('display-feedback-repeatednames');
                     document.getElementById('ready-to-send').classList.remove('display-feedback-success');
+                    document.getElementById('start-game-btn').disabled = true;
+
                     readyToSend = false;
                 }
             }
@@ -76,6 +78,7 @@ formInputNames.addEventListener("keyup", function () {
         if (readyToSend == true) {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
             document.getElementById('ready-to-send').classList.add('display-feedback-success');
+            document.getElementById('start-game-btn').disabled = false;
         }
         namesToSent = fieldnamenList;
     }
@@ -268,7 +271,7 @@ async function sendCard(value, color, wild) {
         let result = await response.json();
         console.log('Result from sendCard call --> ')
         console.log(result);
-        alert(JSON.stringify(result));
+      //  alert(JSON.stringify(result));
         if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
             showErrorToSelectCard(true);
             return false;
