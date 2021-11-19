@@ -321,6 +321,13 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     let cardsPlayerToSetHand = response.Cards.map(item => `${item.Color}${item.Value}`);
     let cardsPlayerToSetHand_color = response.Cards.map(item => `${item.Color}`);
     let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
+
+    if (cardsPlayerToSetHand.length==0 ) 
+       alert("Player  won");
+    if (cardsPlayerToSetHand.length==1 ) 
+       alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+
+
     let myElem = document.getElementById("hand-player" + playerNumber);
     while (myElem.firstChild) {
         myElem.removeChild(myElem.firstChild);
