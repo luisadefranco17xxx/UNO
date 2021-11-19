@@ -119,6 +119,9 @@ li.active-player{
     width: 80px;
     margin-bottom: 15px;
 }
+#deck > img:hover {
+    cursor: pointer;
+}
 
 #deck > img {
     margin-bottom: 15px;

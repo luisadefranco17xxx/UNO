@@ -190,6 +190,7 @@ async function setuptStartingCards() {
             else if(j==1) {  myElem = document.getElementsByClassName("Player2-hand")[0]; }
             else if(j==2) {  myElem = document.getElementsByClassName("Player3-hand")[0]; }
             else if(j==3) {  myElem = document.getElementsByClassName("Player4-hand")[0]; }         
+
             const img = document.createElement("img");
             img.src = url;
             img.dataset.value = arrPlayer_[j].value_[i];
