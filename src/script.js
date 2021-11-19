@@ -149,7 +149,7 @@ function saveResponseFromServer(response) {
         arrPlayer_[i].cards_=response.Players[i].Cards.map(item => `${item.Color}${item.Value}`);    
         arrPlayer_[i].color_=response.Players[i].Cards.map(item => `${item.Color}`);
         arrPlayer_[i].value_=response.Players[i].Cards.map(item => `${item.Value}`);
-
+        arrPlayer_[i].score_=response.Players[i].Score;
    }
 
 }
@@ -313,6 +313,13 @@ function setScore(score,playerNumber){
     spanScore.appendChild(document.createTextNode('SCORE = ' + score));
 }
 
+function getScore(){
+    var tot=0;
+    for (let i = 0; i < 4; i++) {
+       tot=tot+arrPlayer_[i].score_;              
+    }
+    return tot;
+}
 
 function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNumber) {
     scoreHand = response.Score;
@@ -325,13 +332,14 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
 
     if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ) 
-       {  console.log ("Luisa: lastPlayer :"+lastPlayer);
-           console.log ("Luisa:   fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
-          alert("Player : "+fieldnamenList[playerNumber-1] + " won");
+       {  console.log (" lastPlayer :"+lastPlayer);
+           console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
+           let totScore =getScore();
+          alert("Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points");
         }
     if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]) 
-    {   console.log ("Luisa: lastPlayer :"+lastPlayer);
-        console.log ("Luisa:  fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
+    {   console.log ("lastPlayer :"+lastPlayer);
+        console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);        
        alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
     }
 
