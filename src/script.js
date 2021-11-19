@@ -97,6 +97,8 @@ startGameModalButton.addEventListener("click", function () {
 let colorButtonClicked = document.getElementById('colorButtonClicked');
 colorButtonClicked.addEventListener("click", function (event) {
     wild = event.target.id;
+    console.log("ESTE ES WILD -->")
+    console.log(wild)
     sendCard(eventForModal.dataset.value, eventForModal.dataset.color, wild);
 });
 
@@ -271,7 +273,7 @@ async function sendCard(value, color, wild) {
         let result = await response.json();
         console.log('Result from sendCard call --> ')
         console.log(result);
-      //  alert(JSON.stringify(result));
+        alert(JSON.stringify(result));
         if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
             showErrorToSelectCard(true);
             return false;
