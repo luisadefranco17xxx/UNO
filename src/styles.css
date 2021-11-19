@@ -1,10 +1,18 @@
+html {
+    height: 100%;
+}
 body {
-
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-image: linear-gradient(darkgreen, yellow);
 }
+
 nav{
     background-color: darkgreen !important;
 }
+
 header .logo {
     font-size: 1.5rem;
     font-weight: 700;
@@ -20,18 +28,18 @@ header .logo .name {
     color: white;
 }
 
-
-
 #restart-game-btn{
     color: black;
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
 }
+
 #restart-game-btn:hover {
     font-weight: 700;
     color: #ff5253;
 }
+
 ul {
     list-style: none;
     padding: 0!important;
@@ -40,9 +48,7 @@ ul {
     flex-direction: row;
     justify-content: space-between;
 }
-#form-names-modal{
-    display: block !important;
-}
+
 li.active-player{
     margin-left: 15px;
 }
