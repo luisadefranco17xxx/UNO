@@ -335,12 +335,14 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
        {  console.log (" lastPlayer :"+lastPlayer);
            console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
            let totScore =getScore();
-          alert("Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points");
+           let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
+           playerWon(message)
         }
     if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]) 
     {   console.log ("lastPlayer :"+lastPlayer);
         console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);        
-       alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+       //alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+       showCalledUNO(true,fieldnamenList[playerNumber-1]);
     }
 
     let myElem = document.getElementById("hand-player" + playerNumber);
@@ -446,6 +448,7 @@ async function drawACardFromDeck() {
 }
 
 document.getElementById("deck").addEventListener("click", function (event) {
+    showCalledUNO(false,"");
     drawACardFromDeck();
 })
 
@@ -475,6 +478,7 @@ for (let i = 0; i < 4; i++) {
             event.target.offsetWidth;
             event.target.classList.add("shake-horizontal");
         }
+        showCalledUNO(false,"")
     });
 };
 
@@ -485,7 +489,6 @@ restartButton.addEventListener("click", function () {
 
 
 function showErrorToSelectCard(bool) {
-
       if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
       } else {
@@ -493,6 +496,20 @@ function showErrorToSelectCard(bool) {
       }
 }
 
+function showCalledUNO(bool,player) {
+    if (bool) {
+      document.getElementById('called-UNO').classList.add('display-called-UNO');
+      document.getElementById('called-UNO-message').innerHTML=player+ " CALLED UNO ";
+    } else {
+      document.getElementById('called-UNO').classList.remove('display-called-UNO');       
+    }
+}
+
+function playerWon(message){
+        document.getElementById('Player-won').classList.add('display-Player-won');
+        document.getElementById('Player-won-message').innerHTML=message;
+        console.log(message);
+}
 
 
 

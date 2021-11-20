@@ -170,6 +170,21 @@ li.active-player{
   display: block;
 }
 
+#called-UNO{
+    display: none;
+  }
+  
+#called-UNO.display-called-UNO{
+    display: block;
+  }
+
+#Player-won{
+    display: none;
+  }
+  
+#Player-won.display-Player-won{
+    display: block;
+  }
 
 .shake-horizontal {
 	-webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
