@@ -27,6 +27,13 @@ header .logo .name {
     text-decoration: none;
     color: white;
 }
+#exampleModal{
+    background-color: orangered;
+}
+
+#player-1-wrapper{
+
+}
 
 #restart-game-btn{
     color: black;
@@ -48,31 +55,27 @@ ul {
     flex-direction: row;
     justify-content: space-between;
 }
+#pato-uno{
+    width: 240px;
+}
+
+called-uno-message{
+    font-weight: 700;
+    color: #fff;
+}
 
 li.active-player{
     margin-left: 15px;
 }
-.card{
-    margin-top: 30px;
-    margin-bottom: 30px;
 
+.player-wrapper{
+    padding: 30px 100px;
 }
-.card.card-v-1{
-    margin-left: 100px;
-    margin-right: 100px;
+.avatar{
+    width: 150px;
+    margin-right: 15px;
 }
-.card.card-v-2{
-    margin-left: 100px;
-    margin-right: 100px;
-}
-.card.card-v-3{
-    margin-left: 100px;
-    margin-right: 100px;
-}
-.card.card-v-4{
-    margin-left: 100px;
-    margin-right: 100px;
-}
+
 .card-body.hand{
     background-color: rgba(139, 0, 0, 1)!important;
 
@@ -89,8 +92,9 @@ li.active-player{
     justify-content: center !important;
 }
 
-#play-area > .card {
+#play-area .card {
     border: 1px solid orangered !important;
+    min-width: 600px;
 }
 
 .card-header {
@@ -175,7 +179,7 @@ li.active-player{
   }
   
 #called-UNO.display-called-UNO{
-    display: block;
+    display: flex;
   }
 
 #Player-won{

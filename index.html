@@ -29,6 +29,7 @@
 <div class="container ">
     <div class="d-md-flex">
         <!-- PILE AND DECK AREA *****************************************-->
+
         <div class="col-md-3 col-sm-12" id="pile-and-deck">
             <div class="card text-center" id="card-pile-and-deck">
 
@@ -41,71 +42,90 @@
                 <!--to improve-->
                 <div id="error-to-select">
                     <b> This card cannot be selected!
-                       <br>
+                        <br>
                         Draw a card if you don't have a valid card to play!</b>
-                        <img src="https://i.gifer.com/6yJ.gif"
-                         alt="laugh" title="Laugh">         
+                    <img src="https://i.gifer.com/6yJ.gif"
+                         alt="laugh" title="Laugh">
                 </div>
-                <div id="called-UNO">
-                    <b> UNO!</b>
-                        <img src="https://tenor.com/view/donald-duck-wink-thumbs-up-are-you-okay-gif-16477464.gif"
-                         alt="UNO" title="UNO">   
-                    <div id="called-UNO-message"></div>
+                <div id="called-UNO" class="flex-column">
+                    <div class="called-uno-message"> UNO!</div>
+                    <img id="pato-uno" src="https://tenor.com/view/donald-duck-wink-thumbs-up-are-you-okay-gif-16477464.gif"
+                         alt="UNO" title="UNO">
+                    <div id="called-UNO-message" class="called-uno-message"></div>
 
                 </div>
                 <div id="Player-won">
                     <b> Won! </b>
-                        <img src="https://tenor.com/view/donald-duck-i-got-this-confident-gif-14018148.gif"
-                         alt="player-won" title="player-won">   
-                    <div id="Player-won-message"></div>           
+                    <img src="https://tenor.com/view/donald-duck-i-got-this-confident-gif-14018148.gif"
+                         alt="player-won" title="player-won">
+                    <div id="Player-won-message"></div>
                 </div>
-                <!--end to improve-->       
+                <!--end to improve-->
             </div>
         </div>
 
         <!-- PLAYERS HANDS AREA *****************************************-->
         <div class="col-md-9 col-sm-12" id="play-area">
 
-
-            <div class="card card-v-1 text-center">
-                <div class="card-header">
-                    <ul id="name-player1"></ul>
-                    <span id="score-player1"></span>
+            <div id="player-1-wrapper" class="d-flex player-wrapper">
+                <div>
+                    <img class="avatar" id="avatar-p1" src="">
                 </div>
-                <div class="card-body hand">
-                    <div class="Player1-hand card-all" id="hand-player1"></div>
-                </div>
-
-            </div>
-
-            <div class="card card-v-2 text-center">
-                <div class="card-header">
-                    <ul id="name-player2"></ul>
-                    <span id="score-player2"></span>
-                </div>
-                <div class="card-body hand">
-                    <div class="Player2-hand card-all" id="hand-player2"></div>
-                </div>
-            </div>
-            <div class="card card-v-3 text-center">
-                <div class="card-header">
-                    <ul id="name-player3"></ul>
-                    <span id="score-player3"></span>
-                </div>
-                <div class="card-body hand">
-                    <div class="Player3-hand card-all" id="hand-player3"></div>
-                </div>
-            </div>
-            <div class="card card-v-4 text-center">
-                <div class="card-header">
-                    <ul id="name-player4"></ul>
-                    <span id="score-player4"></span>
-                </div>
-                <div class="card-body hand">
-                    <div class="Player4-hand card-all" id="hand-player4"></div>
+                <div class="card card-v text-center">
+                    <div class="card-header">
+                        <ul id="name-player1"></ul>
+                        <span id="score-player1"></span>
+                    </div>
+                    <div class="card-body hand">
+                        <div class="Player1-hand card-all" id="hand-player1"></div>
+                    </div>
                 </div>
             </div>
 
+            <div id="player-2-wrapper"  class="d-flex player-wrapper">
+                <div>
+                    <img class="avatar" id="avatar-p2" src="">
+                </div>
+                <div class="card card-v text-center">
+                    <div class="card-header">
+                        <ul id="name-player2"></ul>
+                        <span id="score-player2"></span>
+                    </div>
+                    <div class="card-body hand">
+                        <div class="Player2-hand card-all" id="hand-player2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="player-3-wrapper" class="d-flex player-wrapper">
+                <div>
+                    <img class="avatar" id="avatar-p3" src="">
+                </div>
+                <div class="card card-v text-center">
+                    <div class="card-header">
+                        <ul id="name-player3"></ul>
+                        <span id="score-player3"></span>
+                    </div>
+                    <div class="card-body hand">
+                        <div class="Player3-hand card-all" id="hand-player3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="player-4-wrapper" class="d-flex player-wrapper">
+                <div>
+                    <img class="avatar" id="avatar-p4" src="">
+                </div>
+                <div class="card card-v text-center">
+                    <div class="card-header">
+                        <ul id="name-player4"></ul>
+                        <span id="score-player4"></span>
+                    </div>
+                    <div class="card-body hand">
+                        <div class="Player4-hand card-all" id="hand-player4"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -127,17 +147,17 @@
                     <span class="input-group-text" id="basic-addon1">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-robot-1"
-                                   value="robot">
+                                   value="set1">
                             <label class="form-check-label" for="radio-robot-1">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-cat-1"
-                                   value="cat" checked>
+                                   value="set4" checked>
                             <label class="form-check-label" for="radio-cat-1">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-zombie-1"
-                                   value="zombie">
+                                   value="set2">
                             <label class="form-check-label" for="radio-zombie-1">Zombie</label>
                         </div>
                     </span>
@@ -149,17 +169,17 @@
                     <span class="input-group-text" id="basic-addon2">
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-robot-2"
-                                   value="robot">
+                                   value="set1">
                             <label class="form-check-label" for="radio-robot-2">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-cat-2"
-                                   value="cat" checked>
+                                   value="set4" checked>
                             <label class="form-check-label" for="radio-cat-2">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-zombie-2"
-                                   value="zombie">
+                                   value="set2">
                             <label class="form-check-label" for="radio-zombie-2">Zombie</label>
                         </div>
                     </span>
@@ -172,17 +192,17 @@
                     <span class="input-group-text" id="basic-addon3">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-robot-3"
-                                   value="robot">
+                                   value="set1">
                             <label class="form-check-label" for="radio-robot-3">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-cat-3"
-                                   value="cat" checked>
+                                   value="set4" checked>
                             <label class="form-check-label" for="radio-cat-3">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-zombie-3"
-                                   value="zombie">
+                                   value="set2">
                             <label class="form-check-label" for="radio-zombie-3">Zombie</label>
                         </div>
                     </span>
@@ -194,17 +214,17 @@
                     <span class="input-group-text" id="basic-addon4">
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-robot-4"
-                                   value="robot">
+                                   value="set1">
                             <label class="form-check-label" for="radio-robot-4">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-cat-4"
-                                   value="cat" checked>
+                                   value="set4" checked>
                             <label class="form-check-label" for="radio-cat-4">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-4" id="radio-zombie-4"
-                                   value="zombie">
+                                   value="set2">
                             <label class="form-check-label" for="radio-zombie-4">Zombie</label>
                         </div>
                     </span>
@@ -224,7 +244,8 @@
                 </div>
             </div>
             <div class="modal-footer d-block text-center">
-                <button type="submit" class="footer_btn-primary" id="start-game-btn" disabled>Start game</button>
+                <button type="submit" class="footer_btn-primary" id="start-game-btn" disabled>Start game
+                </button>
             </div>
         </div>
     </div>
@@ -244,7 +265,8 @@
                 <button type="button" class="btn btn-danger" id="Red" data-bs-dismiss="modal">Red</button>
                 <button type="button" class="btn btn-primary" id="Blue" data-bs-dismiss="modal">Blue</button>
                 <button type="button" class="btn btn-success" id="Green" data-bs-dismiss="modal">Green</button>
-                <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow</button>
+                <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow
+                </button>
             </div>
         </div>
     </div>

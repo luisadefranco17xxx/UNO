@@ -53,6 +53,8 @@ formInputNames.addEventListener("keyup", function () {
     let fieldName4 = document.getElementById("name4");
 
 
+
+
     fieldnamenList = [fieldName1.value, fieldName2.value, fieldName3.value, fieldName4.value];
     var formIsFull = true;
     readyToSend = false;
@@ -98,6 +100,7 @@ startGameModalButton.addEventListener("click", function () {
 
     if (readyToSend) {
         myModal.hide()
+
         startGame();
     }
 });
@@ -111,6 +114,17 @@ colorButtonClicked.addEventListener("click", function (event) {
 });
 
 async function startGame() {
+    let p1TypeAvatar = document.querySelector('[name="inlineRadioOptions-1"]:checked').value
+    let p2TypeAvatar = document.querySelector('[name="inlineRadioOptions-2"]:checked').value
+    let p3TypeAvatar = document.querySelector('[name="inlineRadioOptions-3"]:checked').value
+    let p4TypeAvatar = document.querySelector('[name="inlineRadioOptions-4"]:checked').value
+
+    document.getElementById('avatar-p1').src ="https://robohash.org/" + fieldnamenList[0] +".png?set=" + p1TypeAvatar;
+    document.getElementById('avatar-p2').src ="https://robohash.org/" + fieldnamenList[1] +".png?set=" + p2TypeAvatar;
+    document.getElementById('avatar-p3').src ="https://robohash.org/" + fieldnamenList[2] +".png?set=" + p3TypeAvatar;
+    document.getElementById('avatar-p4').src ="https://robohash.org/" + fieldnamenList[3] +".png?set=" + p4TypeAvatar;
+
+
 
     let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start", {
         method: 'POST',
@@ -213,7 +227,7 @@ function setActivePlayer() {
             let myHand = document.getElementById("hand-player" + (i + 1));
             myHand.classList.add("active-hand");
 
-            let activeCard=myHand.parentElement.parentElement;
+            let activeCard=myHand.parentElement.parentElement.parentElement;
             activeCard.classList.add("scale-up-center");  
 
         } else {
@@ -228,7 +242,7 @@ function setActivePlayer() {
                 myHand.classList.remove("active-hand");
             }
 
-            let activeCard=myHand.parentElement.parentElement;
+            let activeCard=myHand.parentElement.parentElement.parentElement;
             activeCard.classList.remove("scale-up-center");
         }
     }
@@ -332,15 +346,13 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
 
     if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ) 
-       {  console.log (" lastPlayer :"+lastPlayer);
-           console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);
+       {
            let totScore =getScore();
            let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
            playerWon(message)
         }
     if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]) 
-    {   console.log ("lastPlayer :"+lastPlayer);
-        console.log (" fieldnamenList[i]: "+fieldnamenList[playerNumber-1] +", nextPlayer : "+ nextPlayer);        
+    {
        //alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
        showCalledUNO(true,fieldnamenList[playerNumber-1]);
     }
@@ -352,8 +364,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
     for (let i = 0; i < cardsPlayerToSetHand.length; i++) {
         const url = `${baseUrl}${cardsPlayerToSetHand[i]}.png`;
-        console.log('CARDS PLAYERTOSETHAND--> Player = ' + fieldnamenList[playerNumber - 1])
-        console.log("URL :" + url);
+
 
         const img = document.createElement("img");
         img.src = url;
@@ -466,19 +477,29 @@ for (let i = 0; i < 4; i++) {
     });
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
-        event.target.id = "selected-card";
-        if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
-            eventForModal = event.target
-            colorModal.show();
-        } else if (event.target.parentElement.classList.contains("active-hand")) {
-            wild = "";
-            sendCard(event.target.dataset.value, event.target.dataset.color, wild);
+        if(event.target.nodeName == 'IMG') {
+            if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
+                eventForModal = event.target
+                colorModal.show();
+            } else if (event.target.parentElement.classList.contains("active-hand")) {
+                console.log('event.target -->')
+                console.log(event.target);
+                console.log('event.target.parentElement -->')
+                console.log(event.target.parentElement)
+                console.log('event.target.parentElement.classList -->')
+                console.log(event.target.parentElement.classList)
+
+                wild = "";
+                sendCard(event.target.dataset.value, event.target.dataset.color, wild);
+            } else {
+                event.target.classList.remove("shake-horizontal");
+                event.target.offsetWidth;
+                event.target.classList.add("shake-horizontal");
+            }
+            showCalledUNO(false,"")
         } else {
-            event.target.classList.remove("shake-horizontal");
-            event.target.offsetWidth;
-            event.target.classList.add("shake-horizontal");
+            console.log("NO ES ImAGEN EL event.target!!!")
         }
-        showCalledUNO(false,"")
     });
 };
 
