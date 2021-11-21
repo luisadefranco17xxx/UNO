@@ -219,16 +219,23 @@ function setActivePlayer() {
     for (let i = 0; i < fieldnamenList.length; i++) {
         if (fieldnamenList[i] == nextPlayer) {
             let myElem = document.getElementById("name-player" + (i + 1));
-            const li = document.createElement("li");
-            li.innerHTML = "Active Player";
-            li.classList.add('active-player')
-            myElem.appendChild(li);
+            // const li = document.createElement("li");
+            // li.innerHTML = "Active Player";
+            // li.classList.add('active-player')
+            // myElem.appendChild(li);
 
             let myHand = document.getElementById("hand-player" + (i + 1));
             myHand.classList.add("active-hand");
 
-            let activeCard=myHand.parentElement.parentElement.parentElement;
-            activeCard.classList.add("scale-up-center");  
+            let activePlayerWrapper = myHand.parentElement.parentElement.parentElement;
+            activePlayerWrapper.classList.add("scale-up-center");
+
+            let activeAvatarWrapper = document.getElementById("avatar-wrapper-player" + (i + 1));
+            activeAvatarWrapper.classList.remove('d-flex');
+
+            let activeAvatar = document.getElementById("avatar-p"+ (i + 1));
+            activeAvatar.classList.add('active-avatar');
+
 
         } else {
             let myElem = document.getElementById("name-player" + (i + 1));
@@ -242,8 +249,14 @@ function setActivePlayer() {
                 myHand.classList.remove("active-hand");
             }
 
-            let activeCard=myHand.parentElement.parentElement.parentElement;
-            activeCard.classList.remove("scale-up-center");
+            let notActivePlayerWrapper=myHand.parentElement.parentElement.parentElement;
+            notActivePlayerWrapper.classList.remove("scale-up-center");
+
+            let notActiveAvatarWrapper = document.getElementById("avatar-wrapper-player" + (i + 1));
+            notActiveAvatarWrapper.classList.add('d-flex');
+
+            let notActiveAvatar = document.getElementById("avatar-p"+ (i + 1));
+            notActiveAvatar.classList.remove('active-avatar');
         }
     }
 }
@@ -435,8 +448,6 @@ async function drawACardFromDeck() {
         let playerToReceiveCard = result.Player;
 
         const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
-        console.log('Este está en drawCardFromDeck -->')
-        console.log("URL :" + url);
         showErrorToSelectCard(false);
 
         for (let i = 0; i < fieldnamenList.length; i++) {
@@ -482,13 +493,6 @@ for (let i = 0; i < 4; i++) {
                 eventForModal = event.target
                 colorModal.show();
             } else if (event.target.parentElement.classList.contains("active-hand")) {
-                console.log('event.target -->')
-                console.log(event.target);
-                console.log('event.target.parentElement -->')
-                console.log(event.target.parentElement)
-                console.log('event.target.parentElement.classList -->')
-                console.log(event.target.parentElement.classList)
-
                 wild = "";
                 sendCard(event.target.dataset.value, event.target.dataset.color, wild);
             } else {

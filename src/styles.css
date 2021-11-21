@@ -1,6 +1,7 @@
 html {
     height: 100%;
 }
+
 body {
     height: 100%;
     margin: 0;
@@ -13,33 +14,27 @@ nav{
     background-color: darkgreen !important;
 }
 
-header .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: white;
-    display: flex;
+header .menu {
+    font-size: 1.2rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    color: white !important;
+    display: flex !important;
 }
 
-header .logo .name {
+header .menu .menu-item {
     background: black;
-    padding: 15px;
+    padding: 5px;
     text-decoration: none;
     color: white;
 }
+
 #exampleModal{
     background-color: orangered;
 }
 
-#player-1-wrapper{
-
-}
-
 #restart-game-btn{
-    color: black;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
+     cursor: pointer;
 }
 
 #restart-game-btn:hover {
@@ -59,7 +54,7 @@ ul {
     width: 240px;
 }
 
-called-uno-message{
+#called-uno-message{
     font-weight: 700;
     color: #fff;
 }
@@ -71,18 +66,27 @@ li.active-player{
 .player-wrapper{
     padding: 30px 100px;
 }
+
+
+
 .avatar{
-    width: 150px;
+    width: 120px;
     margin-right: 15px;
+}
+
+.active-avatar{
+    margin-top: 30px;
 }
 
 .card-body.hand{
     background-color: rgba(139, 0, 0, 1)!important;
 
 }
+
 #card-pile-and-deck{
     background-color: darkgreen;
     margin-right: 30px;
+    min-height: 301px;
 }
 
 #play-area{
@@ -119,10 +123,12 @@ li.active-player{
 .Player4-hand > img {
     width: 40px;
 }
+
 #pile > img {
     width: 80px;
     margin-bottom: 15px;
 }
+
 #deck > img:hover {
     cursor: pointer;
 }
@@ -164,7 +170,6 @@ li.active-player{
 #error-feedback-empty.display-feedback-empty{
     display: block;
 }
-
 
 #error-to-select{
   display: none;
