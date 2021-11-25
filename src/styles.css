@@ -142,7 +142,6 @@ li.active-player{
 
 
 #deck {
-
     position: absolute;
     top: 0px;
     left: 0px;
@@ -152,18 +151,26 @@ li.active-player{
     transform:rotate(15deg);
     position: relative;
     top: 10px;
-    left: 20px;
+    left: 90px;
     z-index: 1;
 }
 #deck-11 {
     transform: rotate(10deg);
     position: absolute;
     top: 30px;
-    left: 30px;
+    left: 80px;
     z-index: 2;
     border: 1px green solid;
 }
 
+#deck-13 {
+    transform: rotate(5deg);
+    position: absolute;
+    top: 30px;
+    left: 100px;
+    z-index: 1;
+    border: 1px green solid;
+}
 
 .Player1-hand > img {
     width: 40px;
