@@ -8,7 +8,7 @@ var namesToSent;
 var readyToSend;
 var session_id;
 var pile = "";
-//let cards="";  
+//let cards="";
 
 let nextPlayer;
 let lastPlayer;
@@ -47,7 +47,7 @@ setTimeout(function () {
 let formInputNames = document.getElementById("form-names-modal");
 
 formInputNames.addEventListener("keyup", function () {
- 
+
     let fieldName1 = document.getElementById("name1");
     let fieldName2 = document.getElementById("name2");
     let fieldName3 = document.getElementById("name3");
@@ -63,7 +63,7 @@ formInputNames.addEventListener("keyup", function () {
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
-            document.getElementById('ready-to-send').classList.remove('display-feedback-success');        
+            document.getElementById('ready-to-send').classList.remove('display-feedback-success');
             document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
         }
         if (formIsFull == true) {
@@ -150,6 +150,7 @@ async function startGame() {
     }
 }
 
+
 function saveResponseFromServer(response) {
     //SCORE
     session_id = response.Id;
@@ -159,13 +160,13 @@ function saveResponseFromServer(response) {
     pile = `${topCard.Color}${topCard.Value}`;
 
 
-   for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         arrPlayer_[i]=new Player("toCancel", color_, value_, cards_, score_);
-        arrPlayer_[i].cards_=response.Players[i].Cards.map(item => `${item.Color}${item.Value}`);    
+        arrPlayer_[i].cards_=response.Players[i].Cards.map(item => `${item.Color}${item.Value}`);
         arrPlayer_[i].color_=response.Players[i].Cards.map(item => `${item.Color}`);
         arrPlayer_[i].value_=response.Players[i].Cards.map(item => `${item.Value}`);
         arrPlayer_[i].score_=response.Players[i].Score;
-   }
+    }
 
 }
 
@@ -194,7 +195,7 @@ async function setuptStartingCards() {
 
 
     for (let j = 0; j < 4; j++) {
-         
+
         for (let i = 0; i < arrPlayer_[j].cards_.length; i++) {
             const url = `${baseUrl}${arrPlayer_[j].cards_[i]}.png`;
             console.log('CARDS PLAYER '+j+'-->');
@@ -204,7 +205,7 @@ async function setuptStartingCards() {
             if(j==0)      {  myElem = document.getElementsByClassName("Player1-hand")[0]; }
             else if(j==1) {  myElem = document.getElementsByClassName("Player2-hand")[0]; }
             else if(j==2) {  myElem = document.getElementsByClassName("Player3-hand")[0]; }
-            else if(j==3) {  myElem = document.getElementsByClassName("Player4-hand")[0]; }         
+            else if(j==3) {  myElem = document.getElementsByClassName("Player4-hand")[0]; }
 
             const img = document.createElement("img");
             img.src = url;
@@ -297,7 +298,7 @@ async function sendCard(value, color, wild) {
         }
     } catch(e){
         alert("No internet connection: "+e)
-    }    
+    }
 }
 
 
@@ -349,7 +350,7 @@ function setScore(score,playerNumber){
 function getScore(){
     var tot=0;
     for (let i = 0; i < 4; i++) {
-       tot=tot+arrPlayer_[i].score_;              
+        tot=tot+arrPlayer_[i].score_;
     }
     return tot;
 }
@@ -364,16 +365,16 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
 
 
-    if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ) 
-       {
-           let totScore = getScore();
-           let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
-           playerWon(message)
-        }
-    if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]) 
+    if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] )
     {
-       //alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
-       showCalledUNO(true,fieldnamenList[playerNumber-1]);
+        let totScore = getScore();
+        let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
+        playerWon(message)
+    }
+    if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1])
+    {
+        //alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+        showCalledUNO(true,fieldnamenList[playerNumber-1]);
     }
 
     let myElem = document.getElementById("hand-player" + playerNumber);
@@ -520,29 +521,27 @@ restartButton.addEventListener("click", function () {
 
 
 function showErrorToSelectCard(bool) {
-      if (bool) {
+    if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
-      } else {
-        document.getElementById('error-to-select').classList.remove('display-feedback-error');       
-      }
+    } else {
+        document.getElementById('error-to-select').classList.remove('display-feedback-error');
+    }
 }
 
 function showCalledUNO(bool,player) {
     if (bool) {
-      document.getElementById('called-UNO').classList.add('display-called-UNO');
-      document.getElementById('called-UNO-message').innerHTML=player+ " CALLED UNO ";
+        document.getElementById('called-UNO').classList.add('display-called-UNO');
+        document.getElementById('called-UNO-message').innerHTML=player+ " CALLED UNO ";
     } else {
-      document.getElementById('called-UNO').classList.remove('display-called-UNO');       
+        document.getElementById('called-UNO').classList.remove('display-called-UNO');
     }
 }
 
 function playerWon(message){
-        document.getElementById('Player-won').classList.add('display-Player-won');
-        document.getElementById('Player-won-message').innerHTML=message;
-        console.log(message);
+    document.getElementById('Player-won').classList.add('display-Player-won');
+    document.getElementById('Player-won-message').innerHTML=message;
+    console.log(message);
 }
-
-
 
 
 
