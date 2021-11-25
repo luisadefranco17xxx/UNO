@@ -140,6 +140,10 @@ li.active-player{
     flex-direction: column;
 }
 
+#deck > img {
+    transform:rotate(15deg);
+}
+
 .Player1-hand > img {
     width: 40px;
 }

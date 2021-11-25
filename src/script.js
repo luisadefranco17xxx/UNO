@@ -260,43 +260,44 @@ function setActivePlayer() {
 }
 
 async function sendCard(value, color, wild) {
+    try{
+        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
 
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
+        if (response.ok) {
+            let result = await response.json();
+            console.log('Result from sendCard call --> ')
+            console.log(result);
+            console.log(JSON.stringify(result));
+            if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
+                showErrorToSelectCard(true);
+                return false;
+            } else {
+                console.log('Aquí removemos el background color -->' + lastWild);
+                document.getElementById('card-pile-and-deck').classList.remove('back-color-'+ lastWild);
+
+                if (color === 'Black'){
+                    console.log('ESTE DEBE SER EL COLOR ELEGIDO ' + wild);
+                    lastWild = wild;
+                    document.getElementById('card-pile-and-deck').classList.add('back-color-'+ wild);
+                }
+                saveResponseFromServerAfterPlayCard(result);
+                showErrorToSelectCard(false);
+                return true;
             }
-        });
-
-    if (response.ok) {
-
-
-        let result = await response.json();
-        console.log('Result from sendCard call --> ')
-        console.log(result);
-        console.log(JSON.stringify(result));
-        if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
-            showErrorToSelectCard(true);
-            return false;
         } else {
-            console.log('Aquí removemos el background color -->' + lastWild);
-            document.getElementById('card-pile-and-deck').classList.remove('back-color-'+ lastWild);
-
-            if (color === 'Black'){
-                console.log('ESTE DEBE SER EL COLOR ELEGIDO ' + wild);
-                lastWild = wild;
-                document.getElementById('card-pile-and-deck').classList.add('back-color-'+ wild);
-            }
-            saveResponseFromServerAfterPlayCard(result);
-            showErrorToSelectCard(false);
-            return true;
+            console.log('response not OK')
+            console.log("HTTP-Error: " + response.status);
+            return false;
         }
-    } else {
-        console.log('response not OK')
-        console.log("HTTP-Error: " + response.status);
-        return false;
-    }
+    } catch(e){
+        alert("No internet connection: "+e)
+    }    
 }
 
 
