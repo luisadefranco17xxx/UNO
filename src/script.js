@@ -473,8 +473,23 @@ async function drawACardFromDeck() {
     }
 }
 
-document.getElementById("deck").addEventListener("click", function (event) {
+async function createDeckCards() {
+    const url_deck = `src/img/back0.png`;
+    let myElem = document.getElementById("deck");
+    const img = document.createElement("img");
+    img.src = url_deck;
+    img.id = "deck-11";
+    myElem.appendChild(img);
+    
+}
+
+document.getElementById("deck-11").addEventListener("click", function (event) {
     showCalledUNO(false,"");
+    document.getElementById("deck-11").classList.add("scale-out-center");
+
+    console.log("TRASFORM-> deck");
+    //document.getElementById("deck-11").offsetWidth;
+    createDeckCards();
     drawACardFromDeck();
 })
 
