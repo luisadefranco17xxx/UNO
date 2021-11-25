@@ -17,6 +17,7 @@ var fieldnamenList;
 var scoreHand;
 var wild;
 var eventForModal;
+var lastWild;
 
 
 let score=0;
@@ -37,7 +38,7 @@ let value_ = [0, 0, 0];
 
 
 myModal.show();
-//<img src="https://robohash.org/YOUR-TEXT.png">
+
 
 
 setTimeout(function () {
@@ -219,10 +220,7 @@ function setActivePlayer() {
     for (let i = 0; i < fieldnamenList.length; i++) {
         if (fieldnamenList[i] == nextPlayer) {
             let myElem = document.getElementById("name-player" + (i + 1));
-            // const li = document.createElement("li");
-            // li.innerHTML = "Active Player";
-            // li.classList.add('active-player')
-            // myElem.appendChild(li);
+
 
             let myHand = document.getElementById("hand-player" + (i + 1));
             myHand.classList.add("active-hand");
@@ -273,6 +271,7 @@ async function sendCard(value, color, wild) {
 
     if (response.ok) {
 
+
         let result = await response.json();
         console.log('Result from sendCard call --> ')
         console.log(result);
@@ -281,6 +280,14 @@ async function sendCard(value, color, wild) {
             showErrorToSelectCard(true);
             return false;
         } else {
+            console.log('Aquí removemos el background color -->' + lastWild);
+            document.getElementById('card-pile-and-deck').classList.remove('back-color-'+ lastWild);
+
+            if (color === 'Black'){
+                console.log('ESTE DEBE SER EL COLOR ELEGIDO ' + wild);
+                lastWild = wild;
+                document.getElementById('card-pile-and-deck').classList.add('back-color-'+ wild);
+            }
             saveResponseFromServerAfterPlayCard(result);
             showErrorToSelectCard(false);
             return true;
@@ -303,7 +310,6 @@ function saveResponseFromServerAfterPlayCard(response) {
         setPlayersHandsAndScoresAfterPlayCard(fieldnamenList[i], i + 1);
     }
 
-    //  removeSelectedCardFromPlayerHand();
     removeOldPileTopCard();
     setPileTopCard();
 }
@@ -387,7 +393,6 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     }
 }
 
-
 async function setPileTopCard() {
 
     let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
@@ -429,8 +434,6 @@ async function removeSelectedCardFromPlayerHand() {
 
 async function removeOldPileTopCard() {
     let toRemove = document.getElementById("pile-top");
-    console.log('Este es el que hay que remover de la pila -->');
-    console.log(toRemove);
     toRemove.remove();
 }
 
@@ -489,6 +492,9 @@ for (let i = 0; i < 4; i++) {
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if(event.target.nodeName == 'IMG') {
+
+
+
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
                 eventForModal = event.target
                 colorModal.show();

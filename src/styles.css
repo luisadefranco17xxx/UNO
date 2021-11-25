@@ -29,6 +29,19 @@ header .menu .menu-item {
     color: white;
 }
 
+.back-color-Red{
+    background-color: darkred !important;
+}
+.back-color-Green{
+    background-color: #339966 !important;
+}
+.back-color-Blue{
+    background-color: blue !important;
+}
+.back-color-Yellow{
+    background-color: yellow !important;
+}
+
 #exampleModal{
     background-color: orangered;
 }
