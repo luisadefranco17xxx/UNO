@@ -140,9 +140,30 @@ li.active-player{
     flex-direction: column;
 }
 
-#deck > img {
-    transform:rotate(15deg);
+
+#deck {
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
+
+#deck-10 {
+    transform:rotate(15deg);
+    position: relative;
+    top: 10px;
+    left: 20px;
+    z-index: 1;
+}
+#deck-11 {
+    transform: rotate(10deg);
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 2;
+    border: 1px green solid;
+}
+
 
 .Player1-hand > img {
     width: 40px;
@@ -166,9 +187,6 @@ li.active-player{
     cursor: pointer;
 }
 
-#deck > img {
-    margin-bottom: 15px;
-}
 
 .card-all .selected{
     transform: rotate(10deg) translateY(-9px);
