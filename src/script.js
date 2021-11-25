@@ -334,7 +334,6 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
         console.log("HTTP-Error: " + response.status);
         return false;
     }
-
 }
 
 function setScore(score,playerNumber){
@@ -366,7 +365,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
     if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ) 
        {
-           let totScore =getScore();
+           let totScore = getScore();
            let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
            playerWon(message)
         }

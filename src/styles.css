@@ -9,6 +9,11 @@ body {
     background-attachment: fixed;
     background-image: linear-gradient(darkgreen, yellow);
 }
+b{
+    padding: 5px;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
 
 nav{
     background-color: darkgreen !important;
@@ -31,15 +36,19 @@ header .menu .menu-item {
 
 .back-color-Red{
     background-color: darkred !important;
+    color: whitesmoke;
 }
 .back-color-Green{
     background-color: #339966 !important;
+    color: whitesmoke;
 }
 .back-color-Blue{
     background-color: blue !important;
+    color: whitesmoke;
 }
 .back-color-Yellow{
     background-color: yellow !important;
+    color: darkslategray;
 }
 
 #exampleModal{
@@ -63,8 +72,15 @@ ul {
     flex-direction: row;
     justify-content: space-between;
 }
+#pato-laugh {
+    border-radius: 50%;
+    border: 5px solid darkcyan;
+}
+
 #pato-uno{
     width: 240px;
+    border-radius: 50%;
+    border: 5px solid darkcyan;
 }
 
 #called-uno-message{
