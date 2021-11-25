@@ -47,7 +47,7 @@ header .menu .menu-item {
     color: whitesmoke;
 }
 .back-color-Yellow{
-    background-color: yellow !important;
+    background-color: #ffd633 !important;
     color: darkslategray;
 }
 
@@ -171,7 +171,7 @@ li.active-player{
 #deck-10 {
     transform:rotate(14deg);
     position: relative;
-    top: 10px;
+    top: 30px;
     left: 90px;
     z-index: 1;
 }
@@ -185,10 +185,10 @@ li.active-player{
 }
 
 #deck-12 {
-    transform: rotate(5deg);
+    transform: rotate(0deg);
     position: absolute;
     top: 30px;
-    left: 100px;
+    left: 90px;
     z-index: 1;
 }
 
