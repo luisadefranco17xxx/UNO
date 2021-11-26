@@ -7,7 +7,9 @@ var colorModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 var namesToSent;
 var readyToSend;
 var session_id;
-var pile = "";
+var pile = ""; 
+var pileColor="";
+var pileValue="";
 //let cards="";
 
 let nextPlayer;
@@ -109,8 +111,8 @@ startGameModalButton.addEventListener("click", function () {
 let colorButtonClicked = document.getElementById('colorButtonClicked');
 colorButtonClicked.addEventListener("click", function (event) {
     wild = event.target.id;
-    console.log("ESTE ES WILD -->")
-    console.log(wild)
+    console.log(" WILD -->");
+    console.log(wild);
     sendCard(eventForModal.dataset.value, eventForModal.dataset.color, wild);
 });
 
@@ -158,7 +160,8 @@ function saveResponseFromServer(response) {
     nextPlayer = response.NextPlayer;
     let topCard = response.TopCard;
     pile = `${topCard.Color}${topCard.Value}`;
-
+    pileColor=topCard.Color;
+    pileValue=topCard.Value;
 
     for (let i = 0; i < 4; i++) {
         arrPlayer_[i]=new Player("toCancel", color_, value_, cards_, score_);
@@ -411,6 +414,9 @@ async function setPileTopCard() {
 }
 
 async function appendPileTopFromResponseFromServerAfterTopCard(response) {
+    pileColor=response.Color;
+    pileValue=response.Value;
+    
     let _pile = `${response.Color}${response.Value}`
     const url_pile = `${baseUrl}${_pile}.png`;
 
@@ -504,11 +510,26 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if(event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
-                eventForModal = event.target
-                colorModal.show();
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                console.log("checkIfValidCardInHand" +checkIfValidCardInHand());
+                if (event.target.dataset.value==13 && !checkIfValidCardInHand())  {                     
+                   eventForModal = event.target
+                   colorModal.show();
+                  } else {
+                      showErrorToSelectCard(true);
+                    } 
             } else if (event.target.parentElement.classList.contains("active-hand")) {
                 wild = "";
-                sendCard(event.target.dataset.value, event.target.dataset.color, wild);
+                console.log("I will call sendCard funtion -->");
+              
+                if(event.target.dataset.color== pileColor || event.target.dataset.value==pileValue)   
+                {
+                    console.log("Send OK");
+                    sendCard(event.target.dataset.value, event.target.dataset.color, wild);
+                    //todo show error message
+                } else {
+                    showErrorToSelectCard(true);
+                }
             } else {
                 event.target.classList.remove("shake-horizontal");
                 event.target.offsetWidth;
@@ -550,5 +571,20 @@ function playerWon(message){
     console.log(message);
 }
 
+function checkIfValidCardInHand(){
+   let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
+   for (let i = 0; i < arrCardActivePlayer.length; i++) {
+       console.log(arrCardActivePlayer[i].dataset.value);
+       console.log(arrCardActivePlayer[i].dataset.color);
+       console.log("PileColor: "+pileColor+ " pileValue: "+pileValue);
+       if(arrCardActivePlayer[i].dataset.value != 13) {
+            if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
+               console.log("CALL NO ALLOWED");
+               return true;
+            } 
+        } 
+   }
+   return false;
+}
 
 
