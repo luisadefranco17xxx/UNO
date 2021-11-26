@@ -481,6 +481,8 @@ async function drawACardFromDeck() {
     }
 }
 
+//kljkjskljslkjsdlksdsdkldsk
+
 function addHeartbeatToTopDeckCard(){
     let topDeckCard = document.getElementById("deck-11");
     topDeckCard.classList.add("heartbeat");
