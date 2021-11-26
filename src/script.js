@@ -270,7 +270,9 @@ async function setActivePlayer() {
 }
 
 async function sendCard(value, color, wild) {
+
     try {
+        console.log("SEND CARD TO BACKEND--> ")
         console.log(value + "  " + color + "  " + wild);
         let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
             {
@@ -520,14 +522,12 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if (event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
-
-
-                if (event.target.dataset.value == 13 && !checkIfObligatoryToPlayCardInHand()) {
+                if (event.target.dataset.value == 13 && !checkIfDraw4IsNotAllowedToPlay()) {
                     eventForModal = event.target;
-                    console.log("LUISAAAAAAAA1");
+                    console.log("+4");
                     colorModal.show();
                 } else if (event.target.dataset.value == 14) {
-                    console.log("LUISAAAAAAAA2");
+                    console.log("Cambio de color ");
                     eventForModal = event.target
                     colorModal.show();
                 } else {
@@ -536,11 +536,13 @@ for (let i = 0; i < 4; i++) {
                 }
             } else if (event.target.parentElement.classList.contains("active-hand")) {
 
-                console.log("I will call sendCard funtion --> wild: " + wild);
-                if (pileColor == "Black") pileColor = wild;
+                if (pileColor == "Black"){
+                    pileColor = wild;
+                }
                 if (event.target.dataset.color == pileColor || event.target.dataset.value == pileValue) {
-                    console.log("Send OK");
+
                     wild = "";
+
                     sendCard(event.target.dataset.value, event.target.dataset.color, wild);
                 } else {
                     showErrorToSelectCard(true);
@@ -555,8 +557,9 @@ for (let i = 0; i < 4; i++) {
             console.log("NO ES ImAGEN EL event.target!!!")
         }
     });
-}
-;
+};
+
+
 
 let restartButton = document.getElementById("restart-game-btn");
 restartButton.addEventListener("click", function () {
@@ -587,23 +590,28 @@ function playerWon(message) {
     console.log(message);
 }
 
-function checkIfObligatoryToPlayCardInHand() {
+function checkIfDraw4IsNotAllowedToPlay() {
     let arrCardActivePlayer = document.getElementsByClassName("active-hand")[0].childNodes;
+    if (pileValue == 13){ //Si hay un +4 en la pila no se puede jugar (Backend lo impide)
+        return true;
+    }
+
     if (arrCardActivePlayer.length === 1) {
         return false;
     }
 
+
     for (let i = 0; i < arrCardActivePlayer.length; i++) {
         console.log(pileColor + "<-pileColor,    " + pileValue + "<-pileValue");
 
-        if(arrCardActivePlayer[i].dataset.value == 13){
-                 continue; //otro o el mismo +4
+        if(arrCardActivePlayer[i].dataset.color == 'Black'){
+                 continue; //otro o el mismo +4 y cambio de color
         }
          // if(arrCardActivePlayer[i].dataset.value > 9){
          //     continue; //carta no obligatoria (ACTION CARD) BACKEND NO LO VALIDA
          // }
 
-        if (pileValue == 13 || pileValue == 14) {
+        if (pileColor == 'Black') {
             console.log("wild : " + wild);
             if (arrCardActivePlayer[i].dataset.color == wild) {
                 console.log("Hay carta del mismo color");
