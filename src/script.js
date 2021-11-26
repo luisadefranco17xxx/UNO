@@ -198,8 +198,6 @@ async function setuptStartingCards() {
 
         for (let i = 0; i < arrPlayer_[j].cards_.length; i++) {
             const url = `${baseUrl}${arrPlayer_[j].cards_[i]}.png`;
-            console.log('CARDS PLAYER '+j+'-->');
-            console.log("URL :" + url);
 
             let myElem;
             if(j==0)      {  myElem = document.getElementsByClassName("Player1-hand")[0]; }
@@ -272,9 +270,6 @@ async function sendCard(value, color, wild) {
 
         if (response.ok) {
             let result = await response.json();
-            console.log('Result from sendCard call --> ')
-            console.log(result);
-            console.log(JSON.stringify(result));
             if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
                 showErrorToSelectCard(true);
                 return false;
@@ -328,8 +323,6 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
 
     if (response.ok) {
         let result = await response.json();
-        console.log('result from setPlayersHandsAndScoresAfterPlayCard -->')
-        console.log(result);
         saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
         return true;
     } else {
@@ -365,15 +358,13 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
 
 
-    if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] )
-    {
+    if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ){
         let totScore = getScore();
         let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
         playerWon(message)
     }
-    if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1])
-    {
-        //alert("Player: "+fieldnamenList[playerNumber-1] + " calls !!UNO!!");
+
+    if (cardsPlayerToSetHand.length==1 && lastPlayer==fieldnamenList[playerNumber-1]){
         showCalledUNO(true,fieldnamenList[playerNumber-1]);
     }
 
@@ -384,7 +375,6 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
     for (let i = 0; i < cardsPlayerToSetHand.length; i++) {
         const url = `${baseUrl}${cardsPlayerToSetHand[i]}.png`;
-
 
         const img = document.createElement("img");
         img.src = url;
@@ -416,7 +406,7 @@ async function setPileTopCard() {
     }
 }
 
-function appendPileTopFromResponseFromServerAfterTopCard(response) {
+async function appendPileTopFromResponseFromServerAfterTopCard(response) {
     let _pile = `${response.Color}${response.Value}`
     const url_pile = `${baseUrl}${_pile}.png`;
 
@@ -424,8 +414,11 @@ function appendPileTopFromResponseFromServerAfterTopCard(response) {
     const img = document.createElement("img");
     img.src = url_pile;
     img.id = "pile-top"
+    img.classList.add('fade-in')
     myElem.appendChild(img);
-
+    setTimeout(function(){
+        myElem.classList.remove('fade-in')
+    }, 1001)
 }
 
 async function removeSelectedCardFromPlayerHand() {
