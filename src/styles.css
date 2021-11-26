@@ -449,3 +449,11 @@ li.active-player{
         animation-timing-function: ease-out;
     }
 }
+
+.fade-in{
+    animation: fadein 1s linear;
+}
+@keyframes fadein {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}

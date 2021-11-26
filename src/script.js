@@ -438,9 +438,8 @@ async function removeOldPileTopCard() {
     toRemove.remove();
 }
 
+
 async function drawACardFromDeck() {
-   // document.getElementById("deck-11").offsetWidth;
-   // document.getElementById("deck-11").classList.remove("heartbeat");
 
     let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/DrawCard/" + session_id,
         {
@@ -464,11 +463,12 @@ async function drawACardFromDeck() {
                 img.src = url;
                 img.dataset.value = result.Card.Value;
                 img.dataset.color = result.Card.Color;
+                img.classList.add('fade-in');
                 myElem.appendChild(img);
             }
         }
         nextPlayer = result.NextPlayer;
-        setActivePlayer();
+        setTimeout(setActivePlayer, 1000);
         return true;
     } else {
         console.log("HTTP-Error: " + response.status);
@@ -482,7 +482,6 @@ function addHeartbeatToTopDeckCard(){
     setTimeout(function(){
         topDeckCard.classList.remove("heartbeat");
     }, 1400);
-
 }
 
 
@@ -490,8 +489,6 @@ document.getElementById("deck-11").addEventListener("click", function (event) {
     showCalledUNO(false,"");
     addHeartbeatToTopDeckCard();
     drawACardFromDeck();
-
-
 })
 
 for (let i = 0; i < 4; i++) {
