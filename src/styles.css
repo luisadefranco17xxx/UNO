@@ -326,8 +326,8 @@ li.active-player{
 
 
 .scale-up-center {
-    -webkit-animation: scale-up-center 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-    animation: scale-up-center 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    -webkit-animation: scale-up-center 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: scale-up-center 0.9s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 /*.scale-down-center {*/
@@ -478,7 +478,7 @@ li.active-player{
 }
 
 .fade-in{
-    animation: fadein 1s linear;
+    animation: fadein 0.5s linear;
 }
 @keyframes fadein {
     0% { opacity: 0 }

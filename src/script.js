@@ -473,7 +473,7 @@ async function drawACardFromDeck() {
             }
         }
         nextPlayer = result.NextPlayer;
-        setTimeout(setActivePlayer, 1000);
+        setTimeout(setActivePlayer, 800);
         return true;
     } else {
         console.log("HTTP-Error: " + response.status);
