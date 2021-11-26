@@ -111,6 +111,9 @@ li.active-player{
     background-color: rgba(139, 0, 0, 1)!important;
 
 }
+.card-all > img {
+    padding: 1px;
+}
 
 #card-pile-and-deck{
     background-color: darkgreen;
