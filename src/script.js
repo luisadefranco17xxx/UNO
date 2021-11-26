@@ -215,7 +215,7 @@ async function setuptStartingCards() {
     setActivePlayer();
 }
 
-function setActivePlayer() {
+async function setActivePlayer() {
     for (let i = 0; i < fieldnamenList.length; i++) {
         if (fieldnamenList[i] == nextPlayer) {
             let myElem = document.getElementById("name-player" + (i + 1));
@@ -248,6 +248,10 @@ function setActivePlayer() {
 
             let notActivePlayerWrapper=myHand.parentElement.parentElement.parentElement;
             notActivePlayerWrapper.classList.remove("scale-up-center");
+            // notActivePlayerWrapper.classList.add("scale-down-center");
+            // setTimeout(function (){
+            //     notActivePlayerWrapper.classList.remove("scale-down-center");
+            // }, 500);
 
             let notActiveAvatarWrapper = document.getElementById("avatar-wrapper-player" + (i + 1));
             notActiveAvatarWrapper.classList.add('d-flex');
