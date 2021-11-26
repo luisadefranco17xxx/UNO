@@ -268,6 +268,7 @@ async function setActivePlayer() {
 
 async function sendCard(value, color, wild) {
     try{
+        console.log(value+"  "+ color+"  "+wild);
         let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
             {
                 method: 'PUT',
@@ -278,6 +279,7 @@ async function sendCard(value, color, wild) {
 
         if (response.ok) {
             let result = await response.json();
+            console.log("HO FATTO SENDCARD"+result);
             if (result.error == "WrongColor" || result.error == "Draw4NotAllowed") {
                 showErrorToSelectCard(true);
                 return false;
@@ -290,8 +292,8 @@ async function sendCard(value, color, wild) {
                     lastWild = wild;
                     document.getElementById('card-pile-and-deck').classList.add('back-color-'+ wild);
                 }
-                saveResponseFromServerAfterPlayCard(result);
-                //saveResponseFromServer(result);  //TODO vedere se ok
+                saveResponseFromServerAfterPlayCard(result,value,color);
+                //saveResponseFromServer(result);  //TODO vedere se ok                
                 showErrorToSelectCard(false);
                 return true;
             }
@@ -306,7 +308,7 @@ async function sendCard(value, color, wild) {
 }
 
 
-function saveResponseFromServerAfterPlayCard(response) {
+function saveResponseFromServerAfterPlayCard(response,value,color) {
     lastPlayer=nextPlayer;
     nextPlayer = response.Player;
 
@@ -317,7 +319,7 @@ function saveResponseFromServerAfterPlayCard(response) {
     }
 
     removeOldPileTopCard();
-    setPileTopCard();
+    setPileTopCard(value,color);
 }
 
 async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
@@ -342,7 +344,6 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
 }
 
 function setScore(score,playerNumber){
-    console.log(playerNumber);
     totScore[playerNumber-1]=score;
     let spanScore = document.getElementById("score-player" + playerNumber);
 
@@ -393,9 +394,9 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     }
 }
 
-async function setPileTopCard() {
+async function setPileTopCard(value,color) {
 
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
+   /* let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
         {
             method: 'GET',
             headers: {
@@ -404,22 +405,22 @@ async function setPileTopCard() {
         });
 
     if (response.ok) {
-        let result = await response.json();
+        let result = await response.json();*/
         console.log('Result from setPileTopCard -->')
-        console.log(result);
-        appendPileTopFromResponseFromServerAfterTopCard(result);
-        return true;
+       // console.log(result);
+        appendPileTopFromResponseFromServerAfterTopCard(value,color);
+     /*   return true;
     } else {
         console.log("HTTP-Error: " + response.status);
         return false;
-    }
+    }*/
 }
 
-async function appendPileTopFromResponseFromServerAfterTopCard(response) {
-    pileColor=response.Color;
-    pileValue=response.Value;
+async function appendPileTopFromResponseFromServerAfterTopCard(value,color) {
+    pileColor=color;
+    pileValue=value;
     
-    let _pile = `${response.Color}${response.Value}`
+    let _pile = `${color}${value}`
     const url_pile = `${baseUrl}${_pile}.png`;
 
     let myElem = document.getElementById("pile");
@@ -517,12 +518,15 @@ for (let i = 0; i < 4; i++) {
 
                 console.log("checkIfValidCardInHand" +checkIfValidCardInHand());
                 if (event.target.dataset.value==13  && !checkIfValidCardInHand())  {                     
-                   eventForModal = event.target
+                   eventForModal = event.target;
+                   console.log("LUISAAAAAAAA1");
                    colorModal.show();
                   } else if (event.target.dataset.value==14){
+                      console.log("LUISAAAAAAAA2");
                     eventForModal = event.target
                     colorModal.show();
                   } else  {
+                    console.log("LUISAAAAAAAA3");
                       showErrorToSelectCard(true);
                     } 
             } else if (event.target.parentElement.classList.contains("active-hand")) {
@@ -583,13 +587,26 @@ function checkIfValidCardInHand(){
     if(arrCardActivePlayer.length===1)   return false;
 
     for (let i = 0; i < arrCardActivePlayer.length; i++) {
-
-            if(arrCardActivePlayer[i].dataset.value != 13) {
+       console.log(pileColor+"<-pileColor,    "+ pileValue+"<-pileValue");
+                    if(pileValue == 13) { 
+                        console.log("HO un 13 cosa faccio?");
+                        console.log("wild"+wild);
+                        if(arrCardActivePlayer[i].dataset.color == wild) {
+                            console.log("1HO un 13 cosa faccio?");
+                           return true;
+                        } else if (arrCardActivePlayer[i].dataset.value==pileValue) {
+                            console.log("2HO un 13 cosa faccio?");
+                            return true;
+                        } else return false;
+                    }
                     if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
-                    console.log("CALL NO ALLOWED");
-                    return true;
+                        if ( arrCardActivePlayer[i].dataset.value == pileValue) {
+                                 if(pileValue==10||pileValue==11||pileValue==12||pileValue==14) return false;
+                        }
+                        console.log("CALL NO ALLOWED");
+                        return true;
                     } 
-                } 
+            // } 
     }
    return false;
 }
