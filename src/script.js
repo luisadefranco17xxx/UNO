@@ -23,6 +23,7 @@ var lastWild;
 
 
 let score=0;
+let totScore=0;
 class Player {
     constructor(name, cards, color, value, score) {
         this.name = name;
@@ -181,8 +182,9 @@ function setPlayersNamesInBoard(names,response) {
         let nameField = document.getElementById('name-player' + (i + 1));
         nameField.appendChild(li);
     }
-
+    totScore=0;
     for (let i = 0; i < 4; i++) {
+        totScore=totScore+response.Players[i].Score;
         setScore(response.Players[i].Score,i+1);
     }
 }
@@ -290,6 +292,7 @@ async function sendCard(value, color, wild) {
                     document.getElementById('card-pile-and-deck').classList.add('back-color-'+ wild);
                 }
                 saveResponseFromServerAfterPlayCard(result);
+                //saveResponseFromServer(result);  //TODO vedere se ok
                 showErrorToSelectCard(false);
                 return true;
             }
@@ -331,6 +334,7 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
     if (response.ok) {
         let result = await response.json();
         saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
+        //saveResponseFromServer(result);   //todo vedere se toglierlo
         return true;
     } else {
         console.log("HTTP-Error: " + response.status);
@@ -366,7 +370,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
 
     if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ){
-        let totScore = getScore();
+       // let totScore = getScore();
         let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
         playerWon(message)
     }
@@ -510,7 +514,7 @@ for (let i = 0; i < 4; i++) {
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if(event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
-                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 console.log("checkIfValidCardInHand" +checkIfValidCardInHand());
                 if (event.target.dataset.value==13 && !checkIfValidCardInHand())  {                     
                    eventForModal = event.target
@@ -519,14 +523,14 @@ for (let i = 0; i < 4; i++) {
                       showErrorToSelectCard(true);
                     } 
             } else if (event.target.parentElement.classList.contains("active-hand")) {
-                wild = "";
-                console.log("I will call sendCard funtion -->");
-              
+                
+                console.log("I will call sendCard funtion --> wild: " +wild);
+                if( pileColor=="Black")  pileColor=wild;
                 if(event.target.dataset.color== pileColor || event.target.dataset.value==pileValue)   
                 {
                     console.log("Send OK");
+                    wild = "";
                     sendCard(event.target.dataset.value, event.target.dataset.color, wild);
-                    //todo show error message
                 } else {
                     showErrorToSelectCard(true);
                 }
@@ -573,17 +577,19 @@ function playerWon(message){
 
 function checkIfValidCardInHand(){
    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
-   for (let i = 0; i < arrCardActivePlayer.length; i++) {
-       console.log(arrCardActivePlayer[i].dataset.value);
-       console.log(arrCardActivePlayer[i].dataset.color);
-       console.log("PileColor: "+pileColor+ " pileValue: "+pileValue);
-       if(arrCardActivePlayer[i].dataset.value != 13) {
-            if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
-               console.log("CALL NO ALLOWED");
-               return true;
-            } 
-        } 
-   }
+    if(arrCardActivePlayer.length===1)   return false;
+    
+    for (let i = 0; i < arrCardActivePlayer.length; i++) {
+            console.log(arrCardActivePlayer[i].dataset.value);
+            console.log(arrCardActivePlayer[i].dataset.color);
+            console.log("PileColor: "+pileColor+ " pileValue: "+pileValue);
+            if(arrCardActivePlayer[i].dataset.value != 13) {
+                    if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
+                    console.log("CALL NO ALLOWED");
+                    return true;
+                    } 
+                } 
+    }
    return false;
 }
 
