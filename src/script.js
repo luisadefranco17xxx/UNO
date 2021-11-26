@@ -439,6 +439,9 @@ async function removeOldPileTopCard() {
 }
 
 async function drawACardFromDeck() {
+   // document.getElementById("deck-11").offsetWidth;
+   // document.getElementById("deck-11").classList.remove("heartbeat");
+
     let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/DrawCard/" + session_id,
         {
             method: 'PUT',
@@ -473,24 +476,22 @@ async function drawACardFromDeck() {
     }
 }
 
-async function createDeckCards() {
-    const url_deck = `src/img/back0.png`;
-    let myElem = document.getElementById("deck");
-    const img = document.createElement("img");
-    img.src = url_deck;
-    img.id = "deck-11";
-    myElem.appendChild(img);
-    
+function addHeartbeatToTopDeckCard(){
+    let topDeckCard = document.getElementById("deck-11");
+    topDeckCard.classList.add("heartbeat");
+    setTimeout(function(){
+        topDeckCard.classList.remove("heartbeat");
+    }, 1400);
+
 }
+
 
 document.getElementById("deck-11").addEventListener("click", function (event) {
     showCalledUNO(false,"");
-    document.getElementById("deck-11").classList.add("scale-out-center");
-
-    console.log("TRASFORM-> deck");
-    //document.getElementById("deck-11").offsetWidth;
-    createDeckCards();
+    addHeartbeatToTopDeckCard();
     drawACardFromDeck();
+
+
 })
 
 for (let i = 0; i < 4; i++) {
@@ -508,9 +509,6 @@ for (let i = 0; i < 4; i++) {
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if(event.target.nodeName == 'IMG') {
-
-
-
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
                 eventForModal = event.target
                 colorModal.show();
