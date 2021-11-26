@@ -187,6 +187,7 @@ function setPlayersNamesInBoard(names,response) {
         totScore=totScore+response.Players[i].Score;
         setScore(response.Players[i].Score,i+1);
     }
+    console.log("totScore: "+totScore)
 }
 
 async function setuptStartingCards() {
@@ -516,7 +517,7 @@ for (let i = 0; i < 4; i++) {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
 
                 console.log("checkIfValidCardInHand" +checkIfValidCardInHand());
-                if (event.target.dataset.value==13 && !checkIfValidCardInHand())  {                     
+                if (event.target.dataset.value==13  && !checkIfValidCardInHand())  {                     
                    eventForModal = event.target
                    colorModal.show();
                   } else {
@@ -578,7 +579,7 @@ function playerWon(message){
 function checkIfValidCardInHand(){
    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
     if(arrCardActivePlayer.length===1)   return false;
-    
+
     for (let i = 0; i < arrCardActivePlayer.length; i++) {
             console.log(arrCardActivePlayer[i].dataset.value);
             console.log(arrCardActivePlayer[i].dataset.color);
