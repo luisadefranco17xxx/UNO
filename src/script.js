@@ -23,7 +23,7 @@ var lastWild;
 
 
 let score=0;
-let totScore=0;
+let totScore=[0, 0, 0, 0];
 class Player {
     constructor(name, cards, color, value, score) {
         this.name = name;
@@ -182,12 +182,10 @@ function setPlayersNamesInBoard(names,response) {
         let nameField = document.getElementById('name-player' + (i + 1));
         nameField.appendChild(li);
     }
-    totScore=0;
     for (let i = 0; i < 4; i++) {
-        totScore=totScore+response.Players[i].Score;
         setScore(response.Players[i].Score,i+1);
     }
-    console.log("totScore: "+totScore)
+    //console.log("totScore in :setPlayersNamesInBoard "+totScore)
 }
 
 async function setuptStartingCards() {
@@ -335,7 +333,7 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
     if (response.ok) {
         let result = await response.json();
         saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
-        //saveResponseFromServer(result);   //todo vedere se toglierlo
+
         return true;
     } else {
         console.log("HTTP-Error: " + response.status);
@@ -344,21 +342,17 @@ async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
 }
 
 function setScore(score,playerNumber){
+    console.log(playerNumber);
+    totScore[playerNumber-1]=score;
     let spanScore = document.getElementById("score-player" + playerNumber);
 
     while (spanScore.firstChild) {
         spanScore.removeChild(spanScore.firstChild);
     }
     spanScore.appendChild(document.createTextNode('SCORE = ' + score));
+
 }
 
-function getScore(){
-    var tot=0;
-    for (let i = 0; i < 4; i++) {
-        tot=tot+arrPlayer_[i].score_;
-    }
-    return tot;
-}
 
 function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNumber) {
     scoreHand = response.Score;
@@ -371,8 +365,11 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 
 
     if (cardsPlayerToSetHand.length==0 && lastPlayer==fieldnamenList[playerNumber-1] ){
-       // let totScore = getScore();
-        let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+totScore+" points";
+        let tot=0;
+        for (let i = 0; i < 4; i++) {
+            tot = tot+totScore[i];    
+        }
+        let message ="Player : "+fieldnamenList[playerNumber-1] + " won with "+tot+" points";
         playerWon(message)
     }
 
@@ -520,7 +517,10 @@ for (let i = 0; i < 4; i++) {
                 if (event.target.dataset.value==13  && !checkIfValidCardInHand())  {                     
                    eventForModal = event.target
                    colorModal.show();
-                  } else {
+                  } else if (event.target.dataset.value==14){
+                    eventForModal = event.target
+                    colorModal.show();
+                  } else  {
                       showErrorToSelectCard(true);
                     } 
             } else if (event.target.parentElement.classList.contains("active-hand")) {
@@ -581,9 +581,7 @@ function checkIfValidCardInHand(){
     if(arrCardActivePlayer.length===1)   return false;
 
     for (let i = 0; i < arrCardActivePlayer.length; i++) {
-            console.log(arrCardActivePlayer[i].dataset.value);
-            console.log(arrCardActivePlayer[i].dataset.color);
-            console.log("PileColor: "+pileColor+ " pileValue: "+pileValue);
+
             if(arrCardActivePlayer[i].dataset.value != 13) {
                     if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
                     console.log("CALL NO ALLOWED");
@@ -595,3 +593,5 @@ function checkIfValidCardInHand(){
 }
 
 
+//idea for background 
+//https://www.google.at/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHMW67GFOnIc&psig=AOvVaw2t9cSUPCMAXE2H1Nl74NIw&ust=1638009160328000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjU1uPptfQCFQAAAAAdAAAAABAs
