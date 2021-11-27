@@ -44,24 +44,24 @@
                 </div>
                 <!--to improve-->
                 <div id="error-to-select">
-                    <b> This card cannot be selected!
+                    <div class="pato-message"> This card cannot be selected!
                         <br>
-                        Draw a card if you don't have a valid card to play!</b>
+                        Draw a card if you don't have a valid card to play!</div>
                     <img id="pato-laugh" src="https://i.gifer.com/6yJ.gif"
                          alt="laugh" title="Laugh">
                 </div>
                 <div id="called-UNO" class="flex-column">
-                    <div class="called-uno-message"> UNO!</div>
+                    <div class="pato-message"> UNO!</div>
                     <img id="pato-uno" src="https://tenor.com/view/donald-duck-wink-thumbs-up-are-you-okay-gif-16477464.gif"
                          alt="UNO" title="UNO">
                     <div id="called-UNO-message" class="called-uno-message"></div>
 
                 </div>
                 <div id="Player-won">
-                    <b> Won! </b>
-                    <img src="https://tenor.com/view/donald-duck-i-got-this-confident-gif-14018148.gif"
+                    <div class="pato-message"> Won! </div>
+                    <img id="pato-won" src="https://tenor.com/view/donald-duck-i-got-this-confident-gif-14018148.gif"
                          alt="player-won" title="player-won">
-                    <div id="Player-won-message"></div>
+                    <div class="pato-message" id="Player-won-message"></div>
                 </div>
                 <!--end to improve-->
             </div>
@@ -141,21 +141,21 @@
         <div class="modal-content ">
             <div class="modal-header d-block text-center">
                 <h5 class="modal-title" id="exampleModalLabel">Enter the name of the players</h5>
+                <button id="generate-names-btn">Generate Names</button>
             </div>
             <div id="form-names-modal" class="modal-body">
-
                 <div class="input-group mb-3">
                     <input id="name1" type="text" class="form-control1" placeholder="Enter name player 1"
                            aria-label="Username" required>
                     <span class="input-group-text" id="basic-addon1">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-robot-1"
-                                   value="set1">
+                                   value="set1" checked>
                             <label class="form-check-label" for="radio-robot-1">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-1" id="radio-cat-1"
-                                   value="set4" checked>
+                                   value="set4">
                             <label class="form-check-label" for="radio-cat-1">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
@@ -177,12 +177,12 @@
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-cat-2"
-                                   value="set4" checked>
+                                   value="set4" >
                             <label class="form-check-label" for="radio-cat-2">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-2" id="radio-zombie-2"
-                                   value="set2">
+                                   value="set2"checked>
                             <label class="form-check-label" for="radio-zombie-2">Zombie</label>
                         </div>
                     </span>
@@ -195,12 +195,12 @@
                     <span class="input-group-text" id="basic-addon3">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-robot-3"
-                                   value="set1">
+                                   value="set1" checked>
                             <label class="form-check-label" for="radio-robot-3">Robot</label>
                         </div>
                          <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions-3" id="radio-cat-3"
-                                   value="set4" checked>
+                                   value="set4" >
                             <label class="form-check-label" for="radio-cat-3">Cat</label>
                         </div>
                          <div class="form-check form-check-inline">

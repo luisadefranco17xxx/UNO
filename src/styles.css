@@ -85,7 +85,13 @@ ul {
     margin-left: 30px;
 }
 
-.called-uno-message{
+#pato-won{
+    width: 240px;
+    border-radius: 50%;
+    border: 5px solid darkcyan;
+}
+
+.pato-message{
     font-weight: 700;
     font-size: 1.2rem;
     color: #ffff;
@@ -163,10 +169,20 @@ li.active-player{
     margin-top: 160px;
     margin-left: 80px;
 }
-
-#deck > img:hover {
+/* GLOW DECK TOP---------------- */
+#deck > #deck-11:hover {
     cursor: pointer;
+    box-shadow: 0px 0px 9px 4px greenyellow;
+    animation: glow 1.5s linear infinite alternate;
 }
+
+@keyframes glow{
+    to {
+        box-shadow: 0px 0px 30px 20px greenyellow;
+    }
+}
+/* END GLOW DECK TOP---------------- */
+
 #deck {
     position: absolute;
     top: 0;
@@ -179,7 +195,6 @@ li.active-player{
     left: 90px;
     z-index: 1;
 }
-
 
 #deck-11 {
     transform: rotate(10deg);
