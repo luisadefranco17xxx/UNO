@@ -93,6 +93,7 @@ formInputNames.addEventListener("keyup", function () {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
             document.getElementById('ready-to-send').classList.add('display-feedback-success');
             document.getElementById('start-game-btn').disabled = false;
+            playAudio(1,true);
         }
         namesToSent = fieldnamenList;
     }
@@ -106,6 +107,7 @@ startGameModalButton.addEventListener("click", function () {
         myModal.hide()
 
         startGame();
+        playAudio(1,false);
     }
 });
 
@@ -482,8 +484,6 @@ async function drawACardFromDeck() {
     }
 }
 
-//kljkjskljslkjsdlksdsdkldsk
-
 function addHeartbeatToTopDeckCard(){
     let topDeckCard = document.getElementById("deck-11");
     topDeckCard.classList.add("heartbeat");
@@ -519,14 +519,11 @@ for (let i = 0; i < 4; i++) {
                 console.log("checkIfValidCardInHand" +checkIfValidCardInHand());
                 if (event.target.dataset.value==13  && !checkIfValidCardInHand())  {                     
                    eventForModal = event.target;
-                   console.log("LUISAAAAAAAA1");
                    colorModal.show();
                   } else if (event.target.dataset.value==14){
-                      console.log("LUISAAAAAAAA2");
                     eventForModal = event.target
                     colorModal.show();
                   } else  {
-                    console.log("LUISAAAAAAAA3");
                       showErrorToSelectCard(true);
                     } 
             } else if (event.target.parentElement.classList.contains("active-hand")) {
@@ -562,9 +559,10 @@ restartButton.addEventListener("click", function () {
 function showErrorToSelectCard(bool) {
     if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
+        playAudio(2,true);
     } else {
         document.getElementById('error-to-select').classList.remove('display-feedback-error');
-    }
+    }   
 }
 
 function showCalledUNO(bool,player) {
@@ -585,32 +583,33 @@ function playerWon(message){
 function checkIfValidCardInHand(){
    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
     if(arrCardActivePlayer.length===1)   return false;
+    
+    for (let i = 0; i < arrCardActivePlayer.length; i++) {  //only with color
+        if(pileColor=="Black") {
+            if(arrCardActivePlayer[i].dataset.color == wild) {
+                console.log("wild: "+wild +"like card color");
+                return true;
+            } else return false;
+        } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
+            console.log("pileColor: "+pileColor +"like card color");
+            return true;
+        }
 
-    for (let i = 0; i < arrCardActivePlayer.length; i++) {
-       console.log(pileColor+"<-pileColor,    "+ pileValue+"<-pileValue");
-                    if(pileValue == 13) { 
-                        console.log("HO un 13 cosa faccio?");
-                        console.log("wild"+wild);
-                        if(arrCardActivePlayer[i].dataset.color == wild) {
-                            console.log("1HO un 13 cosa faccio?");
-                           return true;
-                        } else if (arrCardActivePlayer[i].dataset.value==pileValue) {
-                            console.log("2HO un 13 cosa faccio?");
-                            return true;
-                        } else return false;
-                    }
-                    if ( arrCardActivePlayer[i].dataset.value == pileValue || arrCardActivePlayer[i].dataset.color == pileColor)  {
-                        if ( arrCardActivePlayer[i].dataset.value == pileValue) {
-                                 if(pileValue==10||pileValue==11||pileValue==12||pileValue==14) return false;
-                        }
-                        console.log("CALL NO ALLOWED");
-                        return true;
-                    } 
-            // } 
     }
    return false;
 }
 
+function playAudio(num,play){
+    if (num==1) {
+        var x = document.getElementById("Audio"+num);
+        if(play) x.play();
+        else x.pause();
+    }
+    if (num==2) {
+        var x = document.getElementById("Audio"+num);
+        if(play) x.play();
+        else x.pause();
+    }
+}
 
-//idea for background 
-//https://www.google.at/url?sa=i&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DHMW67GFOnIc&psig=AOvVaw2t9cSUPCMAXE2H1Nl74NIw&ust=1638009160328000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjU1uPptfQCFQAAAAAdAAAAABAs
+

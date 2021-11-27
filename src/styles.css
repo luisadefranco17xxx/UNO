@@ -53,6 +53,7 @@ header .menu .menu-item {
 
 #exampleModal{
     background-color: orangered;
+    background-image: url("img2/background1.PNG");
 }
 
 #restart-game-btn{
