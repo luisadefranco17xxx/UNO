@@ -108,6 +108,7 @@ startGameModalButton.addEventListener("click", function () {
     }
 });
 
+
 let colorButtonClicked = document.getElementById('colorButtonClicked');
 colorButtonClicked.addEventListener("click", function (event) {
     wild = event.target.id;
@@ -145,11 +146,12 @@ async function startGame() {
         setPlayersNamesInBoard(namesToSent, result);
         setuptStartingCards();
 
-
     } else {
         console.log("HTTP-Error: " + response.status);
     }
 }
+
+
 
 
 function saveResponseFromServer(response) {
