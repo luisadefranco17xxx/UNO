@@ -406,7 +406,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 }
 
 async function setPileTopCard(value, color) {
-
+    playAudio(3,true);
     /* let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
          {
              method: 'GET',
@@ -503,6 +503,7 @@ function addHeartbeatToTopDeckCard(){
 
 
 document.getElementById("deck-11").addEventListener("click", function (event) {
+    playAudio(4,true);
     showCalledUNO(false, "");
     addHeartbeatToTopDeckCard();
     drawACardFromDeck();
@@ -571,6 +572,8 @@ restartButton.addEventListener("click", function () {
 function showErrorToSelectCard(bool) {
     if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
+        playAudio(3,false);
+        playAudio(2,false);
         playAudio(2,true);
     } else {
         document.getElementById('error-to-select').classList.remove('display-feedback-error');
@@ -612,16 +615,9 @@ function checkIfValidCardInHand(){
 }
 
 function playAudio(num,play){
-    if (num==1) {
-        var x = document.getElementById("Audio"+num);
-        if(play) x.play();
-        else x.pause();
-    }
-    if (num==2) {
-        var x = document.getElementById("Audio"+num);
-        if(play) x.play();
-        else x.pause();
-    }
+    var x = document.getElementById("Audio"+num);
+    if(play) x.play();
+    else x.pause();   
 }
 
 
