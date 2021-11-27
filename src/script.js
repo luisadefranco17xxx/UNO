@@ -406,6 +406,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 }
 
 async function setPileTopCard(value, color) {
+    playAudio(3,false);
     playAudio(3,true);
     /* let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/TopCard/" + session_id,
          {
@@ -615,6 +616,7 @@ function checkIfValidCardInHand(){
 }
 
 function playAudio(num,play){
+    console.log("playAudio: num: "+num+", play:"+play)
     var x = document.getElementById("Audio"+num);
     if(play) x.play();
     else x.pause();   
