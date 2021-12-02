@@ -373,7 +373,6 @@ function saveResponseFromServerAfterPlayCard(response, value, color) {
     for (let i = 0; i < fieldnamenList.length; i++) {
         setPlayersHandsAndScoresAfterPlayCard(fieldnamenList[i], i + 1);
     }
-
     removeOldPileTopCard();
     setPileTopCard(value, color);
 }
