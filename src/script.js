@@ -12,8 +12,6 @@ var pile = "";
 var pileColor = "";
 var pileValue = "";
 var arrowDirection=1;
-var arrowReverse=false;
-//let cards="";
 
 let nextPlayer;
 let lastPlayer;
@@ -242,9 +240,8 @@ async function setuptStartingCards() {
 
     if (pileValue==12) {    
         arrowDirection=arrowDirection*(-1);  
-        if(arrowReverse==true)  arrowReverse=false;
-        else arrowReverse=true;
     }
+    toggleArrow(arrowDirection);
 
     for (let j = 0; j < 4; j++) {
 
@@ -473,9 +470,8 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
 
     if (pileValue==12) {
         arrowDirection=arrowDirection*(-1); 
-        if(arrowReverse==true)  arrowReverse=false;
-        else arrowReverse=true; 
     }
+    toggleArrow(arrowDirection);
 }
 
 async function removeSelectedCardFromPlayerHand() {
@@ -686,5 +682,14 @@ function toggleSound(){
     } else {
         document.getElementById('audio-on-btn').classList.add('muted');
         document.getElementById('audio-on-img').src = "src/img2/sound-off.png"
+    }
+}
+
+
+function toggleArrow(direction){
+    if(direction==1){  
+        document.getElementById('arrow-img').src = "src/img2/arrow_down.png"
+    } else {
+        document.getElementById('arrow-img').src = "src/img2/arrow_up.png"
     }
 }
