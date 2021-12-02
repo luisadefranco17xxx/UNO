@@ -11,6 +11,7 @@ var session_id;
 var pile = "";
 var pileColor = "";
 var pileValue = "";
+var arrowDirection=1;
 //let cards="";
 
 let nextPlayer;
@@ -230,6 +231,9 @@ async function setuptStartingCards() {
     img.id = "pile-top";
     myElem.appendChild(img);
 
+    if (pileValue==12) {    
+        arrowDirection=arrowDirection*(-1);  
+    }
 
     for (let j = 0; j < 4; j++) {
 
@@ -455,7 +459,11 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
     myElem.appendChild(img);
     setTimeout(function () {
         myElem.classList.remove('fade-in')
-    }, 1001)
+    }, 1001);
+
+    if (pileValue==12) {
+        arrowDirection=arrowDirection*(-1);  
+    }
 }
 
 async function removeSelectedCardFromPlayerHand() {
@@ -595,6 +603,7 @@ function showCalledUNO(bool, player) {
     if (bool) {
         document.getElementById('called-UNO').classList.add('display-called-UNO');
         document.getElementById('called-UNO-message').innerHTML = player + " CALLED UNO ";
+        playAudio(5,true);
     } else {
         document.getElementById('called-UNO').classList.remove('display-called-UNO');
     }
