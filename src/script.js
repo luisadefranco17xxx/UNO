@@ -626,6 +626,7 @@ function playerWon(message) {
     document.getElementById('Player-won').classList.add('display-Player-won');
     document.getElementById('Player-won-message').innerHTML = message;
     console.log(message);
+    playAudio(6,true);
 }
 
 function checkIfValidCardInHand(){
