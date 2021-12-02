@@ -592,12 +592,16 @@ for (let i = 0; i < 4; i++) {
     });
 };
 
-
+function reload() {
+    location.reload();
+}
 
 let restartButton = document.getElementById("restart-game-btn");
-restartButton.addEventListener("click", function () {
-    location.reload();
-})
+restartButton.addEventListener("click", reload);
+
+let restartNamesButton = document.getElementById("restart-names-btn");
+restartNamesButton.addEventListener("click", reload);
+
 
 
 function showErrorToSelectCard(bool) {
