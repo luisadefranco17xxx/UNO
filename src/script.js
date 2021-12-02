@@ -136,8 +136,9 @@ generateNamesButton.addEventListener('click', function(){
     playAudio(1,true);
     namesToSent = fieldnamenList;
     readyToSend = true;
-});
 
+});
+// ****************** END NAME GENERATOR  ************************
 
 let startGameModalButton = document.getElementById("start-game-btn");
 startGameModalButton.addEventListener("click", function () {
