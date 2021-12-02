@@ -12,6 +12,7 @@ var pile = "";
 var pileColor = "";
 var pileValue = "";
 var arrowDirection=1;
+var arrowReverse=false;
 //let cards="";
 
 let nextPlayer;
@@ -233,6 +234,8 @@ async function setuptStartingCards() {
 
     if (pileValue==12) {    
         arrowDirection=arrowDirection*(-1);  
+        if(arrowReverse==true)  arrowReverse=false;
+        else arrowReverse=true;
     }
 
     for (let j = 0; j < 4; j++) {
@@ -462,7 +465,9 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
     }, 1001);
 
     if (pileValue==12) {
-        arrowDirection=arrowDirection*(-1);  
+        arrowDirection=arrowDirection*(-1); 
+        if(arrowReverse==true)  arrowReverse=false;
+        else arrowReverse=true; 
     }
 }
 
