@@ -49,17 +49,15 @@ myModal.show();
 setTimeout(function () {
     document.getElementById("name1").focus();
 }, 500);
-let formInputNames = document.getElementById("form-names-modal");
 
+let formInputNames = document.getElementById("form-names-modal");
 formInputNames.addEventListener("keyup", function () {
 
 // ****************** fill names array ************************ --->
-
     let fieldName1 = document.getElementById("name1");
     let fieldName2 = document.getElementById("name2");
     let fieldName3 = document.getElementById("name3");
     let fieldName4 = document.getElementById("name4");
-
 
     fieldnamenList = [fieldName1.value, fieldName2.value, fieldName3.value, fieldName4.value];
 
@@ -115,11 +113,14 @@ formInputNames.addEventListener("keyup", function () {
 const getRandomNumber = (max) => Math.floor(Math.random() * max);
 let generateNamesButton = document.getElementById('generate-names-btn');
 generateNamesButton.addEventListener('click', function(){
-    let name;
+
+    let nameInput;
     for (let i = 0; i < 4; i++) {
-        name = namesArr[getRandomNumber(namesArr.length)];
-        document.getElementById('name' + (i+1)).value = name;
-        fieldnamenList[i] = document.getElementById('name' + (i+1)).value;
+        nameInput = document.getElementById('name' + (i+1));
+        nameInput.value = namesArr[getRandomNumber(namesArr.length)];
+        nameInput.disabled = true;
+        
+        fieldnamenList[i] = nameInput.value;
         console.log("fieldnamenList["+i+"] --> "+ fieldnamenList[i]);
     }
 
@@ -647,10 +648,23 @@ function checkIfValidCardInHand(){
     }
     return false;
 }
+document.getElementById('audio-on-btn').addEventListener('click', toggleSound)
 
 function playAudio(num,play){
     console.log("playAudio: num: "+num+", play:"+play)
     var x = document.getElementById("Audio"+num);
     if(play) x.play();
     else x.pause();   
+}
+
+function toggleSound(){
+    let audioElements = document.getElementsByTagName('audio');
+    for(var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++);
+    if(document.getElementById('audio-on-btn').classList.contains('muted')){
+        document.getElementById('audio-on-btn').classList.remove('muted');
+        document.getElementById('audio-on-img').src = "src/img2/sound-on.png"
+    } else {
+        document.getElementById('audio-on-btn').classList.add('muted');
+        document.getElementById('audio-on-img').src = "src/img2/sound-off.png"
+    }
 }

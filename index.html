@@ -14,13 +14,16 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-light ">
-        <div class="container-fluid">
-            <div class="menu">
-                <a href="index.html" class="menu-item">L&V</a>
-            </div>
+    <nav class="navbar navbar-light d-flex">
+        <div class="menu names-l">
+            <a href="index.html" class="menu-item">L&V</a>
+        </div>
+        <div class="d-flex menu-items-wrapper">
             <div class="menu">
                 <a href="#" class="menu-item" id="restart-game-btn">New Game</a>
+            </div>
+            <div class="menu">
+                <span id="audio-on-btn"><img src="src/img2/sound-on.png" id="audio-on-img" alt=""></span>
             </div>
         </div>
     </nav>
@@ -269,7 +272,8 @@
 </div>
 
 <audio id="Audio1">
-   <source  src="src/audio/Twin-Musicom-64-Sundays.mp3" type="audio/mpeg"> 
+   <source  src="src/audio/Twin-Musicom-64-Sundays.mp3"
+            type="audio/mpeg">
 </audio>
 <audio id="Audio2">
     <source  src="src/audio/laugh.mp3" type="audio/mpeg"> 
