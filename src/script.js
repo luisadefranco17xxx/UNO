@@ -17,7 +17,7 @@ var arrowDirection=1;
 let nextPlayer;
 let lastPlayer;
 var baseUrl = "src/img/";
-const fieldnamenList = [];
+var fieldnamenList = [];
 var scoreHand;
 var wild;
 var eventForModal;
@@ -68,13 +68,16 @@ formInputNames.addEventListener("keyup", function () {
     var formIsFull = true;
     readyToSend = false;
 
+    console.log("fieldnamenList --> " + fieldnamenList.toString())
     fieldnamenList.forEach(function (fieldElement) {
         if (fieldElement == "") {
             formIsFull = false;
+
             document.getElementById('ready-to-send').classList.remove('display-feedback-success');
             document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
         }
         if (formIsFull == true) {
+            console.log('FORM IS FULL')
             document.getElementById('error-feedback-empty').classList.remove('display-feedback-empty');
         }
     });
@@ -110,6 +113,7 @@ formInputNames.addEventListener("keyup", function () {
     }
 });
 
+// ****************** NAME GENERATOR  ************************ --->
 
 const getRandomNumber = (max) => Math.floor(Math.random() * max);
 let generateNamesButton = document.getElementById('generate-names-btn');
@@ -125,7 +129,10 @@ generateNamesButton.addEventListener('click', function(){
         console.log("fieldnamenList["+i+"] --> "+ fieldnamenList[i]);
     }
 
+
     document.getElementById('start-game-btn').disabled = false;
+    document.getElementById('ready-to-send').classList.add('display-feedback-success');
+    playAudio(1,true);
     namesToSent = fieldnamenList;
     readyToSend = true;
 });
@@ -617,12 +624,6 @@ function playerWon(message) {
 
 function checkIfValidCardInHand(){
    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
-/*
-//Si hay un +4 en la pila no se puede jugar (Backend lo impide) --> CHEQUEAR
-    if (pileValue == 13){
-        return true;
-    }
- */
 
     if(arrCardActivePlayer.length===1) {
         return false;
