@@ -212,7 +212,6 @@ function saveResponseFromServer(response) {
         arrPlayer_[i].value_ = response.Players[i].Cards.map(item => `${item.Value}`);
         arrPlayer_[i].score_ = response.Players[i].Score;
     }
-
 }
 
 
@@ -555,7 +554,8 @@ for (let i = 0; i < 4; i++) {
         if (event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
 
-               if (event.target.dataset.value == 13  && !checkIfValidCardInHand())  {                   eventForModal = event.target;
+               if (event.target.dataset.value == 13  && !checkIfValidCardInHandLuisa())  {                   
+                   eventForModal = event.target;
                    console.log("+4");
                    colorModal.show();
                   } else if (event.target.dataset.value==14){
@@ -626,6 +626,17 @@ function playerWon(message) {
     document.getElementById('Player-won-message').innerHTML = message;
     console.log(message);
     playAudio(6,true);
+    //start confetti
+    let myElem = document.getElementsByClassName("d-md-flex")[0];
+    const divConfettis = document.createElement("div");
+    divConfettis.id="confettis";
+    myElem.appendChild(divConfettis);  
+    for (let i = 0; i < 10; i++) {
+        const divElem = document.createElement("div");
+        divElem.classList.add("confetti");
+        divConfettis.appendChild(divElem);        
+    }
+    //end confetti  
 }
 
 function checkIfValidCardInHand(){
@@ -664,6 +675,26 @@ function checkIfValidCardInHand(){
     }
     return false;
 }
+function checkIfValidCardInHandLuisa(){
+    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
+     if(arrCardActivePlayer.length===1)   return false;
+     
+     for (let i = 0; i < arrCardActivePlayer.length; i++) {  //only with color
+         if(pileColor=="Black") {
+             if(arrCardActivePlayer[i].dataset.color == wild) {
+                 console.log("wild: "+wild +"like card color");
+                 return true;
+             } else return false;
+         } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
+             console.log("pileColor: "+pileColor +"like card color");
+             return true;
+         }
+ 
+     }
+    return false;
+ }
+ 
+
 document.getElementById('audio-on-btn').addEventListener('click', toggleSound)
 
 function playAudio(num,play){
