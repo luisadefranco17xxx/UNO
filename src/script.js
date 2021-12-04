@@ -471,6 +471,7 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
         arrowDirection=arrowDirection*(-1); 
     }
     toggleArrow(arrowDirection);
+
 }
 
 async function removeSelectedCardFromPlayerHand() {
@@ -554,7 +555,7 @@ for (let i = 0; i < 4; i++) {
         if (event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
 
-               if (event.target.dataset.value == 13  && !checkIfValidCardInHandLuisa())  {                   
+               if (event.target.dataset.value == 13  && !checkIfValidCardInHand())  {                   
                    eventForModal = event.target;
                    console.log("+4");
                    colorModal.show();
