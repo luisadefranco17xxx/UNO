@@ -11,7 +11,7 @@ var session_id;
 var pile = "";
 var pileColor = "";
 var pileValue = "";
-var arrowDirection=1;
+var arrowDirection = 1;
 
 let nextPlayer;
 let lastPlayer;
@@ -106,7 +106,7 @@ formInputNames.addEventListener("keyup", function () {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
             document.getElementById('ready-to-send').classList.add('display-feedback-success');
             document.getElementById('start-game-btn').disabled = false;
-            playAudio(1,true);
+            playAudio(1, true);
         }
         namesToSent = fieldnamenList;
     }
@@ -116,22 +116,22 @@ formInputNames.addEventListener("keyup", function () {
 
 const getRandomNumber = (max) => Math.floor(Math.random() * max);
 let generateNamesButton = document.getElementById('generate-names-btn');
-generateNamesButton.addEventListener('click', function(){
+generateNamesButton.addEventListener('click', function () {
 
     let nameInput;
     for (let i = 0; i < 4; i++) {
-        nameInput = document.getElementById('name' + (i+1));
+        nameInput = document.getElementById('name' + (i + 1));
         nameInput.value = namesArr[getRandomNumber(namesArr.length)];
         nameInput.disabled = true;
-        
+
         fieldnamenList[i] = nameInput.value;
-        console.log("fieldnamenList["+i+"] --> "+ fieldnamenList[i]);
+        console.log("fieldnamenList[" + i + "] --> " + fieldnamenList[i]);
     }
 
 
     document.getElementById('start-game-btn').disabled = false;
     document.getElementById('ready-to-send').classList.add('display-feedback-success');
-    playAudio(1,true);
+    playAudio(1, true);
     namesToSent = fieldnamenList;
     readyToSend = true;
 
@@ -145,7 +145,7 @@ startGameModalButton.addEventListener("click", function () {
         myModal.hide()
 
         startGame();
-        playAudio(1,false);
+        playAudio(1, false);
     }
 });
 
@@ -193,8 +193,6 @@ async function startGame() {
 }
 
 
-
-
 function saveResponseFromServer(response) {
     //SCORE
     session_id = response.Id;
@@ -237,8 +235,8 @@ async function setuptStartingCards() {
     img.id = "pile-top";
     myElem.appendChild(img);
 
-    if (pileValue==12) {    
-        arrowDirection=arrowDirection*(-1);  
+    if (pileValue == 12) {
+        arrowDirection = arrowDirection * (-1);
     }
     toggleArrow(arrowDirection);
 
@@ -311,12 +309,12 @@ async function setActivePlayer() {
     }
 }
 
-async function sendCard(value, color, wild) {
+async function sendCard(value, color, wildParam) {
 
     try {
         console.log("SEND CARD TO BACKEND--> ")
-        console.log(value + "  " + color + "  " + wild);
-        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wild,
+        console.log(value + "  " + color + "  " + wildParam);
+        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/playCard/" + session_id + "?value=" + value + "&color=" + color + "&wildColor=" + wildParam,
             {
                 method: 'PUT',
                 headers: {
@@ -326,10 +324,16 @@ async function sendCard(value, color, wild) {
 
         if (response.ok) {
             let result = await response.json();
-            console.log("HO FATTO SENDCARD -->" );
+            console.log("HO FATTO SENDCARD -->");
             console.log(result);
-            if (result.error === "WrongColor" || result.error === "Draw4NotAllowed") {
-                console.log("error en respuesta")
+            if (result.error === "WrongColor") {
+                console.log("error en respuesta --> wrongcolor")
+                showErrorToSelectCard(true);
+                return false;
+            } else if (result.error === "Draw4NotAllowed") {
+                wild = lastWild;
+                console.log("lastWild -->" + lastWild)
+                console.log("error en respuesta --> draw4notallowed")
                 showErrorToSelectCard(true);
                 return false;
             } else {
@@ -337,9 +341,9 @@ async function sendCard(value, color, wild) {
                 document.getElementById('card-pile-and-deck').classList.remove('back-color-' + lastWild);
 
                 if (color === 'Black') {
-                    console.log('ESTE DEBE SER EL COLOR ELEGIDO ' + wild);
-                    lastWild = wild;
-                    document.getElementById('card-pile-and-deck').classList.add('back-color-' + wild);
+                    console.log('ESTE DEBE SER EL COLOR ELEGIDO ' + wildParam);
+                    lastWild = wildParam;
+                    document.getElementById('card-pile-and-deck').classList.add('back-color-' + wildParam);
                 }
                 saveResponseFromServerAfterPlayCard(result, value, color);
                 showErrorToSelectCard(false);
@@ -414,8 +418,13 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
         for (let i = 0; i < 4; i++) {
             tot = tot + totScore[i];
         }
+
+        let avatarWon = document.getElementById('avatar-p' + (playerNumber));
+
+        avatarWon.classList.add('heartbeat');
         let message = "Player : " + fieldnamenList[playerNumber - 1] + " won with " + tot + " points";
-        playerWon(message)
+        playerWon(message);
+
     }
 
     if (cardsPlayerToSetHand.length === 1 && lastPlayer === fieldnamenList[playerNumber - 1]) {
@@ -439,8 +448,8 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
 }
 
 async function setPileTopCard(value, color) {
-    playAudio(3,false);
-    playAudio(3,true);
+    playAudio(3, false);
+    playAudio(3, true);
     console.log('Result from setPileTopCard -->')
     appendPileTopFromResponseFromServerAfterTopCard(value, color);
 
@@ -463,8 +472,8 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
         myElem.classList.remove('fade-in')
     }, 1001);
 
-    if (pileValue==12) {
-        arrowDirection=arrowDirection*(-1); 
+    if (pileValue == 12) {
+        arrowDirection = arrowDirection * (-1);
     }
     toggleArrow(arrowDirection);
 
@@ -508,8 +517,8 @@ async function drawACardFromDeck() {
                 img.dataset.color = result.Card.Color;
                 img.classList.add('fade-in');
                 myElem.appendChild(img);
-                totScore[i] = totScore[i]+ (parseInt(result.Card.Score, 10));
-                setScore(totScore[i], i+1);
+                totScore[i] = totScore[i] + (parseInt(result.Card.Score, 10));
+                setScore(totScore[i], i + 1);
             }
         }
         nextPlayer = result.NextPlayer;
@@ -521,7 +530,7 @@ async function drawACardFromDeck() {
     }
 }
 
-function addHeartbeatToTopDeckCard(){
+function addHeartbeatToTopDeckCard() {
     let topDeckCard = document.getElementById("deck-11");
     topDeckCard.classList.add("heartbeat");
     setTimeout(function () {
@@ -530,7 +539,7 @@ function addHeartbeatToTopDeckCard(){
 }
 
 document.getElementById("deck-11").addEventListener("click", function (event) {
-    playAudio(4,true);
+    playAudio(4, true);
     showCalledUNO(false, "");
     addHeartbeatToTopDeckCard();
     drawACardFromDeck();
@@ -549,24 +558,53 @@ for (let i = 0; i < 4; i++) {
         }
     });
 
+    function disableButtonsUnavailableColorsFromModalColor() {
+        console.log("DISABLE ALL BUT COLOR");
+        console.log("Wild es " + wild);
+        if (wild != 'Red'){
+            document.getElementById("Red").setAttribute('disabled', "");
+        }
+        if (wild != 'Green'){
+            document.getElementById("Green").setAttribute('disabled', "");
+        }
+        if (wild != 'Blue'){
+            document.getElementById("Blue").setAttribute('disabled', "");
+        }
+        if (wild != 'Yellow'){
+            document.getElementById("Yellow").setAttribute('disabled', "");
+        }
+    }
+
+    function enableAllButtonsFromModalColor() {
+        console.log("ENABLE ALL");
+        document.getElementById("Red").removeAttribute('disabled');
+        document.getElementById("Blue").removeAttribute('disabled');
+        document.getElementById("Green").removeAttribute('disabled');
+        document.getElementById("Yellow").removeAttribute('disabled');
+    }
+
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if (event.target.nodeName == 'IMG') {
             if (event.target.dataset.color === "Black" && event.target.parentElement.classList.contains("active-hand")) {
 
-               if (event.target.dataset.value == 13  && !checkIfValidCardInHand())  {                   
-                   eventForModal = event.target;
-                   console.log("+4");
-                   colorModal.show();
-                  } else if (event.target.dataset.value==14){
-                   console.log("Cambio de color ")
+                enableAllButtonsFromModalColor();
+                if (event.target.dataset.value == 13 && !checkIfValidCardInHand()) {
+                    if (pileValue == 14) {
+                        disableButtonsUnavailableColorsFromModalColor();
+                    }
+                    eventForModal = event.target;
+                    console.log("+4");
+                    colorModal.show();
+                } else if (event.target.dataset.value == 14) {
+                    console.log("Cambio de color ")
                     eventForModal = event.target
                     colorModal.show();
-                  } else  {
-                      showErrorToSelectCard(true);
-                    } 
+                } else {
+                    showErrorToSelectCard(true);
+                }
             } else if (event.target.parentElement.classList.contains("active-hand")) {
 
-                if (pileColor == "Black"){
+                if (pileColor == "Black") {
                     pileColor = wild;
                 }
                 if (event.target.dataset.color == pileColor || event.target.dataset.value == pileValue) {
@@ -585,7 +623,8 @@ for (let i = 0; i < 4; i++) {
             console.log("NO ES ImAGEN EL event.target!!!")
         }
     });
-};
+}
+;
 
 function reload() {
     location.reload();
@@ -600,19 +639,19 @@ restartNamesButton.addEventListener("click", reload);
 function showErrorToSelectCard(bool) {
     if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
-        playAudio(3,false);
-        playAudio(2,false);
-        playAudio(2,true);
+        playAudio(3, false);
+        playAudio(2, false);
+        playAudio(2, true);
     } else {
         document.getElementById('error-to-select').classList.remove('display-feedback-error');
-    }   
+    }
 }
 
 function showCalledUNO(bool, player) {
     if (bool) {
         document.getElementById('called-UNO').classList.add('display-called-UNO');
         document.getElementById('called-UNO-message').innerHTML = player + " CALLED UNO ";
-        playAudio(5,true);
+        playAudio(5, true);
     } else {
         document.getElementById('called-UNO').classList.remove('display-called-UNO');
     }
@@ -622,35 +661,37 @@ function playerWon(message) {
     document.getElementById('Player-won').classList.add('display-Player-won');
     document.getElementById('Player-won-message').innerHTML = message;
     console.log(message);
-    playAudio(6,true);
-    //start confetti
-    let myElem = document.getElementsByClassName("d-md-flex")[0];
-    const divConfettis = document.createElement("div");
-    divConfettis.id="confettis";
-    myElem.appendChild(divConfettis);  
-    for (let i = 0; i < 10; i++) {
-        const divElem = document.createElement("div");
-        divElem.classList.add("confetti");
-        divConfettis.appendChild(divElem);        
-    }
-    //end confetti  
+    playAudio(6, true);
+
+    /*
+        //start confetti
+        let myElem = document.getElementsByClassName("d-md-flex")[0];
+        const divConfettis = document.createElement("div");
+        divConfettis.id="confettis";
+        myElem.appendChild(divConfettis);
+        for (let i = 0; i < 10; i++) {
+            const divElem = document.createElement("div");
+            divElem.classList.add("confetti");
+            divConfettis.appendChild(divElem);
+        }
+        //end confetti  */
 }
 
-function checkIfValidCardInHand(){
-   let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
+function checkIfValidCardInHand() {
+    let arrCardActivePlayer = document.getElementsByClassName("active-hand")[0].childNodes;
 
-    if(arrCardActivePlayer.length===1) {
+    if (arrCardActivePlayer.length === 1) {
         return false;
     }
-    
+
     for (let i = 0; i < arrCardActivePlayer.length; i++) {
 
-        if (arrCardActivePlayer[i].dataset.color == 'Black'){
+        if (arrCardActivePlayer[i].dataset.color == 'Black') {
             continue; //otro o el mismo +4 y cambio de color
         }
 
         //only with color
-        if(pileColor  == "Black") {
+        if (pileColor == "Black") {
             console.log("wild : " + wild);
             if (arrCardActivePlayer[i].dataset.color == wild) {
                 console.log("Hay carta del mismo color");
@@ -658,7 +699,7 @@ function checkIfValidCardInHand(){
             }
         }
         if (arrCardActivePlayer[i].dataset.color == pileColor) {
-            console.log("pileColor: "+ pileColor +" like card color");
+            console.log("pileColor: " + pileColor + " like card color");
             return true;
         }
         if (arrCardActivePlayer[i].dataset.color == pileColor) {
@@ -669,39 +710,40 @@ function checkIfValidCardInHand(){
     }
     return false;
 }
-function checkIfValidCardInHandLuisa(){
-    let  arrCardActivePlayer=  document.getElementsByClassName("active-hand")[0].childNodes;
-     if(arrCardActivePlayer.length===1)   return false;
-     
-     for (let i = 0; i < arrCardActivePlayer.length; i++) {  //only with color
-         if(pileColor=="Black") {
-             if(arrCardActivePlayer[i].dataset.color == wild) {
-                 console.log("wild: "+wild +"like card color");
-                 return true;
-             } else return false;
-         } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
-             console.log("pileColor: "+pileColor +"like card color");
-             return true;
-         }
- 
-     }
+
+function checkIfValidCardInHandLuisa() {
+    let arrCardActivePlayer = document.getElementsByClassName("active-hand")[0].childNodes;
+    if (arrCardActivePlayer.length === 1) return false;
+
+    for (let i = 0; i < arrCardActivePlayer.length; i++) {  //only with color
+        if (pileColor == "Black") {
+            if (arrCardActivePlayer[i].dataset.color == wild) {
+                console.log("wild: " + wild + "like card color");
+                return true;
+            } else return false;
+        } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
+            console.log("pileColor: " + pileColor + "like card color");
+            return true;
+        }
+
+    }
     return false;
- }
- 
+}
+
 
 document.getElementById('audio-on-btn').addEventListener('click', toggleSound)
 
-function playAudio(num,play){
-    console.log("playAudio: num: "+num+", play:"+play)
-    var x = document.getElementById("Audio"+num);
-    if(play) x.play();
-    else x.pause();   
+function playAudio(num, play) {
+    //  console.log("playAudio: num: "+num+", play:"+play)
+    var x = document.getElementById("Audio" + num);
+    if (play) x.play();
+    else x.pause();
 }
 
-function toggleSound(){
+function toggleSound() {
     let audioElements = document.getElementsByTagName('audio');
-    for(var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++);
-    if(document.getElementById('audio-on-btn').classList.contains('muted')){
+    for (var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++) ;
+    if (document.getElementById('audio-on-btn').classList.contains('muted')) {
         document.getElementById('audio-on-btn').classList.remove('muted');
         document.getElementById('audio-on-img').src = "src/img2/sound-on.png"
     } else {
@@ -711,8 +753,8 @@ function toggleSound(){
 }
 
 
-function toggleArrow(direction){
-    if(direction==1){  
+function toggleArrow(direction) {
+    if (direction == 1) {
         document.getElementById('arrow-img').src = "src/img2/arrow_down.png"
     } else {
         document.getElementById('arrow-img').src = "src/img2/arrow_up.png"
