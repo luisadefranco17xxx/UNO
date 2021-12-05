@@ -225,7 +225,7 @@ function setPlayersNamesInBoard(names, response) {
     for (let i = 0; i < 4; i++) {
         setScore(response.Players[i].Score, i + 1);
     }
-    //console.log("totScore in :setPlayersNamesInBoard "+totScore)
+
 }
 
 async function setuptStartingCards() {
@@ -301,10 +301,6 @@ async function setActivePlayer() {
 
             let notActivePlayerWrapper = myHand.parentElement.parentElement.parentElement;
             notActivePlayerWrapper.classList.remove("scale-up-center");
-            // notActivePlayerWrapper.classList.add("scale-down-center");
-            // setTimeout(function (){
-            //     notActivePlayerWrapper.classList.remove("scale-down-center");
-            // }, 500);
 
             let notActiveAvatarWrapper = document.getElementById("avatar-wrapper-player" + (i + 1));
             notActiveAvatarWrapper.classList.add('d-flex');
@@ -503,6 +499,7 @@ async function drawACardFromDeck() {
         showErrorToSelectCard(false);
 
         for (let i = 0; i < fieldnamenList.length; i++) {
+            console.log("totScore of " + fieldnamenList[i] + " in : draw card " + totScore[i])
             if (fieldnamenList[i] === playerToReceiveCard) {
                 let myElem = document.getElementById("hand-player" + (i + 1));
                 const img = document.createElement("img");
@@ -511,6 +508,8 @@ async function drawACardFromDeck() {
                 img.dataset.color = result.Card.Color;
                 img.classList.add('fade-in');
                 myElem.appendChild(img);
+                totScore[i] = totScore[i]+ (parseInt(result.Card.Score, 10));
+                setScore(totScore[i], i+1);
             }
         }
         nextPlayer = result.NextPlayer;
@@ -529,7 +528,6 @@ function addHeartbeatToTopDeckCard(){
         topDeckCard.classList.remove("heartbeat");
     }, 1400);
 }
-
 
 document.getElementById("deck-11").addEventListener("click", function (event) {
     playAudio(4,true);
@@ -599,8 +597,6 @@ restartButton.addEventListener("click", reload);
 let restartNamesButton = document.getElementById("restart-names-btn");
 restartNamesButton.addEventListener("click", reload);
 
-
-
 function showErrorToSelectCard(bool) {
     if (bool) {
         document.getElementById('error-to-select').classList.add('display-feedback-error');
@@ -665,10 +661,7 @@ function checkIfValidCardInHand(){
             console.log("pileColor: "+ pileColor +" like card color");
             return true;
         }
-        if (arrCardActivePlayer[i].dataset.value == pileValue){
-            console.log("Hay carta del mismo valor!");
-            return true;
-        } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
+        if (arrCardActivePlayer[i].dataset.color == pileColor) {
             console.log("Hay carta del mismo color!");
             return true;
         }
