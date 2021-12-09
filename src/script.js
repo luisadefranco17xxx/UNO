@@ -105,7 +105,9 @@ formInputNames.addEventListener("keyup", function () {
         if (readyToSend == true) {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
             document.getElementById('ready-to-send').classList.add('display-feedback-success');
+            console.log("HERE!!!! Validations ")
             document.getElementById('start-game-btn').classList.add('footer-btn-modal-names');
+            console.log(document.getElementById('start-game-btn'));
             document.getElementById('start-game-btn').disabled = false;
             playAudio(1, true);
         }

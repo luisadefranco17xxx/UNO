@@ -47,22 +47,32 @@ header .menu .menu-item {
     background-color: darkred !important;
     color: whitesmoke;
 }
+
 .back-color-Green{
     background-color: #339966 !important;
     color: whitesmoke;
 }
+
 .back-color-Blue{
     background-color: blue !important;
     color: whitesmoke;
 }
+
 .back-color-Yellow{
     background-color: #ffd633 !important;
     color: darkslategray;
 }
+h5.modal-title{
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 700;
 
+}
 #exampleModal{
     background-color: orangered;
     background-image: url("img2/background1.PNG");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #restart-game-btn{
@@ -73,10 +83,22 @@ header .menu .menu-item {
     font-weight: 700;
     color: #ff5253;
 }
+#start-game-btn:hover{
+    font-weight: 700;
+    color: #ff5253;
+    text-transform: uppercase;
+    background-color: black;
+}
+
 #audio-on-img{
     cursor: pointer;
     width: 40px;
 }
+#audio-on-img-modal{
+    cursor: pointer;
+    width: 30px;
+}
+
 #arrow-img{
     width: 40px;
     background: transparent !important;

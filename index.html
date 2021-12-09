@@ -23,7 +23,7 @@
                 <a href="#" class="menu-item" id="restart-game-btn">New Game</a>
             </div>
             <div class="menu">
-                <span id="audio-on-btn"><img src="src/img2/sound-on.png" id="audio-on-img" alt=""></span>
+                <span id="audio-on-btn"><img src="src/img2/sound-on.png" id="audio-on-img"></span>
             </div>
             <div class="menu">
                 <span id="arrow-down-img"><img src="src/img2/arrow_down.png" id="arrow-img" alt=""></span>
@@ -149,8 +149,6 @@
         <div class="modal-content ">
             <div class="modal-header d-block text-center">
                 <h5 class="modal-title" id="exampleModalLabel">Enter the name of the players</h5>
-                <button id="generate-names-btn">Generate Names</button>
-                <button id="restart-names-btn">Restart</button>
             </div>
             <div id="form-names-modal" class="modal-body">
                 <div class="input-group mb-3">
@@ -250,7 +248,10 @@
                 </div>
             </div>
             <div class="modal-footer d-block text-center">
-                <button type="submit" class="footer_btn-primary" id="start-game-btn" disabled>Start game</button>
+                <span id="audio-on-btn-modal"><img src="src/img2/sound-on.png" id="audio-on-img-modal"></span>
+                <button class="footer-btn-modal-names" id="generate-names-btn">Generate Names</button>
+                <button class="footer-btn-modal-names" id="restart-names-btn">Restart</button>
+                <button type="submit" class="footer-btn-modal-names" id="start-game-btn" disabled>Start game</button>
             </div>
         </div>
     </div>
@@ -270,8 +271,7 @@
                 <button type="button" class="btn btn-danger" id="Red" data-bs-dismiss="modal">Red</button>
                 <button type="button" class="btn btn-primary" id="Blue" data-bs-dismiss="modal">Blue</button>
                 <button type="button" class="btn btn-success" id="Green" data-bs-dismiss="modal">Green</button>
-                <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow
-                </button>
+                <button type="button" class="btn btn-warning" id="Yellow" data-bs-dismiss="modal">Yellow</button>
             </div>
         </div>
     </div>
