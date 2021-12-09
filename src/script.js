@@ -125,7 +125,7 @@ generateNamesButton.addEventListener('click', function () {
     for (let i = 0; i < 4; i++) {
         nameInput = document.getElementById('name' + (i + 1));
         nameInput.value = namesArr[getRandomNumber(namesArr.length)];
-        nameInput.disabled = true;
+        //nameInput.disabled = true;
 
         fieldnamenList[i] = nameInput.value;
         console.log("fieldnamenList[" + i + "] --> " + fieldnamenList[i]);
@@ -269,7 +269,7 @@ async function setuptStartingCards() {
     setActivePlayer();
 }
 
-async function setActivePlayer() {
+ function setActivePlayer() {
     for (let i = 0; i < fieldnamenList.length; i++) {
         if (fieldnamenList[i] == nextPlayer) {
             let myElem = document.getElementById("name-player" + (i + 1));
@@ -450,15 +450,10 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     }
 }
 
-async function setPileTopCard(value, color) {
+ function setPileTopCard(value, color) {
     playAudio(3, false);
     playAudio(3, true);
     console.log('Result from setPileTopCard -->')
-    appendPileTopFromResponseFromServerAfterTopCard(value, color);
-
-}
-
-async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
     pileColor = color;
     pileValue = value;
 
@@ -479,15 +474,11 @@ async function appendPileTopFromResponseFromServerAfterTopCard(value, color) {
         arrowDirection = arrowDirection * (-1);
     }
     toggleArrow(arrowDirection);
-
 }
 
-async function removeSelectedCardFromPlayerHand() {
-    let toRemove = document.getElementById("selected-card");
-    toRemove.remove();
-}
 
-async function removeOldPileTopCard() {
+
+ function removeOldPileTopCard() {
     let toRemove = document.getElementById("pile-top");
     toRemove.remove();
 }
@@ -705,33 +696,13 @@ function checkIfValidCardInHand() {
             console.log("pileColor: " + pileColor + " like card color");
             return true;
         }
-        if (arrCardActivePlayer[i].dataset.color == pileColor) {
-            console.log("Hay carta del mismo color!");
-            return true;
-        }
+
 
     }
     return false;
 }
 
-function checkIfValidCardInHandLuisa() {
-    let arrCardActivePlayer = document.getElementsByClassName("active-hand")[0].childNodes;
-    if (arrCardActivePlayer.length === 1) return false;
 
-    for (let i = 0; i < arrCardActivePlayer.length; i++) {  //only with color
-        if (pileColor == "Black") {
-            if (arrCardActivePlayer[i].dataset.color == wild) {
-                console.log("wild: " + wild + "like card color");
-                return true;
-            } else return false;
-        } else if (arrCardActivePlayer[i].dataset.color == pileColor) {
-            console.log("pileColor: " + pileColor + "like card color");
-            return true;
-        }
-
-    }
-    return false;
-}
 
 
 document.getElementById('audio-on-btn').addEventListener('click', toggleSound);
