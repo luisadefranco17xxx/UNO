@@ -105,6 +105,7 @@ formInputNames.addEventListener("keyup", function () {
         if (readyToSend == true) {
             document.getElementById('error-feedback-names').classList.remove('display-feedback-repeatednames');
             document.getElementById('ready-to-send').classList.add('display-feedback-success');
+            document.getElementById('start-game-btn').classList.add('footer-btn-modal-names');
             document.getElementById('start-game-btn').disabled = false;
             playAudio(1, true);
         }
@@ -128,7 +129,7 @@ generateNamesButton.addEventListener('click', function () {
         console.log("fieldnamenList[" + i + "] --> " + fieldnamenList[i]);
     }
 
-
+    document.getElementById('start-game-btn').classList.add('footer-btn-modal-names');
     document.getElementById('start-game-btn').disabled = false;
     document.getElementById('ready-to-send').classList.add('display-feedback-success');
     playAudio(1, true);
@@ -731,7 +732,8 @@ function checkIfValidCardInHandLuisa() {
 }
 
 
-document.getElementById('audio-on-btn').addEventListener('click', toggleSound)
+document.getElementById('audio-on-btn').addEventListener('click', toggleSound);
+document.getElementById('audio-on-btn-modal').addEventListener('click', toggleSoundModal);
 
 function playAudio(num, play) {
     //  console.log("playAudio: num: "+num+", play:"+play)
@@ -749,6 +751,17 @@ function toggleSound() {
     } else {
         document.getElementById('audio-on-btn').classList.add('muted');
         document.getElementById('audio-on-img').src = "src/img2/sound-off.png"
+    }
+}
+function toggleSoundModal() {
+    let audioElement = document.getElementById('Audio1');
+    audioElement.muted = !audioElement.muted;
+    if (document.getElementById('audio-on-btn-modal').classList.contains('muted')) {
+        document.getElementById('audio-on-btn-modal').classList.remove('muted');
+        document.getElementById('audio-on-img-modal').src = "src/img2/sound-on.png"
+    } else {
+        document.getElementById('audio-on-btn-modal').classList.add('muted');
+        document.getElementById('audio-on-img-modal').src = "src/img2/sound-off.png"
     }
 }
 
