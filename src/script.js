@@ -153,37 +153,38 @@ colorButtonClicked.addEventListener("click", function (event) {
 });
 
 async function startGame() {
-    let p1TypeAvatar = document.querySelector('[name="inlineRadioOptions-1"]:checked').value
-    let p2TypeAvatar = document.querySelector('[name="inlineRadioOptions-2"]:checked').value
-    let p3TypeAvatar = document.querySelector('[name="inlineRadioOptions-3"]:checked').value
-    let p4TypeAvatar = document.querySelector('[name="inlineRadioOptions-4"]:checked').value
+    let p1TypeAvatar = document.querySelector('[name="inlineRadioOptions-1"]:checked').value;
+    let p2TypeAvatar = document.querySelector('[name="inlineRadioOptions-2"]:checked').value;
+    let p3TypeAvatar = document.querySelector('[name="inlineRadioOptions-3"]:checked').value;
+    let p4TypeAvatar = document.querySelector('[name="inlineRadioOptions-4"]:checked').value;
 
     document.getElementById('avatar-p1').src = "https://robohash.org/" + fieldnamenList[0] + ".png?set=" + p1TypeAvatar;
     document.getElementById('avatar-p2').src = "https://robohash.org/" + fieldnamenList[1] + ".png?set=" + p2TypeAvatar;
     document.getElementById('avatar-p3').src = "https://robohash.org/" + fieldnamenList[2] + ".png?set=" + p3TypeAvatar;
     document.getElementById('avatar-p4').src = "https://robohash.org/" + fieldnamenList[3] + ".png?set=" + p4TypeAvatar;
 
+    try {
+        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start", {
+            method: 'POST',
+            body: JSON.stringify(
+                namesToSent
+            ),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+        if (response.ok) {
+            let result = await response.json();
 
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/game/start", {
-        method: 'POST',
-        body: JSON.stringify(
-            namesToSent
-        ),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
+            saveResponseFromServer(result);
+            setPlayersNamesInBoard(namesToSent, result);
+            setuptStartingCards();
+        } else {
+            console.log("HTTP-Error: " + response.status);
         }
-    });
-
-    if (response.ok) {
-        let result = await response.json();
-
-        saveResponseFromServer(result);
-        setPlayersNamesInBoard(namesToSent, result);
-        setuptStartingCards();
-
-    } else {
-        console.log("HTTP-Error: " + response.status);
-    }
+    } catch (e) {
+        alert("No internet connection: " + e)
+    }    
 }
 
 
@@ -220,7 +221,7 @@ function setPlayersNamesInBoard(names, response) {
 
 }
 
-async function setuptStartingCards() {
+function setuptStartingCards() {
 
     const url_pile = `${baseUrl}${pile}.png`;
     let myElem = document.getElementById("pile");
@@ -239,16 +240,7 @@ async function setuptStartingCards() {
         for (let i = 0; i < arrPlayer_[j].cards_.length; i++) {
             const url = `${baseUrl}${arrPlayer_[j].cards_[i]}.png`;
 
-            let myElem;
-            if (j == 0) {
-                myElem = document.getElementsByClassName("Player1-hand")[0];
-            } else if (j == 1) {
-                myElem = document.getElementsByClassName("Player2-hand")[0];
-            } else if (j == 2) {
-                myElem = document.getElementsByClassName("Player3-hand")[0];
-            } else if (j == 3) {
-                myElem = document.getElementsByClassName("Player4-hand")[0];
-            }
+            let myElem = document.getElementsByClassName("Player" + (j + 1)+"-hand")[0];
 
             const img = document.createElement("img");
             img.src = url;
@@ -285,7 +277,7 @@ async function setuptStartingCards() {
             if (activeLi != null) {
                 activeLi.remove();
             }
-            console.log("Luisa1:  nextPlayer  :" + nextPlayer)
+            console.log(" nextPlayer  :" + nextPlayer)
             let myHand = document.getElementById("hand-player" + (i + 1));
             if (myHand.classList.contains("active-hand")) {
                 myHand.classList.remove("active-hand");
@@ -304,7 +296,6 @@ async function setuptStartingCards() {
 }
 
 async function sendCard(value, color, wildParam) {
-
     try {
         console.log("SEND CARD TO BACKEND--> ")
         console.log(value + "  " + color + "  " + wildParam);
@@ -365,21 +356,26 @@ function saveResponseFromServerAfterPlayCard(response, value, color) {
 }
 
 async function setPlayersHandsAndScoresAfterPlayCard(playerName, playerNumber) {
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/GetCards/" + session_id + "?playerName=" + playerName,
-        {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            }
-        });
-    if (response.ok) {
-        let result = await response.json();
-        saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
-        return true;
-    } else {
-        console.log("HTTP-Error: " + response.status);
-        return false;
-    }
+   
+    try {
+        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/GetCards/" + session_id + "?playerName=" + playerName,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+        if (response.ok) {
+            let result = await response.json();
+            saveResponseFromServerAfterSetPlayersHandsAndScores(result, playerNumber);
+            return true;
+        } else {
+            console.log("HTTP-Error: " + response.status);
+            return false;
+        }
+    } catch (e) {
+        alert("No internet connection: " + e)
+    }    
 }
 
 function setScore(score, playerNumber) {
@@ -401,24 +397,6 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
     let cardsPlayerToSetHand_color = response.Cards.map(item => `${item.Color}`);
     let cardsPlayerToSetHand_value = response.Cards.map(item => `${item.Value}`);
 
-
-    if (cardsPlayerToSetHand.length === 0 && lastPlayer === fieldnamenList[playerNumber - 1]) {
-        let tot = 0;
-        for (let i = 0; i < 4; i++) {
-            tot = tot + totScore[i];
-        }
-
-        let avatarWon = document.getElementById('avatar-p' + (playerNumber));
-
-        avatarWon.classList.add('heartbeat');
-        let message = "Player : " + fieldnamenList[playerNumber - 1] + " won with " + tot + " points";
-        playerWon(message);
-    }
-
-    if (cardsPlayerToSetHand.length === 1 && lastPlayer === fieldnamenList[playerNumber - 1]) {
-        showCalledUNO(true, fieldnamenList[playerNumber - 1]);
-    }
-
     let myElem = document.getElementById("hand-player" + playerNumber);
     while (myElem.firstChild) {
         myElem.removeChild(myElem.firstChild);
@@ -431,6 +409,29 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
         img.src = url;
         img.dataset.value = cardsPlayerToSetHand_value[i];
         img.dataset.color = cardsPlayerToSetHand_color[i];
+        myElem.appendChild(img);
+    }
+
+    if (cardsPlayerToSetHand.length === 1 && lastPlayer === fieldnamenList[playerNumber - 1]) {
+        showCalledUNO(true, fieldnamenList[playerNumber - 1]);
+    }
+
+    if (cardsPlayerToSetHand.length === 0 && lastPlayer === fieldnamenList[playerNumber - 1]) {
+        let tot = 0;
+        for (let i = 0; i < 4; i++) {
+            tot = tot + totScore[i];
+        }
+
+        let avatarWon = document.getElementById('avatar-p' + (playerNumber));
+
+        avatarWon.classList.add('heartbeat');
+        let message = "Player : " + fieldnamenList[playerNumber - 1] + " won with " + tot + " points";
+        playerWon(message);
+        let myElem = document.getElementById("hand-player" + playerNumber);
+        const img = document.createElement("img");
+        img.id = "congratulation-label";
+        img.classList.add('heartbeat');
+        img.src = "src/img2/Congratulations.png"
         myElem.appendChild(img);
     }
 }
@@ -469,42 +470,46 @@ function removeOldPileTopCard() {
 
 
 async function drawACardFromDeck() {
-    let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/DrawCard/" + session_id,
-        {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            }
+    try{
+        let response = await fetch("http://nowaunoweb.azurewebsites.net/api/Game/DrawCard/" + session_id,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
         });
 
-    if (response.ok) {
-        let result = await response.json();
-        let playerToReceiveCard = result.Player;
+        if (response.ok) {
+            let result = await response.json();
+            let playerToReceiveCard = result.Player;
 
-        const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
-        showErrorToSelectCard(false);
+            const url = `${baseUrl}${result.Card.Color}${result.Card.Value}.png`;
+            showErrorToSelectCard(false);
 
-        for (let i = 0; i < fieldnamenList.length; i++) {
-            console.log("totScore of " + fieldnamenList[i] + " in : draw card " + totScore[i])
-            if (fieldnamenList[i] === playerToReceiveCard) {
-                let myElem = document.getElementById("hand-player" + (i + 1));
-                const img = document.createElement("img");
-                img.src = url;
-                img.dataset.value = result.Card.Value;
-                img.dataset.color = result.Card.Color;
-                img.classList.add('fade-in');
-                myElem.appendChild(img);
-                totScore[i] = totScore[i] + (parseInt(result.Card.Score, 10));
-                setScore(totScore[i], i + 1);
+            for (let i = 0; i < fieldnamenList.length; i++) {
+                console.log("totScore of " + fieldnamenList[i] + " in : draw card " + totScore[i])
+                if (fieldnamenList[i] === playerToReceiveCard) {
+                    let myElem = document.getElementById("hand-player" + (i + 1));
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.dataset.value = result.Card.Value;
+                    img.dataset.color = result.Card.Color;
+                    img.classList.add('fade-in');
+                    myElem.appendChild(img);
+                    totScore[i] = totScore[i] + (parseInt(result.Card.Score, 10));
+                    setScore(totScore[i], i + 1);
+                }
             }
+            nextPlayer = result.NextPlayer;
+            setTimeout(setActivePlayer, 800);
+            return true;
+        } else {
+            console.log("HTTP-Error: " + response.status);
+            return false;
         }
-        nextPlayer = result.NextPlayer;
-        setTimeout(setActivePlayer, 800);
-        return true;
-    } else {
-        console.log("HTTP-Error: " + response.status);
-        return false;
-    }
+    } catch (e) {
+        alert("No internet connection: " + e)
+    }    
 }
 
 function addHeartbeatToTopDeckCard() {
@@ -522,7 +527,10 @@ document.getElementById("deck-11").addEventListener("click", function (event) {
     drawACardFromDeck();
 })
 
+
+/********************************************Big for loop****************************************************************************/
 for (let i = 0; i < 4; i++) {
+
     document.getElementsByClassName("card-body hand")[i].addEventListener("mouseover", function (event) {
         if (event.target.tagName === "IMG" && event.target.parentElement.classList.contains("active-hand")) {
             event.target.classList.add("selected");
@@ -534,31 +542,6 @@ for (let i = 0; i < 4; i++) {
             event.target.classList.remove("selected");
         }
     });
-
-    function disableButtonsUnavailableColorsFromModalColor() {
-        console.log("DISABLE ALL BUT COLOR");
-        console.log("Wild es " + wild);
-        if (wild != 'Red'){
-            document.getElementById("Red").setAttribute('disabled', "");
-        }
-        if (wild != 'Green'){
-            document.getElementById("Green").setAttribute('disabled', "");
-        }
-        if (wild != 'Blue'){
-            document.getElementById("Blue").setAttribute('disabled', "");
-        }
-        if (wild != 'Yellow'){
-            document.getElementById("Yellow").setAttribute('disabled', "");
-        }
-    }
-
-    function enableAllButtonsFromModalColor() {
-        console.log("ENABLE ALL");
-        document.getElementById("Red").removeAttribute('disabled');
-        document.getElementById("Blue").removeAttribute('disabled');
-        document.getElementById("Green").removeAttribute('disabled');
-        document.getElementById("Yellow").removeAttribute('disabled');
-    }
 
     document.getElementsByClassName("card-body hand")[i].addEventListener("click", function (event) {
         if (event.target.nodeName == 'IMG') {
@@ -598,12 +581,42 @@ for (let i = 0; i < 4; i++) {
             console.log("NO imagin in event.target!!!")
         }
     });
+    
 }
+/**************************************Ende of big for loop****************************************************************************/
+
 
 
 function reload() {
     location.reload();
 }
+
+
+function disableButtonsUnavailableColorsFromModalColor() {
+    console.log("DISABLE ALL BUT COLOR");
+    console.log("Wild es " + wild);
+    if (wild != 'Red'){
+        document.getElementById("Red").setAttribute('disabled', "");
+    }
+    if (wild != 'Green'){
+        document.getElementById("Green").setAttribute('disabled', "");
+    }
+    if (wild != 'Blue'){
+        document.getElementById("Blue").setAttribute('disabled', "");
+    }
+    if (wild != 'Yellow'){
+        document.getElementById("Yellow").setAttribute('disabled', "");
+    }
+}
+
+function enableAllButtonsFromModalColor() {
+    console.log("ENABLE ALL");
+    document.getElementById("Red").removeAttribute('disabled');
+    document.getElementById("Blue").removeAttribute('disabled');
+    document.getElementById("Green").removeAttribute('disabled');
+    document.getElementById("Yellow").removeAttribute('disabled');
+}
+
 
 let restartButton = document.getElementById("restart-game-btn");
 restartButton.addEventListener("click", reload);
