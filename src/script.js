@@ -19,7 +19,7 @@ var scoreHand;
 var wild;
 var eventForModal;
 var lastWild;
-var playAudioBool=true;
+var mutedAudioBool=false;
 
 let score = 0;
 let totScore = [0, 0, 0, 0];
@@ -149,7 +149,7 @@ startGameModalButton.addEventListener("click", function () {
 
         startGame();
         playAudio(1, false);
-        toggleSound();
+        if (mutedAudioBool) toggleSound();
     }
 });
 
@@ -718,46 +718,35 @@ function playAudio(num, play) {
 }
 
 function toggleSound() {
-    if (playAudioBool==false){
-        //todo ettwas
-        for (var e = 0; e < audioElements.length; e++) {
-            audioElements[e].muted;
+        let audioElements = document.getElementsByTagName('audio');
+        for (var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++) ;
+        if (document.getElementById('audio-on-btn').classList.contains('muted')) {
+            document.getElementById('audio-on-btn').classList.remove('muted');
+            document.getElementById('audio-on-img').src = "src/img2/sound-on.png";
+        } else {
+            document.getElementById('audio-on-btn').classList.add('muted');
+            document.getElementById('audio-on-img').src = "src/img2/sound-off.png";
         }
-        document.getElementById('audio-on-img').src = "src/img2/sound-off.png";
-        playAudioBool=true;
-       
-    } else  {
-    let audioElements = document.getElementsByTagName('audio');
-    for (var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++) ;
-    if (document.getElementById('audio-on-btn').classList.contains('muted')) {
-        document.getElementById('audio-on-btn').classList.remove('muted');
-        document.getElementById('audio-on-img').src = "src/img2/sound-on.png";
-    } else {
-        document.getElementById('audio-on-btn').classList.add('muted');
-        document.getElementById('audio-on-img').src = "src/img2/sound-off.png";
-    }
-  }
 }
 function toggleSoundModal() {
     let audioElement = document.getElementById('Audio1');
-    console.log("audioElement.muted:   "+audioElement.muted);
     audioElement.muted = !audioElement.muted;
-    playAudioBool=audioElement.muted; 
+    mutedAudioBool=audioElement.muted; 
+    console.log("audioElement.muted:   "+audioElement.muted);
     if (document.getElementById('audio-on-btn-modal').classList.contains('muted')) {
         document.getElementById('audio-on-btn-modal').classList.remove('muted');
-        document.getElementById('audio-on-img-modal').src = "src/img2/sound-on.png"
+        document.getElementById('audio-on-img-modal').src = "src/img2/sound-on.png";
     } else {
         document.getElementById('audio-on-btn-modal').classList.add('muted');
-        document.getElementById('audio-on-img-modal').src = "src/img2/sound-off.png"
+        document.getElementById('audio-on-img-modal').src = "src/img2/sound-off.png";
     }
-   // toggleSound() ;
 }
 
 
 function toggleArrow(direction) {
     if (direction == 1) {
-        document.getElementById('arrow-img').src = "src/img2/arrow_down.png"
+        document.getElementById('arrow-img').src = "src/img2/arrow_down.png";
     } else {
-        document.getElementById('arrow-img').src = "src/img2/arrow_up.png"
+        document.getElementById('arrow-img').src = "src/img2/arrow_up.png";
     }
 }
