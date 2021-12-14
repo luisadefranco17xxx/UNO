@@ -72,6 +72,9 @@ formInputNames.addEventListener("keyup", function () {
 
             document.getElementById('ready-to-send').classList.remove('display-feedback-success');
             document.getElementById('error-feedback-empty').classList.add('display-feedback-empty');
+            document.getElementById('start-game-btn').disabled = true;
+            playAudio(1, false);
+            document.getElementById('start-game-btn').classList.remove('start-game-hover');
         }
         if (formIsFull == true) {
             console.log('FORM IS FULL')
@@ -89,6 +92,9 @@ formInputNames.addEventListener("keyup", function () {
                     document.getElementById('error-feedback-names').classList.add('display-feedback-repeatednames');
                     document.getElementById('ready-to-send').classList.remove('display-feedback-success');
                     document.getElementById('start-game-btn').disabled = true;
+                    playAudio(1, false);
+                    document.getElementById('start-game-btn').classList.remove('start-game-hover');
+
 
                     readyToSend = false;
                 }
@@ -101,6 +107,7 @@ formInputNames.addEventListener("keyup", function () {
             document.getElementById('start-game-btn').classList.add('footer-btn-modal-names');
             console.log(document.getElementById('start-game-btn'));
             document.getElementById('start-game-btn').disabled = false;
+            document.getElementById('start-game-btn').classList.add('start-game-hover');
             playAudio(1, true);
         }
         namesToSent = fieldnamenList;
@@ -125,6 +132,7 @@ generateNamesButton.addEventListener('click', function () {
 
     document.getElementById('start-game-btn').classList.add('footer-btn-modal-names');
     document.getElementById('start-game-btn').disabled = false;
+    document.getElementById('start-game-btn').classList.add('start-game-hover');
     document.getElementById('ready-to-send').classList.add('display-feedback-success');
     playAudio(1, true);
     namesToSent = fieldnamenList;
@@ -651,8 +659,8 @@ function playerWon(message) {
     console.log(message);
     playAudio(6, true);
 
-    /*
-        //start confetti
+
+       /* //start confetti
         let myElem = document.getElementsByClassName("d-md-flex")[0];
         const divConfettis = document.createElement("div");
         divConfettis.id="confettis";
@@ -662,7 +670,7 @@ function playerWon(message) {
             divElem.classList.add("confetti");
             divConfettis.appendChild(divElem);
         }
-        //end confetti  */
+        //end confetti*/
 }
 
 function checkIfValidCardInHand() {

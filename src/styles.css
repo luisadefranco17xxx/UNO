@@ -74,6 +74,10 @@ h5.modal-title{
     background-repeat: no-repeat;
     background-size: cover;
 }
+#congratulation-label{
+    background-color: darkred;
+    max-width: 120px;
+}
 
 #restart-game-btn{
     cursor: pointer;
@@ -83,7 +87,7 @@ h5.modal-title{
     font-weight: 700;
     color: #ff5253;
 }
-#start-game-btn:hover{
+.start-game-hover{
     font-weight: 700;
     color: #ff5253;
     text-transform: uppercase;
