@@ -19,6 +19,7 @@ var scoreHand;
 var wild;
 var eventForModal;
 var lastWild;
+var playAudioBool=true;
 
 let score = 0;
 let totScore = [0, 0, 0, 0];
@@ -148,6 +149,7 @@ startGameModalButton.addEventListener("click", function () {
 
         startGame();
         playAudio(1, false);
+        toggleSound();
     }
 });
 
@@ -663,7 +665,7 @@ function playerWon(message) {
     playAudio(6, true);
 
 
-       /* //start confetti
+     //start confetti
         let myElem = document.getElementsByClassName("d-md-flex")[0];
         const divConfettis = document.createElement("div");
         divConfettis.id="confettis";
@@ -716,19 +718,31 @@ function playAudio(num, play) {
 }
 
 function toggleSound() {
+    if (playAudioBool==false){
+        //todo ettwas
+        for (var e = 0; e < audioElements.length; e++) {
+            audioElements[e].muted;
+        }
+        document.getElementById('audio-on-img').src = "src/img2/sound-off.png";
+        playAudioBool=true;
+       
+    } else  {
     let audioElements = document.getElementsByTagName('audio');
     for (var e = 0; e < audioElements.length; audioElements[e].muted = !audioElements[e].muted, e++) ;
     if (document.getElementById('audio-on-btn').classList.contains('muted')) {
         document.getElementById('audio-on-btn').classList.remove('muted');
-        document.getElementById('audio-on-img').src = "src/img2/sound-on.png"
+        document.getElementById('audio-on-img').src = "src/img2/sound-on.png";
     } else {
         document.getElementById('audio-on-btn').classList.add('muted');
-        document.getElementById('audio-on-img').src = "src/img2/sound-off.png"
+        document.getElementById('audio-on-img').src = "src/img2/sound-off.png";
     }
+  }
 }
 function toggleSoundModal() {
     let audioElement = document.getElementById('Audio1');
+    console.log("audioElement.muted:   "+audioElement.muted);
     audioElement.muted = !audioElement.muted;
+    playAudioBool=audioElement.muted; 
     if (document.getElementById('audio-on-btn-modal').classList.contains('muted')) {
         document.getElementById('audio-on-btn-modal').classList.remove('muted');
         document.getElementById('audio-on-img-modal').src = "src/img2/sound-on.png"
@@ -736,6 +750,7 @@ function toggleSoundModal() {
         document.getElementById('audio-on-btn-modal').classList.add('muted');
         document.getElementById('audio-on-img-modal').src = "src/img2/sound-off.png"
     }
+   // toggleSound() ;
 }
 
 
