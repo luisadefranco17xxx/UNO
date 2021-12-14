@@ -559,6 +559,8 @@ for (let i = 0; i < 4; i++) {
                 if (event.target.dataset.value == 13 && !checkIfValidCardInHand()) {
                     if (pileValue == 14) {
                         disableButtonsUnavailableColorsFromModalColor();
+                    } else if (pileValue == 13){
+                        disableButtonsUnavailableColorsFromModalColor();
                     }
                     eventForModal = event.target;
                     colorModal.show();
@@ -603,6 +605,7 @@ function reload() {
 function disableButtonsUnavailableColorsFromModalColor() {
     console.log("DISABLE ALL BUT COLOR");
     console.log("Wild es " + wild);
+
     if (wild != 'Red'){
         document.getElementById("Red").setAttribute('disabled', "");
     }
