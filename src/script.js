@@ -435,6 +435,7 @@ function saveResponseFromServerAfterSetPlayersHandsAndScores(response, playerNum
         let avatarWon = document.getElementById('avatar-p' + (playerNumber));
 
         avatarWon.classList.add('heartbeat');
+        avatarWon.classList.add('winner-glow');
         let message = "Player : " + fieldnamenList[playerNumber - 1] + " won with " + tot + " points";
         playerWon(message);
         let myElem = document.getElementById("hand-player" + playerNumber);
@@ -535,7 +536,7 @@ document.getElementById("deck-11").addEventListener("click", function (event) {
     showCalledUNO(false, "");
     addHeartbeatToTopDeckCard();
     drawACardFromDeck();
-})
+});
 
 
 /********************************************Big for loop****************************************************************************/
